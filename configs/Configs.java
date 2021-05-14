@@ -38,7 +38,7 @@ public class Configs {
     /**
      * The static object of ball room
      */
-    public static final Room BALL_ROOM = new Room(Location.Ball_room, null);
+    public static final Room BALL_ROOM = new Room(Location.Ball_Room, null);
     /**
      * The static object of conservatory
      */
@@ -79,7 +79,7 @@ public class Configs {
      */
     public static Room getRoom(Location loc) {
         switch (loc) {
-        case Ball_room:
+        case Ball_Room:
             return BALL_ROOM;
         case Billard_Room:
             return BILLARD_ROOM;

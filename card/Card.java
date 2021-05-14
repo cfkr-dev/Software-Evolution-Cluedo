@@ -4,7 +4,7 @@ package card;
  * This interface represents a card in Cluedo game. It could be a Character card, a Room
  * (Location) card, or a weapon card.
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
 public interface Card {
