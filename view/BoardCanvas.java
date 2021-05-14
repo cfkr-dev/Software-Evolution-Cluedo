@@ -32,7 +32,7 @@ public class BoardCanvas extends JPanel {
      * The width and Height of each Tile. Note this constant is important as most of board
      * display is calculated based upon this value
      */
-    private static final int TILE_WIDTH = WindowUtilities.resizeHorizontalDimension(32);
+    private static int TILE_WIDTH = 32;
     /**
      * The width of board
      */
@@ -101,6 +101,10 @@ public class BoardCanvas extends JPanel {
 
         // update tokens' positions
         update();
+    }
+
+    public static void refreshScreen() {
+        TILE_WIDTH = WindowUtilities.resizeHorizontalDimension(32);
     }
 
     /**

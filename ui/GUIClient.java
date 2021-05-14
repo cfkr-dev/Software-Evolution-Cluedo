@@ -214,6 +214,17 @@ public class GUIClient extends JFrame {
         WindowUtilities.setWidth((int) width);
         WindowUtilities.setHeight((int) height);
 
+        getContentPane().addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                WindowUtilities.setWidth(e.getComponent().getWidth());
+                WindowUtilities.setHeight(e.getComponent().getHeight());
+                BoardCanvas.refreshScreen();
+                System.out.println("Resized... Dimensions: " + e.getComponent().getWidth() + ", " + e.getComponent().getHeight() + " Position: " + e.getComponent().getX() + ", " + e.getComponent().getY());
+            }
+        });
+
         // now make the left panel, which is game board
         boardPanel = new BoardCanvas(this);
         boardPanel.setPreferredSize(new Dimension(LEFT_PANEL_WIDTH, HEIGHT));
@@ -238,7 +249,7 @@ public class GUIClient extends JFrame {
         this.add(window);
         this.pack();
         this.validate();
-        this.setResizable(false);
+        this.setResizable(true);
         this.setVisible(true);
     }
 
