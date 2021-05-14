@@ -30,6 +30,7 @@ import card.Card;
 import card.Character;
 import card.Location;
 import card.Weapon;
+import view.dialogs.ExitRoomDialog;
 
 import static ui.GUIClient.loadImage;
 

@@ -182,7 +182,7 @@ public class PlayerSetupDialog extends JDialog {
                     b.setEnabled(false);
                     confirm.setEnabled(false);
 
-                    if (selectedCharacters.size() == parent.getGame().getNumPlayers() - 1) {
+                    if (selectedCharacters.size() == parent.getNumPlayers() - 1) {
                         confirm.setText("Game On!");
                     }
                     break;
@@ -206,7 +206,7 @@ public class PlayerSetupDialog extends JDialog {
 
             if (selectedCharacters.size() == 0) {
                 cancel.setEnabled(false);
-            } else if (selectedCharacters.size() < parent.getGame().getNumPlayers() - 1) {
+            } else if (selectedCharacters.size() < parent.getNumPlayers() - 1) {
                 confirm.setText("Next");
             }
         });
