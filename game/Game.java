@@ -483,9 +483,7 @@ public class Game {
     /**
      * Set the game to easy mode (so that the game will remember clues for player
      * ...cheating).
-     * 
-     * @param isNobrainerMode
-     *            --- a flag to turn on or off easy mode
+     *
      */
     public void setEasyMode(boolean isEasyMode) {
         this.isEasyMode = isEasyMode;

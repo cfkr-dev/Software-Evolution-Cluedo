@@ -195,9 +195,7 @@ public class Player {
         if (getClass() != obj.getClass())
             return false;
         Player other = (Player) obj;
-        if (token != other.token)
-            return false;
-        return true;
+        return token != other.token;
     }
 
 }

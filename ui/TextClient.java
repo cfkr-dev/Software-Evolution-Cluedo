@@ -209,7 +209,7 @@ public class TextClient {
                 int yesNo = parseInt(1, 2);
                 if (yesNo == 1) {
                     // made an accusation
-                    makeAccusation(game, currentPlayer);
+                    makeAccusation(game);
                 }
 
                 remainingSteps = 0;
@@ -221,7 +221,7 @@ public class TextClient {
 
         } else if (choice == movablePos.size() + 1) {
             // player chose to make an accusation
-            makeAccusation(game, currentPlayer);
+            makeAccusation(game);
             remainingSteps = 0;
 
         } else if (choice == movablePos.size() + 2) {
@@ -240,7 +240,7 @@ public class TextClient {
                 int yesNo = parseInt(1, 2);
                 if (yesNo == 1) {
                     // made an accusation
-                    makeAccusation(game, currentPlayer);
+                    makeAccusation(game);
                 }
 
                 remainingSteps = 0;
@@ -360,9 +360,8 @@ public class TextClient {
      * if wrong, the player is out.
      * 
      * @param game
-     * @param currentPlayer
      */
-    private static void makeAccusation(Game game, Character currentPlayer) {
+    private static void makeAccusation(Game game) {
 
         System.out.println("What accusation do you want to make:");
 
@@ -524,7 +523,7 @@ public class TextClient {
 
             try {
                 // parse the input
-                int i = Integer.valueOf(line);
+                int i = Integer.parseInt(line);
                 if (i >= min && i <= max) {
                     // a good input
                     return i;
@@ -532,12 +531,10 @@ public class TextClient {
                     // a out of boundary input, let the user retry.
                     System.out.println(
                             "Please choose between " + min + " and " + max + ":");
-                    continue;
                 }
             } catch (NumberFormatException e) {
                 // the input is not an integer
                 System.out.println("Please enter an integer:");
-                continue;
             }
         }
     }

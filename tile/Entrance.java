@@ -88,11 +88,9 @@ public class Entrance extends Tile {
             return false;
         Entrance other = (Entrance) obj;
         if (toRoom == null) {
-            if (other.toRoom != null)
-                return false;
-        } else if (!toRoom.equals(other.toRoom))
-            return false;
-        return true;
+            return other.toRoom == null;
+        }
+        return !toRoom.equals(other.toRoom);
     }
 
 }

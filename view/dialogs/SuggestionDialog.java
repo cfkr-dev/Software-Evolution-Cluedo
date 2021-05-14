@@ -37,7 +37,6 @@ import view.PlayerPanelCanvas;
  * @author Hector
  *
  */
-@SuppressWarnings("serial")
 public class SuggestionDialog extends JDialog {
     /**
      * The preferred dimension for card displaying
@@ -406,13 +405,10 @@ public class SuggestionDialog extends JDialog {
         JButton cancel = new JButton("Previous");
 
         // an action listener for radio buttons
-        ActionListener al = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardDisplay.repaint();
-                if (!confirm.isEnabled()) {
-                    confirm.setEnabled(true);
-                }
+        ActionListener al = e -> {
+            cardDisplay.repaint();
+            if (!confirm.isEnabled()) {
+                confirm.setEnabled(true);
             }
         };
 

@@ -30,6 +30,7 @@ import card.Card;
 import card.Character;
 import card.Location;
 import card.Weapon;
+import view.dialogs.ExitRoomDialog;
 
 import static ui.GUIClient.loadImage;
 
@@ -42,7 +43,7 @@ import static ui.GUIClient.loadImage;
  * @author Hector
  *
  */
-@SuppressWarnings("serial")
+
 public class PlayerPanelCanvas extends JPanel {
 
     // ============ some numbers for swing to set size =============

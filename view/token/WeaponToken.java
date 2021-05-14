@@ -14,7 +14,7 @@ import tile.RoomTile;
  * @author Hector
  *
  */
-@SuppressWarnings("serial")
+
 public class WeaponToken extends AbstractToken {
 
     /**

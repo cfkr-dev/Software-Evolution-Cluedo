@@ -19,7 +19,7 @@ import tile.RoomTile;
  * @author Hector
  *
  */
-@SuppressWarnings("serial")
+
 public abstract class AbstractToken extends JLabel {
 
     /**

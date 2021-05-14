@@ -443,8 +443,6 @@ public class Board {
      * 
      * @param weaponToken
      *            --- the weapon token
-     * @param room
-     *            --- where to move to
      */
     public void moveWeapon(WeaponToken weaponToken, RoomTile roomTile) {
         weaponToken.setRoomTile(roomTile);

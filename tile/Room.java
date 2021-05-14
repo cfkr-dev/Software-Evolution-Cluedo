@@ -135,9 +135,7 @@ public class Room extends Position {
         Room other = (Room) obj;
         if (room != other.room)
             return false;
-        if (secPasTo != other.secPasTo)
-            return false;
-        return true;
+        return secPasTo == other.secPasTo;
     }
 
 }
