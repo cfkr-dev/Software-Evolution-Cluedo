@@ -21,10 +21,10 @@ public class WindowUtilities {
     }
 
     public static int resizeVerticalDimension(int dimension) {
-        return width / dimension;
+        return (height * dimension) / 830;
     }
 
     public static int resizeHorizontalDimension(int dimension) {
-        return height / dimension;
+        return (width) * dimension / 1508;
     }
 }

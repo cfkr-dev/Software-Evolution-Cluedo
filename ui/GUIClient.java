@@ -239,6 +239,7 @@ public class GUIClient extends JFrame {
         window.add(boardPanel);
         window.add(playerPanel);
 
+
         // add key bindings
         addKeyBindings(window);
 
