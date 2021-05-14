@@ -37,7 +37,7 @@ public class Board {
 
         startPositions = new Tile[Character.values().length];
 
-        String boardString = Configs.BOARD_STRING;
+        String boardString = Configs.BOARD_STRING_B;
 
         int height = Configs.BOARD_HEIGHT;
         int width = Configs.BOARD_WIDTH;

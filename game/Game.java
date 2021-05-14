@@ -675,7 +675,7 @@ public class Game {
         int width = Configs.BOARD_WIDTH + 1;
 
         // get the canvas first
-        char[] boardChars = Configs.UI_STRING_A.toCharArray();
+        char[] boardChars = Configs.UI_STRING_B.toCharArray();
 
         // draw players by replacing his character on his position
         for (Player p : players) {
