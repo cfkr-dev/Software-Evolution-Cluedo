@@ -15,6 +15,6 @@ public interface Card {
      * 
      * @return --- a single char String to print a symbol on text-based graphical board.
      */
-    public char toStringOnBoard();
+     char toStringOnBoard();
 
 }
