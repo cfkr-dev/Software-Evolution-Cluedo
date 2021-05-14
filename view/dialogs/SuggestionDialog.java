@@ -1,4 +1,4 @@
-package view;
+package view.dialogs;
 
 import java.awt.CardLayout;
 import java.awt.Component;
@@ -29,6 +29,7 @@ import tile.Position;
 import tile.Room;
 import card.Location;
 import ui.GUIClient;
+import view.PlayerPanelCanvas;
 
 /**
  * This class is a custom dialog for players to make a suggestion or accusation.

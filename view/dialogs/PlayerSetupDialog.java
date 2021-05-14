@@ -1,4 +1,4 @@
-package view;
+package view.dialogs;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 
 import card.Character;
 import ui.GUIClient;
+import view.PlayerPanelCanvas;
 
 /**
  * This class is a custom dialog for players to choose which character he / she want to
@@ -181,7 +182,7 @@ public class PlayerSetupDialog extends JDialog {
                     b.setEnabled(false);
                     confirm.setEnabled(false);
 
-                    if (selectedCharacters.size() == parent.getNumPlayers() - 1) {
+                    if (selectedCharacters.size() == parent.getGame().getNumPlayers() - 1) {
                         confirm.setText("Game On!");
                     }
                     break;
@@ -205,7 +206,7 @@ public class PlayerSetupDialog extends JDialog {
 
             if (selectedCharacters.size() == 0) {
                 cancel.setEnabled(false);
-            } else if (selectedCharacters.size() < parent.getNumPlayers() - 1) {
+            } else if (selectedCharacters.size() < parent.getGame().getNumPlayers() - 1) {
                 confirm.setText("Next");
             }
         });
@@ -277,10 +278,6 @@ public class PlayerSetupDialog extends JDialog {
         }
 
         // all of them have to be true to unlock the next chapter ** sorry button
-        if (hasName && radioSelected && nameUnique) {
-            confirm.setEnabled(true);
-        } else {
-            confirm.setEnabled(false);
-        }
+        confirm.setEnabled(hasName && radioSelected && nameUnique);
     }
 }
