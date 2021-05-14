@@ -23,12 +23,12 @@ public class Board {
     /**
      * board is created as a 2D array of positions
      */
-    private Position[][] board;
+    private final Position[][] board;
 
     /**
      * six starting tiles for each character
      */
-    private Tile[] startPositions;
+    private final Tile[] startPositions;
 
     /**
      * Construct a board.

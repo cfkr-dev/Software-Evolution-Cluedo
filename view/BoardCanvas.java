@@ -25,7 +25,7 @@ import view.token.WeaponToken;
 import static ui.GUIClient.loadImage;
 
 @SuppressWarnings("serial")
-public class BoardCanvas extends JPanel {
+public class  BoardCanvas extends JPanel {
 
     /**
      * The width and Height of each Tile. Note this constant is important as most of board

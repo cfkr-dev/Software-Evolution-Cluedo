@@ -109,6 +109,7 @@ public class Game {
             knownCards.put(Character.get(i), new HashSet<>());
         }
 
+
         // then add all six dummy tokens on board
         players.add(new Player(Character.Miss_Scarlet,
                 board.getStartPosition(Character.Miss_Scarlet), false));

@@ -445,7 +445,7 @@ public class TextClient {
             location = Location.Kitchen;
             break;
         case 2:
-            location = Location.Ball_room;
+            location = Location.Ball_Room;
             break;
         case 3:
             location = Location.Conservatory;
