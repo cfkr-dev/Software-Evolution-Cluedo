@@ -18,6 +18,7 @@ import tile.Room;
 import tile.RoomTile;
 import tile.Tile;
 import ui.GUIClient;
+import utilities.WindowUtilities;
 import view.token.AbstractToken;
 import view.token.CharacterToken;
 import view.token.WeaponToken;
@@ -31,7 +32,7 @@ public class BoardCanvas extends JPanel {
      * The width and Height of each Tile. Note this constant is important as most of board
      * display is calculated based upon this value
      */
-    private static final int TILE_WIDTH = 32;
+    private static final int TILE_WIDTH = WindowUtilities.resizeHorizontalDimension(32);
     /**
      * The width of board
      */
