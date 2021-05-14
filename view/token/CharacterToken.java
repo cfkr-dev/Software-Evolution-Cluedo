@@ -13,7 +13,7 @@ import card.Character;
  * @author Hector
  *
  */
-@SuppressWarnings("serial")
+
 public class CharacterToken extends AbstractToken {
 
     /**
@@ -26,8 +26,6 @@ public class CharacterToken extends AbstractToken {
      * 
      * @param img
      *            --- the image used to draw this weapon token on board
-     * @param token
-     *            --- the character
      */
     public CharacterToken(ImageIcon img, Character character) {
         super(img, null);

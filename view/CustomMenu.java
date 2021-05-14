@@ -91,7 +91,7 @@ public class CustomMenu extends JMenuBar {
         });
 
         // exit
-        JMenuItem exit = new JMenuItem(MENU_STRINGS[i++]);
+        JMenuItem exit = new JMenuItem(MENU_STRINGS[i]);
         exit.addActionListener(e -> {
 
             if (parent.isGameRunning()) {

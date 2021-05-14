@@ -484,9 +484,7 @@ public class Game {
     /**
      * Set the game to easy mode (so that the game will remember clues for player
      * ...cheating).
-     * 
-     * @param isNobrainerMode
-     *            --- a flag to turn on or off easy mode
+     *
      */
     public void setEasyMode(boolean isEasyMode) {
         this.isEasyMode = isEasyMode;
@@ -678,7 +676,7 @@ public class Game {
         int width = Configs.BOARD_WIDTH + 1;
 
         // get the canvas first
-        char[] boardChars = Configs.UI_STRING_A.toCharArray();
+        char[] boardChars = Configs.UI_STRING_B.toCharArray();
 
         // draw players by replacing his character on his position
         for (Player p : players) {

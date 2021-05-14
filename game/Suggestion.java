@@ -84,9 +84,7 @@ public class Suggestion {
             return false;
         if (location != other.location)
             return false;
-        if (weapon != other.weapon)
-            return false;
-        return true;
+        return weapon != other.weapon;
     }
 
 }

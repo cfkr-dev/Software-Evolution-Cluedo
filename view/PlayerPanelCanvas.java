@@ -43,7 +43,7 @@ import static ui.GUIClient.loadImage;
  * @author Hector
  *
  */
-@SuppressWarnings("serial")
+
 public class PlayerPanelCanvas extends JPanel {
 
     // ============ some numbers for swing to set size =============

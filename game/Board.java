@@ -37,7 +37,7 @@ public class Board {
 
         startPositions = new Tile[Character.values().length];
 
-        String boardString = Configs.BOARD_STRING;
+        String boardString = Configs.BOARD_STRING_B;
 
         int height = Configs.BOARD_HEIGHT;
         int width = Configs.BOARD_WIDTH;
@@ -443,8 +443,6 @@ public class Board {
      * 
      * @param weaponToken
      *            --- the weapon token
-     * @param room
-     *            --- where to move to
      */
     public void moveWeapon(WeaponToken weaponToken, RoomTile roomTile) {
         weaponToken.setRoomTile(roomTile);
