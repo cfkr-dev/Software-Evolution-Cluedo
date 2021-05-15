@@ -1,15 +1,6 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Insets;
+import java.awt.*;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -21,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import configs.Configs;
 import game.Player;
 import tile.Entrance;
 import tile.Room;
@@ -30,8 +22,10 @@ import card.Card;
 import card.Character;
 import card.Location;
 import card.Weapon;
+import utilities.WindowUtilities;
 import view.dialogs.ExitRoomDialog;
 
+import static ui.GUIClient.RIGHT_PANEL_WIDTH;
 import static ui.GUIClient.loadImage;
 
 /**
@@ -51,11 +45,11 @@ public class PlayerPanelCanvas extends JPanel {
     /**
      * Panel width
      */
-    public static final int WIDTH = 700;
+    public static int WIDTH;
     /**
      * Panel height
      */
-    private static final int HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
+    private static int HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
     /**
      * the height of sub-panel for displaying cards in hand
      */
@@ -81,15 +75,15 @@ public class PlayerPanelCanvas extends JPanel {
     /**
      * the padding size on left
      */
-    public static final int PADDING_LEFT = BoardCanvas.PADDING_LEFT;
+    public static final int PADDING_LEFT = 0;
     /**
      * the padding size on right
      */
-    public static final int PADDING_RIGHT = BoardCanvas.PADDING_RIGHT;
+    public static final int PADDING_RIGHT = 0;
     /**
      * the padding size on top
      */
-    private static final int PADDING_TOP = BoardCanvas.PADDING_TOP;
+    private static final int PADDING_TOP =0;
 
     // ============== swing components ======================
 
@@ -191,6 +185,9 @@ public class PlayerPanelCanvas extends JPanel {
 
         this.gui = guiClient;
 
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth();
+        WIDTH = (int) width/2;
         // ================== BorderLayout =====================
         this.setLayout(new BorderLayout(5, 5));
 
@@ -411,6 +408,12 @@ public class PlayerPanelCanvas extends JPanel {
 
         // update the panel
         update();
+    }
+
+    public static void refreshScreen() {
+
+        HEIGHT = WindowUtilities.getHeight();
+
     }
 
     /**
@@ -980,7 +983,7 @@ public class PlayerPanelCanvas extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(PLAYER_PANEL, PADDING_LEFT, PADDING_TOP, WIDTH, HEIGHT, this);
+        g.drawImage(PLAYER_PANEL, 0, 0, this.getWidth(), this.getHeight(), this);
     }
 
     // ============== Static Images ========================

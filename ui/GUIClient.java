@@ -63,18 +63,15 @@ public class GUIClient extends JFrame {
     /**
      * The height of main frame
      */
-    public static final int HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT
-            + BoardCanvas.PADDING_TOP + BoardCanvas.PADDING_DOWN;
+    public static int HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
     /**
      * The width of game board (left panel)
      */
-    public static final int LEFT_PANEL_WIDTH = BoardCanvas.BOARD_IMG_WIDTH
-            + BoardCanvas.PADDING_LEFT + BoardCanvas.PADDING_RIGHT;
+    public static int LEFT_PANEL_WIDTH = WindowUtilities.getWidth()/2;
     /**
      * the width of game board (right panel)
      */
-    public static final int RIGHT_PANEL_WIDTH = PlayerPanelCanvas.WIDTH
-            + PlayerPanelCanvas.PADDING_LEFT + PlayerPanelCanvas.PADDING_RIGHT;
+    public static int RIGHT_PANEL_WIDTH = WindowUtilities.getWidth()/2;
 
     // =========== Views ================
 
@@ -137,12 +134,13 @@ public class GUIClient extends JFrame {
         double height = screenSize.getHeight();
         window.setPreferredSize(
                 new Dimension((int) width, (int) height));
-
         getContentPane().addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
                 System.out.println("Resized... Dimensions: " + e.getComponent().getWidth() + ", " + e.getComponent().getHeight() + " Position: " + e.getComponent().getX() + ", " + e.getComponent().getY());
+                WindowUtilities.setWidth(e.getComponent().getWidth());
+                WindowUtilities.setHeight(e.getComponent().getHeight());
             }
         });
 
@@ -213,14 +211,19 @@ public class GUIClient extends JFrame {
                 new Dimension((int) width, (int) height));
         WindowUtilities.setWidth((int) width);
         WindowUtilities.setHeight((int) height);
-
+        LEFT_PANEL_WIDTH = WindowUtilities.getWidth()/2;
+        RIGHT_PANEL_WIDTH = WindowUtilities.getWidth()/2;
         getContentPane().addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
+                BoardCanvas.refreshScreen();
+                PlayerPanelCanvas.refreshScreen();
+                LEFT_PANEL_WIDTH = e.getComponent().getWidth()/2;
+                RIGHT_PANEL_WIDTH = e.getComponent().getWidth()/2;
                 WindowUtilities.setWidth(e.getComponent().getWidth());
                 WindowUtilities.setHeight(e.getComponent().getHeight());
-                BoardCanvas.refreshScreen();
+                HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
                 System.out.println("Resized... Dimensions: " + e.getComponent().getWidth() + ", " + e.getComponent().getHeight() + " Position: " + e.getComponent().getX() + ", " + e.getComponent().getY());
             }
         });

@@ -1,13 +1,14 @@
 package view;
 
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.text.Utilities;
+
 import configs.Configs;
 import card.Card;
 import card.Character;
@@ -32,31 +33,16 @@ public class BoardCanvas extends JPanel {
      * The width and Height of each Tile. Note this constant is important as most of board
      * display is calculated based upon this value
      */
-    private static int TILE_WIDTH = 32;
+    private static int TILE_WIDTH;
     /**
      * The width of board
      */
-    public static final int BOARD_IMG_WIDTH = TILE_WIDTH * Configs.BOARD_WIDTH;
+    public static int BOARD_IMG_WIDTH;
     /**
      * The height of board
      */
-    public static final int BOARD_IMG_HEIGHT = TILE_WIDTH * Configs.BOARD_HEIGHT;
-    /**
-     * the padding size on left
-     */
-    public static final int PADDING_LEFT = 10;
-    /**
-     * the padding size on right
-     */
-    public static final int PADDING_RIGHT = PADDING_LEFT;
-    /**
-     * the padding size on Top
-     */
-    public static final int PADDING_TOP = 20;
-    /**
-     * the padding size on down
-     */
-    public static final int PADDING_DOWN = PADDING_LEFT;
+    public static int BOARD_IMG_HEIGHT;
+
     /**
      * Game's main GUI
      */
@@ -75,6 +61,11 @@ public class BoardCanvas extends JPanel {
     public BoardCanvas(GUIClient guiClient) {
         super();
         this.gui = guiClient;
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth();
+        TILE_WIDTH = (int) width/48;
+        BOARD_IMG_WIDTH = TILE_WIDTH * Configs.BOARD_WIDTH;
+        BOARD_IMG_HEIGHT = TILE_WIDTH * Configs.BOARD_HEIGHT;
         addMouseListenerOnBoard(this);
 
         // we use absolute layout
@@ -104,7 +95,9 @@ public class BoardCanvas extends JPanel {
     }
 
     public static void refreshScreen() {
-        TILE_WIDTH = WindowUtilities.resizeHorizontalDimension(32);
+        TILE_WIDTH = WindowUtilities.getWidth()/48;
+        BOARD_IMG_WIDTH = TILE_WIDTH * Configs.BOARD_WIDTH;
+        BOARD_IMG_HEIGHT = TILE_WIDTH * Configs.BOARD_HEIGHT;
     }
 
     /**
@@ -188,8 +181,8 @@ public class BoardCanvas extends JPanel {
     private void setCharacterTokenOnTile(CharacterToken characterToken, int x, int y) {
         int height = characterToken.getIcon().getIconHeight();
         int width = characterToken.getIcon().getIconWidth();
-        characterToken.setBounds(PADDING_LEFT + TILE_WIDTH * x,
-                PADDING_TOP + TILE_WIDTH * y - (height - TILE_WIDTH + 2), width, height);
+        characterToken.setBounds(TILE_WIDTH * x,
+                TILE_WIDTH * y - (height - TILE_WIDTH + 2), width, height);
     }
 
     /**
@@ -203,8 +196,8 @@ public class BoardCanvas extends JPanel {
     private void setTokenInRoom(JLabel token, RoomTile roomTile) {
         int height = token.getIcon().getIconHeight();
         int width = token.getIcon().getIconWidth();
-        token.setBounds(PADDING_LEFT + TILE_WIDTH * roomTile.getX(),
-                PADDING_TOP + TILE_WIDTH * roomTile.getY() - (height - TILE_WIDTH + 2),
+        token.setBounds( TILE_WIDTH * roomTile.getX(),
+                TILE_WIDTH * roomTile.getY() - (height - TILE_WIDTH + 2),
                 width, height);
     }
 
@@ -241,8 +234,8 @@ public class BoardCanvas extends JPanel {
             int width = AbstractToken.QUESTION_ICON.getIconWidth();
             int Height = AbstractToken.QUESTION_ICON.getIconHeight();
 
-            questionIcons[i].setBounds(PADDING_LEFT + TILE_WIDTH * EASYMODE_POS[i][0],
-                    PADDING_TOP + TILE_WIDTH * EASYMODE_POS[i][1], width, Height);
+            questionIcons[i].setBounds( TILE_WIDTH * EASYMODE_POS[i][0],
+                    TILE_WIDTH * EASYMODE_POS[i][1], width, Height);
             questionIcons[i].setVisible(false);
         }
         return questionIcons;
@@ -261,8 +254,8 @@ public class BoardCanvas extends JPanel {
             int width = AbstractToken.CROSS_ICON.getIconWidth();
             int Height = AbstractToken.CROSS_ICON.getIconHeight();
 
-            crossIcons[i].setBounds(PADDING_LEFT + TILE_WIDTH * EASYMODE_POS[i][0],
-                    PADDING_TOP + TILE_WIDTH * EASYMODE_POS[i][1], width, Height);
+            crossIcons[i].setBounds(TILE_WIDTH * EASYMODE_POS[i][0],
+                    TILE_WIDTH * EASYMODE_POS[i][1], width, Height);
             crossIcons[i].setVisible(false);
         }
         return crossIcons;
@@ -346,7 +339,7 @@ public class BoardCanvas extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(GAME_BOARD, PADDING_LEFT, PADDING_TOP, this);
+        g.drawImage(GAME_BOARD, 0, 0, this.getWidth(), this.getHeight(), this);
         /*
          * TODO draw rectangle on movable positions, so that a clicking on it can actually
          * move the player there
