@@ -26,7 +26,7 @@ public enum Location implements Card {
     Lounge("Lounge", ' '),
     Dining_Room("Dining Room", ' ');
 
-    public static ArrayList<Location> LOCATIONS = new ArrayList<>();
+    private static final ArrayList<Location> LOCATIONS = new ArrayList<>();
 
     private final String name;
     private final char symbolOnBoard;
@@ -68,4 +68,15 @@ public enum Location implements Card {
             throw new GameError("Invalid index.");
         }
     }
+
+
+    /**
+     * Get the number of locations.
+     *
+     * @return --- the array of locations's size
+     */
+    public static int getNumberOfLocations() {
+        return LOCATIONS.size();
+    }
+
 }

@@ -2,12 +2,12 @@ package configs;
 
 import card.Location;
 import tile.Room;
+import java.util.ArrayList;
 
 /**
- * This class contains most of configurations to construct a game board. All fields and
- * methods are static to use.
+ * This class contains most of configurations to construct a game board.
  *
- * @author Hector
+ * @author G7EAS
  *
  */
 public class Configs {
@@ -31,77 +31,45 @@ public class Configs {
      * the vertical boundary coordinate of Cluedo game board.
      */
     public static final int BOARD_HEIGHT = 50;
-    /**
-     * The static object of Kitchen
-     */
-    public static final Room KITCHEN = new Room(Location.Kitchen, Location.Study);
-    /**
-     * The static object of ball room
-     */
-    public static final Room BALL_ROOM = new Room(Location.Ball_Room, null);
-    /**
-     * The static object of conservatory
-     */
-    public static final Room CONSERVATORY = new Room(Location.Conservatory,
-            Location.Lounge);
-    /**
-     * The static object of billard room
-     */
-    public static final Room BILLARD_ROOM = new Room(Location.Billard_Room, null);
-    /**
-     * The static object of Library
-     */
-    public static final Room LIBRARY = new Room(Location.Library, null);
-    /**
-     * The static object of study room
-     */
-    public static final Room STUDY = new Room(Location.Study, Location.Kitchen);
-    /**
-     * The static object of hall
-     */
-    public static final Room HALL = new Room(Location.Hall, null);
-    /**
-     * The static object of lounge
-     */
-    public static final Room LOUNGE = new Room(Location.Lounge, Location.Conservatory);
-    /**
-     * The static object of dining room
-     */
-    public static final Room DINING_ROOM = new Room(Location.Dining_Room, null);
 
     /**
-     * This method take into the symbolic location (Card object), and returns the
-     * corresponding Room object.
-     *
-     * @param loc
-     *            --- symbolic location (Card object)
-     * @return --- the corresponding, static Room object
+     * The static object of all locations
      */
-    public static Room getRoom(Location loc) {
-        switch (loc) {
-        case Ball_Room:
-            return BALL_ROOM;
-        case Billard_Room:
-            return BILLARD_ROOM;
-        case Conservatory:
-            return CONSERVATORY;
-        case Dining_Room:
-            return DINING_ROOM;
-        case Hall:
-            return HALL;
-        case Kitchen:
-            return KITCHEN;
-        case Library:
-            return LIBRARY;
-        case Lounge:
-            return LOUNGE;
-        case Study:
-            return STUDY;
-        default:
-            return null; // dead code
+    public static ArrayList<Room> ROOMS = new ArrayList<>();
+
+
+    public Configs() {
+        for (int i = 0; i < Location.getNumberOfLocations(); i++) {
+            Room room = new Room(Location.get(i),null);
+            ROOMS.add(room);
         }
+        assignShortcuts(ROOMS);
     }
 
+    /**
+     * This method take into the all Room objects and assign the necessary shortcuts
+     *
+     * @param rooms
+     *          --- Array of rooms
+     */
+    private void assignShortcuts(ArrayList<Room> rooms) {
+        rooms.get(0).setSecPasTo(Location.get(5));
+        rooms.get(5).setSecPasTo(Location.get(0));
+        rooms.get(2).setSecPasTo(Location.get(7));
+        rooms.get(7).setSecPasTo(Location.get(2));
+    }
+
+    /**
+     * This method take into the symbolic location (integer), and returns the
+     * corresponding Room object.
+     *
+     * @param symbolLocation
+     *            --- symbolic location (integer)
+     * @return --- the corresponding, static Room object
+     */
+    public static Room getRoom(int symbolLocation) {
+        return ROOMS.get(symbolLocation);
+    }
 
     /**
      *  a string used to print out text-based UI. This is used as a canvas.
