@@ -1,12 +1,10 @@
 package test;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-
-import org.junit.Test;
 
 import card.Character;
 import card.Location;
@@ -18,6 +16,11 @@ import tile.Entrance;
 import tile.Position;
 import tile.Tile;
 import view.token.WeaponToken;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class GameRunTest {
 
@@ -72,16 +75,16 @@ public class GameRunTest {
                 // ============== test lounge ===============
 
                 // put the player in lounge
-                game.movePlayer(c, Configs.LOUNGE);
+                game.movePlayer(c, Configs.ROOMS.get(8));  //lounge
                 List<Position> positions = game.getMovablePositions(c);
                 int size = positions.size();
                 System.out.println(size);
                 // secret passage
-                if (!positions.contains(Configs.CONSERVATORY)) {
+                if (!positions.contains(Configs.ROOMS.get(2))) {  //conservatory
                     fail("Should be able to go to CONSERVATORY");
                 }
                 // exit
-                Entrance exit = new Entrance(6, 18, Configs.LOUNGE);
+                Entrance exit = new Entrance(6, 18, Configs.ROOMS.get(8));  //lounge
                 if (!positions.contains(exit)) {
                     fail("Should be able to exit lounge");
                 }
@@ -93,7 +96,7 @@ public class GameRunTest {
 
                 positions = game.getMovablePositions(c);
                 // secret passage
-                if (!positions.contains(Configs.CONSERVATORY)) {
+                if (!positions.contains(Configs.ROOMS.get(2))) {  //conservatory
                     fail("Should be able to go to CONSERVATORY");
                 }
                 // exit
@@ -106,17 +109,17 @@ public class GameRunTest {
                 // ==================try ball room again=================
 
                 // put the player in lounge
-                game.movePlayer(c, Configs.BALL_ROOM);
+                game.movePlayer(c, Configs.ROOMS.get(1));  //ball room
                 positions = game.getMovablePositions(c);
                 // no secret passage, choose a room to test
-                if (positions.contains(Configs.HALL)) {
+                if (positions.contains(Configs.ROOMS.get(6))) {  //hall
                     fail("Should not be able to go to HALL");
                 }
                 // there are 4 exits in ball room
-                Entrance exit_1 = new Entrance(7, 5, Configs.BALL_ROOM);
-                Entrance exit_2 = new Entrance(9, 8, Configs.BALL_ROOM);
-                Entrance exit_3 = new Entrance(14, 8, Configs.BALL_ROOM);
-                Entrance exit_4 = new Entrance(16, 5, Configs.BALL_ROOM);
+                Entrance exit_1 = new Entrance(7, 5, Configs.ROOMS.get(1));
+                Entrance exit_2 = new Entrance(9, 8, Configs.ROOMS.get(1));
+                Entrance exit_3 = new Entrance(14, 8, Configs.ROOMS.get(1));
+                Entrance exit_4 = new Entrance(16, 5, Configs.ROOMS.get(1));
                 if (!positions.contains(exit_1)) {
                     fail("Should be able to exit lounge from (7,5)");
                 }
@@ -232,7 +235,7 @@ public class GameRunTest {
                 // ============== test kitchen's entrance ===============
 
                 // put the player in kitchen
-                Entrance entrToKit = new Entrance(4, 7, Configs.KITCHEN);
+                Entrance entrToKit = new Entrance(4, 7, Configs.ROOMS.get(0));  //kitchen
                 Tile southTile = new Tile(4, 8);
                 Tile eastTile = new Tile(5, 7);
                 Tile westTile = new Tile(3, 7);
@@ -246,14 +249,14 @@ public class GameRunTest {
                     }
                 }
                 // enter kitchen
-                if (!positions.contains(Configs.KITCHEN)) {
+                if (!positions.contains(Configs.ROOMS.get(0))) {
                     fail("Should be able to go into KITCHEN");
                 }
                 assertEquals("In lounge there should be 4 positions to move to", 4,
                         positions.size());
 
                 // put another player in kitchen, that should block nothing
-                game.movePlayer(c.nextCharacter(), Configs.KITCHEN);
+                game.movePlayer(c.nextCharacter(), Configs.ROOMS.get(0));
                 positions = game.getMovablePositions(c);
                 // test 3 directions
                 for (Tile t : Arrays.asList(southTile, eastTile, westTile)) {
@@ -262,7 +265,7 @@ public class GameRunTest {
                     }
                 }
                 // enter kitchen
-                if (!positions.contains(Configs.KITCHEN)) {
+                if (!positions.contains(Configs.ROOMS.get(0))) {
                     fail("Should be able to go into KITCHEN");
                 }
                 assertEquals("In lounge there should be 4 positions to move to", 4,
@@ -354,7 +357,7 @@ public class GameRunTest {
             game.movePlayer(currentPlayer, testTile);
             List<Position> positions = game.getMovablePositions(currentPlayer);
 
-            if (positions.contains(Configs.KITCHEN)) {
+            if (positions.contains(Configs.ROOMS.get(0))) {
                 fail("Should be able to ghost through wall to kitchen");
             }
             assertEquals("There should be 3 positions to move to", 3, positions.size());
@@ -484,6 +487,7 @@ public class GameRunTest {
             Character c = Character.values()[ran.nextInt(Character.values().length)];
             Weapon w = Weapon.values()[ran.nextInt(Weapon.values().length)];
             Location l = Location.values()[ran.nextInt(Location.values().length)];
+            int numberLocation= l.ordinal();
             Suggestion randomAccusation = new Suggestion(c, w, l);
 
             game.moveTokensInvolvedInSuggestion(randomAccusation);
@@ -491,20 +495,24 @@ public class GameRunTest {
             for (Character ch : Character.values()) {
                 if (ch == c) {
                     if (!game.getPlayerByCharacter(ch).getPosition()
-                            .equals(Configs.getRoom(l))) {
+                            .equals(Configs.getRoom(numberLocation))) {
                         fail("Player mentioned in suggestion should be moved in the mentioned room");
                     }
                 }
             }
 
+
             for (WeaponToken wt : game.getWeaponTokens()) {
                 if (wt.getWeapon() == w) {
-                    if (!Configs.getRoom(wt.getRoomTile().getRoom())
-                            .equals(Configs.getRoom(l))) {
+                    if (!Configs.getRoom(wt.getRoomTile().getRoom().ordinal())
+                            .equals(Configs.getRoom(numberLocation))) {
                         fail("weapon mentioned in suggestion should be moved in the mentioned room");
                     }
                 }
             }
+
+
+
         }
     }
 
