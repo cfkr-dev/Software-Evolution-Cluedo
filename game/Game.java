@@ -314,7 +314,7 @@ public class Game {
      */
     public void moveTokensInvolvedInSuggestion(Suggestion suggestion) {
         moveWeapon(suggestion.weapon, board.getAvailableRoomTile(suggestion.location));
-        movePlayer(suggestion.character, Configs.getRoom(suggestion.location));
+        movePlayer(suggestion.character, Configs.getRoom(suggestion.location.ordinal()));
     }
 
     /**
