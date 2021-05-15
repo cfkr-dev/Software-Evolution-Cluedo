@@ -20,11 +20,4 @@ public class WindowUtilities {
         height = h;
     }
 
-    public static int resizeVerticalDimension(int dimension) {
-        return (height * dimension) / 830;
-    }
-
-    public static int resizeHorizontalDimension(int dimension) {
-        return (width) * dimension / 1508;
-    }
 }

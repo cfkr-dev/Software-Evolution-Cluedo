@@ -217,15 +217,15 @@ public class GUIClient extends JFrame {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
+                WindowUtilities.setWidth(e.getComponent().getWidth());
+                WindowUtilities.setHeight(e.getComponent().getHeight());
                 BoardCanvas.refreshScreen();
                 PlayerPanelCanvas.refreshScreen();
                 LEFT_PANEL_WIDTH = e.getComponent().getWidth()/2;
                 RIGHT_PANEL_WIDTH = e.getComponent().getWidth()/2;
-                WindowUtilities.setWidth(e.getComponent().getWidth());
-                WindowUtilities.setHeight(e.getComponent().getHeight());
                 HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
-                System.out.println("Resized... Dimensions: " + e.getComponent().getWidth() + ", " + e.getComponent().getHeight() + " Position: " + e.getComponent().getX() + ", " + e.getComponent().getY());
-            }
+                repaint();
+                }
         });
 
         // now make the left panel, which is game board

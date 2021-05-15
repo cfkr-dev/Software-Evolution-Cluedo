@@ -34,6 +34,9 @@ public class BoardCanvas extends JPanel {
      * display is calculated based upon this value
      */
     private static int TILE_WIDTH;
+
+    private static int TILE_HEIGHT;
+
     /**
      * The width of board
      */
@@ -61,11 +64,12 @@ public class BoardCanvas extends JPanel {
     public BoardCanvas(GUIClient guiClient) {
         super();
         this.gui = guiClient;
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth();
-        TILE_WIDTH = (int) width/48;
-        BOARD_IMG_WIDTH = TILE_WIDTH * Configs.BOARD_WIDTH;
-        BOARD_IMG_HEIGHT = TILE_WIDTH * Configs.BOARD_HEIGHT;
+        int width = WindowUtilities.getWidth();
+        int height = WindowUtilities.getHeight();
+        TILE_WIDTH =  width / (2 * Configs.BOARD_WIDTH);
+        TILE_HEIGHT = height / (Configs.BOARD_HEIGHT);
+        BOARD_IMG_WIDTH = WindowUtilities.getWidth() / 2;
+        BOARD_IMG_HEIGHT = WindowUtilities.getHeight();
         addMouseListenerOnBoard(this);
 
         // we use absolute layout
@@ -95,9 +99,10 @@ public class BoardCanvas extends JPanel {
     }
 
     public static void refreshScreen() {
-        TILE_WIDTH = WindowUtilities.getWidth()/48;
-        BOARD_IMG_WIDTH = TILE_WIDTH * Configs.BOARD_WIDTH;
-        BOARD_IMG_HEIGHT = TILE_WIDTH * Configs.BOARD_HEIGHT;
+        TILE_WIDTH = WindowUtilities.getWidth() / (2 * Configs.BOARD_WIDTH);
+        TILE_HEIGHT = WindowUtilities.getHeight() / (Configs.BOARD_HEIGHT);
+        BOARD_IMG_WIDTH = WindowUtilities.getWidth() / 2;
+        BOARD_IMG_HEIGHT = TILE_HEIGHT * Configs.BOARD_HEIGHT;
     }
 
     /**
@@ -108,7 +113,7 @@ public class BoardCanvas extends JPanel {
         WeaponToken[] weaponTokens = gui.getWeaponTokens();
         Set<Card> knownCards = gui.getKnownCards();
         boolean isEasyMode = gui.isEasyMode();
-
+        BoardCanvas.refreshScreen();
         // if it is easy mode, draw some cross or question marks on rooms
         if (isEasyMode) {
             for (Location l : Location.values()) {
@@ -179,10 +184,10 @@ public class BoardCanvas extends JPanel {
      *            --- the vertical coordinate
      */
     private void setCharacterTokenOnTile(CharacterToken characterToken, int x, int y) {
-        int height = characterToken.getIcon().getIconHeight();
-        int width = characterToken.getIcon().getIconWidth();
+        int height = TILE_HEIGHT + 9;
+        int width = TILE_WIDTH;
         characterToken.setBounds(TILE_WIDTH * x,
-                TILE_WIDTH * y - (height - TILE_WIDTH + 2), width, height);
+                TILE_HEIGHT * y - (height - TILE_HEIGHT + 2), width, height);
     }
 
     /**
@@ -197,7 +202,7 @@ public class BoardCanvas extends JPanel {
         int height = token.getIcon().getIconHeight();
         int width = token.getIcon().getIconWidth();
         token.setBounds( TILE_WIDTH * roomTile.getX(),
-                TILE_WIDTH * roomTile.getY() - (height - TILE_WIDTH + 2),
+                TILE_HEIGHT * roomTile.getY() - (height - TILE_HEIGHT + 2),
                 width, height);
     }
 
@@ -235,7 +240,7 @@ public class BoardCanvas extends JPanel {
             int Height = AbstractToken.QUESTION_ICON.getIconHeight();
 
             questionIcons[i].setBounds( TILE_WIDTH * EASYMODE_POS[i][0],
-                    TILE_WIDTH * EASYMODE_POS[i][1], width, Height);
+                    TILE_HEIGHT * EASYMODE_POS[i][1], width, Height);
             questionIcons[i].setVisible(false);
         }
         return questionIcons;
@@ -255,7 +260,7 @@ public class BoardCanvas extends JPanel {
             int Height = AbstractToken.CROSS_ICON.getIconHeight();
 
             crossIcons[i].setBounds(TILE_WIDTH * EASYMODE_POS[i][0],
-                    TILE_WIDTH * EASYMODE_POS[i][1], width, Height);
+                    TILE_HEIGHT * EASYMODE_POS[i][1], width, Height);
             crossIcons[i].setVisible(false);
         }
         return crossIcons;
@@ -339,11 +344,12 @@ public class BoardCanvas extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(GAME_BOARD, 0, 0, this.getWidth(), this.getHeight(), this);
+        g.drawImage(GAME_BOARD, 0, 0, BOARD_IMG_WIDTH, BOARD_IMG_HEIGHT, this);
         /*
          * TODO draw rectangle on movable positions, so that a clicking on it can actually
          * move the player there
          */
+        repaint();
     }
 
     /**
