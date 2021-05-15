@@ -84,7 +84,9 @@ public class Tile extends Position {
         if (getClass() != obj.getClass())
             return false;
         Tile other = (Tile) obj;
-        return (x != other.x && y == other.y);
+        if (x != other.x)
+            return false;
+        return y == other.y;
     }
 
 }
