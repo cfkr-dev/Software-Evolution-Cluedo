@@ -90,7 +90,9 @@ public class Entrance extends Tile {
         if (toRoom == null) {
             return other.toRoom == null;
         }
-        return !toRoom.equals(other.toRoom);
+        else if (!toRoom.equals(other.toRoom))
+            return false;
+        return  true;
     }
 
 }

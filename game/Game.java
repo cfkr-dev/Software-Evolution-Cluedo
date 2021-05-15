@@ -109,6 +109,7 @@ public class Game {
             knownCards.put(Character.get(i), new HashSet<>());
         }
 
+
         // then add all six dummy tokens on board
         players.add(new Player(Character.Miss_Scarlet,
                 board.getStartPosition(Character.Miss_Scarlet), false));
@@ -313,7 +314,7 @@ public class Game {
      */
     public void moveTokensInvolvedInSuggestion(Suggestion suggestion) {
         moveWeapon(suggestion.weapon, board.getAvailableRoomTile(suggestion.location));
-        movePlayer(suggestion.character, Configs.getRoom(suggestion.location));
+        movePlayer(suggestion.character, Configs.getRoom(suggestion.location.ordinal()));
     }
 
     /**
@@ -675,7 +676,7 @@ public class Game {
         int width = Configs.BOARD_WIDTH + 1;
 
         // get the canvas first
-        char[] boardChars = Configs.UI_STRING_A.toCharArray();
+        char[] boardChars = Configs.UI_STRING_B.toCharArray();
 
         // draw players by replacing his character on his position
         for (Player p : players) {

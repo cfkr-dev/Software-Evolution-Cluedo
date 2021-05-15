@@ -15,7 +15,7 @@ import configs.Configs;
 /**
  * This class represents a Cluedo game board.
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
 public class Board {
@@ -23,21 +23,23 @@ public class Board {
     /**
      * board is created as a 2D array of positions
      */
-    private Position[][] board;
+    private final Position[][] board;
 
     /**
      * six starting tiles for each character
      */
-    private Tile[] startPositions;
+    private final Tile[] startPositions;
 
     /**
      * Construct a board.
      */
     public Board() {
 
+        Configs configurations = new Configs();
+
         startPositions = new Tile[Character.values().length];
 
-        String boardString = Configs.BOARD_STRING;
+        String boardString = Configs.BOARD_STRING_B;
 
         int height = Configs.BOARD_HEIGHT;
         int width = Configs.BOARD_WIDTH;
@@ -56,6 +58,11 @@ public class Board {
                 continue;
             }
 
+            // If the tile corresponds to a room
+            if ( boardString.charAt(index) >= '1' && boardString.charAt(index) <= '9') {
+                board[y][x] = new RoomTile(Configs.getRoom(java.lang.Character.getNumericValue(boardString.charAt(index)) - 1), x, y);
+            }
+
             // probably the longest switch in my life...
             switch (boardString.charAt(index)) {
 
@@ -69,34 +76,6 @@ public class Board {
                 board[y][x] = null;
                 break;
 
-            // 1-9 represents nine rooms on board.
-            case '1':
-                board[y][x] = new RoomTile(Configs.KITCHEN, x, y);
-                break;
-            case '2':
-                board[y][x] = new RoomTile(Configs.BALL_ROOM, x, y);
-                break;
-            case '3':
-                board[y][x] = new RoomTile(Configs.CONSERVATORY, x, y);
-                break;
-            case '4':
-                board[y][x] = new RoomTile(Configs.BILLARD_ROOM, x, y);
-                break;
-            case '5':
-                board[y][x] = new RoomTile(Configs.LIBRARY, x, y);
-                break;
-            case '6':
-                board[y][x] = new RoomTile(Configs.STUDY, x, y);
-                break;
-            case '7':
-                board[y][x] = new RoomTile(Configs.HALL, x, y);
-                break;
-            case '8':
-                board[y][x] = new RoomTile(Configs.LOUNGE, x, y);
-                break;
-            case '9':
-                board[y][x] = new RoomTile(Configs.DINING_ROOM, x, y);
-                break;
 
             /*
              * '!', '@', '#', '$', '%', '^' (shift + 1-6) represents six starting tiles
@@ -139,54 +118,57 @@ public class Board {
              * 'b' to room '2', and so on.
              */
             case 'a':
-                Entrance entrToKitchen = new Entrance(x, y, Configs.KITCHEN);
+                Entrance entrToKitchen = new Entrance(x, y, Configs.getRoom(0));
                 board[y][x] = entrToKitchen;
-                Configs.KITCHEN.addEntrances(entrToKitchen);
+                Configs.getRoom(0).addEntrances(entrToKitchen);
                 break;
             case 'b':
-                Entrance entrToBall = new Entrance(x, y, Configs.BALL_ROOM);
+                Entrance entrToBall = new Entrance(x, y, Configs.getRoom(1));
                 board[y][x] = entrToBall;
-                Configs.BALL_ROOM.addEntrances(entrToBall);
+                Configs.getRoom(1).addEntrances(entrToBall);
                 break;
             case 'c':
-                Entrance entrToCSVY = new Entrance(x, y, Configs.CONSERVATORY);
+                Entrance entrToCSVY = new Entrance(x, y, Configs.getRoom(2));
                 board[y][x] = entrToCSVY;
-                Configs.CONSERVATORY.addEntrances(entrToCSVY);
+                Configs.getRoom(2).addEntrances(entrToCSVY);
                 break;
             case 'd':
-                Entrance entrToBLDR = new Entrance(x, y, Configs.BILLARD_ROOM);
+                Entrance entrToBLDR = new Entrance(x, y, Configs.getRoom(3));
                 board[y][x] = entrToBLDR;
-                Configs.BILLARD_ROOM.addEntrances(entrToBLDR);
+                Configs.getRoom(3).addEntrances(entrToBLDR);
                 break;
             case 'e':
-                Entrance entrToLBRY = new Entrance(x, y, Configs.LIBRARY);
+                Entrance entrToLBRY = new Entrance(x, y, Configs.getRoom(4));
                 board[y][x] = entrToLBRY;
-                Configs.LIBRARY.addEntrances(entrToLBRY);
+                Configs.getRoom(4).addEntrances(entrToLBRY);
                 break;
             case 'f':
-                Entrance entrToSTDY = new Entrance(x, y, Configs.STUDY);
+                Entrance entrToSTDY = new Entrance(x, y, Configs.getRoom(5));
                 board[y][x] = entrToSTDY;
-                Configs.STUDY.addEntrances(entrToSTDY);
+                Configs.getRoom(5).addEntrances(entrToSTDY);
                 break;
             case 'g':
-                Entrance entrToHall = new Entrance(x, y, Configs.HALL);
+                Entrance entrToHall = new Entrance(x, y, Configs.getRoom(6));
                 board[y][x] = entrToHall;
-                Configs.HALL.addEntrances(entrToHall);
+                Configs.getRoom(6).addEntrances(entrToHall);
                 break;
             case 'h':
-                Entrance entrToLounge = new Entrance(x, y, Configs.LOUNGE);
+                Entrance entrToLounge = new Entrance(x, y, Configs.getRoom(7));
                 board[y][x] = entrToLounge;
-                Configs.LOUNGE.addEntrances(entrToLounge);
+                Configs.getRoom(7).addEntrances(entrToLounge);
                 break;
             case 'i':
-                Entrance entrToDining = new Entrance(x, y, Configs.DINING_ROOM);
+                Entrance entrToDining = new Entrance(x, y, Configs.getRoom(8));
                 board[y][x] = entrToDining;
-                Configs.DINING_ROOM.addEntrances(entrToDining);
+                Configs.getRoom(8).addEntrances(entrToDining);
                 break;
 
             default:
-                throw new GameError("Invalid board string, unknow character:"
-                        + boardString.charAt(index));
+                // temporary exception
+                if (!(boardString.charAt(index) >= '1' && boardString.charAt(index) <= '9')) {
+                    throw new GameError("Invalid board string, unknow character:"
+                            + boardString.charAt(index));
+                }
             }
             index++;
         }
@@ -414,7 +396,7 @@ public class Board {
         if (playerPos instanceof Room) {
             Room room = (Room) playerPos;
             if (room.hasSecPas()) {
-                return Configs.getRoom(room.getSecPasTo());
+                return Configs.getRoom(room.getSecPasTo().ordinal());
             }
         }
         return null;

@@ -19,10 +19,11 @@ public class Room extends Position {
      * The Location
      */
     private final Location room;
+
     /**
      * The end of the secret passage if this room has one. null if it doesn't have one.
      */
-    private final Location secPasTo;
+    private  Location secPasTo;
     /**
      * a list of entrance tiles only on which a player can enter this room. The order is
      * crucial as we identify each entrance by it's index inside this list. Also, we need
@@ -101,7 +102,7 @@ public class Room extends Position {
     public String optionString(Position destination) {
         if (destination instanceof Room) {
             Room destinationRoom = (Room) destination;
-            return "Take the secret passage to " + destinationRoom.toString() + ".";
+            return "Take the secret passage to " + destinationRoom + ".";
         } else if (destination instanceof Entrance) {
             Entrance exitOfRoom = (Entrance) destination;
             return "Exit room from exit (" + exitOfRoom.x + ", " + exitOfRoom.y + ").";
@@ -138,4 +139,7 @@ public class Room extends Position {
         return secPasTo == other.secPasTo;
     }
 
+    public void setSecPasTo(Location secPasTo) {
+        this.secPasTo = secPasTo;
+    }
 }

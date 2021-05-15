@@ -229,7 +229,7 @@ public class PlayerSetupDialog extends JDialog {
         // pack and show
         this.add(playerSetupPane);
         this.setModal(true);
-        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setResizable(false);
         this.pack();
         this.setLocationRelativeTo(parent);

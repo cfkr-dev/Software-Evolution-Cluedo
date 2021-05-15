@@ -67,7 +67,7 @@ public class ExitRoomDialog extends JDialog {
                 .lookForExit(parent.getPlayerByCharacter(parent.getCurrentPlayer()));
 
         // choose which image array to use
-        if (room == Location.Ball_room) {
+        if (room == Location.Ball_Room) {
             images = BALL_ROOM_EXITS;
         } else if (room == Location.Billard_Room) {
             images = BILLARD_ROOM_EXITS;

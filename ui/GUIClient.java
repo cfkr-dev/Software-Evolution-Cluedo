@@ -282,7 +282,7 @@ public class GUIClient extends JFrame {
      */
     public void makeSuggestion(Suggestion sug) {
         // move the involved character and weapon into the involved location
-        movePlayer(sug.character, Configs.getRoom(sug.location));
+        movePlayer(sug.character, Configs.getRoom(sug.location.ordinal()));
         moveWeapon(sug.weapon, getAvailableRoomTile(sug.location));
 
         // let's see how others refute it
@@ -321,7 +321,7 @@ public class GUIClient extends JFrame {
      */
     public void makeAccusation(Suggestion accusation) {
         // move the involved character and weapon into the involved location
-        movePlayer(accusation.character, Configs.getRoom(accusation.location));
+        movePlayer(accusation.character, Configs.getRoom(accusation.location.ordinal()));
         moveWeapon(accusation.weapon, getAvailableRoomTile(accusation.location));
 
         // let's see if the accusation is right or wrong
@@ -381,8 +381,8 @@ public class GUIClient extends JFrame {
         // we move the corresponding character token as well
         CharacterToken[] characterTokens = boardPanel.getCharacterTokens();
         if (position instanceof Tile) {
-            // Tile tile = (Tile) position;
-            // characterTokens[character.ordinal()].moveToTile(tile);
+             //Tile tile = (Tile) position;
+             //characterTokens[character.ordinal()].moveToTile(tile);
         } else if (position instanceof Room) {
             Room room = (Room) position;
             RoomTile destRoomTile = getAvailableRoomTile(room.getRoom());

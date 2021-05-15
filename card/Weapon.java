@@ -1,49 +1,51 @@
 package card;
 
 import game.GameError;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * This enum class represents a Weapon card in Cluedo game. There are six weapons,
  * Candlestick, Dagger, Lead Pipe, Revolver, Rope, and Spanner.<br>
- * <br>
+ *
  * Note that this class is also used to symbolically represent the weapon token in game.
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
 public enum Weapon implements Card {
 
-    Candlestick, Dagger, Lead_Pipe, Revolver, Rope, Spanner;
+    Candlestick("Candlestick", 'c'),
+    Dagger("Dagger", 'd'),
+    Lead_Pipe("Lead Pipe", 'p'),
+    Revolver("Revolver", 'g'),
+    Rope("Rope", 'r'),
+    Spanner("Spanner", 's');
+
+    public static ArrayList<Weapon> WEAPONS = new ArrayList<>();
+
+    private final String name;
+    private final char symbolOnBoard;
+
+    static {
+        WEAPONS.addAll(Arrays.asList(values()));
+    }
+
+    Weapon(String weapon, char symbol) {
+        this.name = weapon;
+        this.symbolOnBoard = symbol;
+    }
 
     @Override
     public String toString() {
-        return this.name().replaceAll("_", " ");
+        return get(ordinal()).name;
     }
 
     @Override
     public char toStringOnBoard() {
         char s = ' ';
-        switch (this.ordinal()) {
-        case 0:
-            s = 'c';
-            break;
-        case 1:
-            s = 'd';
-            break;
-        case 2:
-            s = 'p';
-            break;
-        case 3:
-            s = 'g';
-            break;
-        case 4:
-            s = 'r';
-            break;
-        case 5:
-            s = 's';
-            break;
-        default:
-        }
+        if (ordinal() < WEAPONS.size())
+            s = WEAPONS.get(ordinal()).symbolOnBoard;
         return s;
     }
 
@@ -55,20 +57,9 @@ public enum Weapon implements Card {
      * @return --- the weapon at the given index (ordinal)
      */
     public static Weapon get(int index) {
-        switch (index) {
-        case 0:
-            return Candlestick;
-        case 1:
-            return Dagger;
-        case 2:
-            return Lead_Pipe;
-        case 3:
-            return Revolver;
-        case 4:
-            return Rope;
-        case 5:
-            return Spanner;
-        default:
+        try {
+            return WEAPONS.get(index);
+        } catch (GameError e) {
             throw new GameError("Invalid index.");
         }
     }
