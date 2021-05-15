@@ -58,7 +58,7 @@ public enum Character implements Card {
      * @return --- the next character in turn.
      */
     public Character nextCharacter() {
-        return get(ordinal() + 1 % values().length);
+        return get((ordinal() + 1) % CHARACTERS.size());
     }
 
     /**
