@@ -114,6 +114,7 @@ public class BoardCanvas extends JPanel {
         Set<Card> knownCards = gui.getKnownCards();
         boolean isEasyMode = gui.isEasyMode();
         BoardCanvas.refreshScreen();
+        setPreferredSize(new Dimension(2000,768));
         // if it is easy mode, draw some cross or question marks on rooms
         if (isEasyMode) {
             for (Location l : Location.values()) {

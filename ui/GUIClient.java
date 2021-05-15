@@ -224,6 +224,8 @@ public class GUIClient extends JFrame {
                 LEFT_PANEL_WIDTH = e.getComponent().getWidth()/2;
                 RIGHT_PANEL_WIDTH = e.getComponent().getWidth()/2;
                 HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
+                boardPanel.setPreferredSize(new Dimension(LEFT_PANEL_WIDTH, HEIGHT));
+                playerPanel.setPreferredSize(new Dimension(RIGHT_PANEL_WIDTH, HEIGHT));
                 repaint();
                 }
         });

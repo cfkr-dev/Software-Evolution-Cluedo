@@ -429,7 +429,7 @@ public class PlayerPanelCanvas extends JPanel {
         profileLabel.setIcon(PROFILE_IMG[currentPlayer.ordinal()]);
 
         PlayerPanelCanvas.refreshScreen();
-
+        remainingCardsPanel.setPreferredSize(new Dimension(WIDTH, NORTH_PANEL_HEIGHT));
         // ============== centre, dice or dices ====================
         if (remainingSteps == 0) {
             for (int i = 0; i < diceLabels.length; i++) {
