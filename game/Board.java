@@ -55,45 +55,47 @@ public class Board {
             // skip the '\n' character
             if (x == width) {
                 index++;
-                continue;
             }
+            else {
+                //Represent anything of the board
+                char logicSymbolBoard = boardString.charAt(index);
 
-            // ' ' (space) represents walls and unenterable tiles
-            if (boardString.charAt(index) == ' ') {
-                board[y][x] = null;
+                // ' ' (space) represents walls and unenterable tiles
+                if (logicSymbolBoard == ' ') {
+                    board[y][x] = null;
+                }
+
+                // walkable tiles, tiles that are out of all rooms
+                if (logicSymbolBoard == '0') {
+                    board[y][x] = new Tile(x, y);
+                }
+
+                // If the tile corresponds to a room
+                if (logicSymbolBoard >= '1' && logicSymbolBoard <= '9') {
+                    board[y][x] = new RoomTile(Configs.getRoom(java.lang.Character.getNumericValue(boardString.charAt(index)) - 1), x, y);
+                }
+
+                /*
+                 * ';', '<', '=', '>', '?', '%' represents six starting tiles
+                 * for player tokens. ';' indicates Scarlet's start position, '<' for Mustard,
+                 * and so on.
+                 */
+                if (logicSymbolBoard >= ';' && logicSymbolBoard <= '@') {
+                    Tile starPositionCharacter = new Tile(x, y);
+                    board[x][y] = starPositionCharacter;
+                    startPositions[java.lang.Character.getNumericValue(boardString.charAt(index)) - 59] = starPositionCharacter;
+                }
+
+                /*
+                 * 'a' - 'i' represents entrance to each room, 'a' is entrance to room '1',
+                 * 'b' to room '2', and so on.
+                 */
+                if (logicSymbolBoard >= 'a' && logicSymbolBoard <= 'i') {
+                    Entrance entrance = new Entrance(x, y, Configs.getRoom(java.lang.Character.getNumericValue(boardString.charAt(index)) - 97));
+                    board[y][x] = entrance;
+                    Configs.getRoom(java.lang.Character.getNumericValue(boardString.charAt(index)) - 97).addEntrances(entrance);
+                }
             }
-
-            // walkable tiles, tiles that are out of all rooms
-            if (boardString.charAt(index) == '0') {
-                board[y][x] = new Tile(x, y);
-            }
-
-            // If the tile corresponds to a room
-            if (boardString.charAt(index) >= '1' && boardString.charAt(index) <= '9') {
-                board[y][x] = new RoomTile(Configs.getRoom(java.lang.Character.getNumericValue(boardString.charAt(index)) - 1), x, y);
-            }
-
-            /*
-             * ';', '<', '=', '>', '?', '%' represents six starting tiles
-             * for player tokens. ';' indicates Scarlet's start position, '<' for Mustard,
-             * and so on.
-             */
-            if (boardString.charAt(index) >= ';' && boardString.charAt(index) <= '@') {
-                Tile starPositionCharacter = new Tile(x, y);
-                board[x][y] = starPositionCharacter;
-                startPositions[java.lang.Character.getNumericValue(boardString.charAt(index)) - 59] = starPositionCharacter;
-            }
-
-            /*
-             * 'a' - 'i' represents entrance to each room, 'a' is entrance to room '1',
-             * 'b' to room '2', and so on.
-             */
-            if (boardString.charAt(index) >= 'a' && boardString.charAt(index) <= 'i') {
-                Entrance entrance = new Entrance(x, y, Configs.getRoom(java.lang.Character.getNumericValue(boardString.charAt(index)) - 97));
-                board[y][x] = entrance;
-                Configs.getRoom(java.lang.Character.getNumericValue(boardString.charAt(index)) - 97).addEntrances(entrance);
-            }
-
             index++;
         }
     }
