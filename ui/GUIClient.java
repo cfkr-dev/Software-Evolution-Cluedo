@@ -213,22 +213,7 @@ public class GUIClient extends JFrame {
         WindowUtilities.setHeight((int) height);
         LEFT_PANEL_WIDTH = WindowUtilities.getWidth()/2;
         RIGHT_PANEL_WIDTH = WindowUtilities.getWidth()/2;
-        getContentPane().addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                super.componentResized(e);
-                WindowUtilities.setWidth(e.getComponent().getWidth());
-                WindowUtilities.setHeight(e.getComponent().getHeight());
-                BoardCanvas.refreshScreen();
-                PlayerPanelCanvas.refreshScreen();
-                LEFT_PANEL_WIDTH = e.getComponent().getWidth()/2;
-                RIGHT_PANEL_WIDTH = e.getComponent().getWidth()/2;
-                HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
-                boardPanel.setPreferredSize(new Dimension(LEFT_PANEL_WIDTH, HEIGHT));
-                playerPanel.setPreferredSize(new Dimension(RIGHT_PANEL_WIDTH, HEIGHT));
-                repaint();
-                }
-        });
+
 
         // now make the left panel, which is game board
         boardPanel = new BoardCanvas(this);
@@ -257,6 +242,23 @@ public class GUIClient extends JFrame {
         this.validate();
         this.setResizable(true);
         this.setVisible(true);
+
+        getContentPane().addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                WindowUtilities.setWidth(e.getComponent().getWidth());
+                WindowUtilities.setHeight(e.getComponent().getHeight());
+                BoardCanvas.refreshScreen();
+                PlayerPanelCanvas.refreshScreen();
+                LEFT_PANEL_WIDTH = e.getComponent().getWidth()/2;
+                RIGHT_PANEL_WIDTH = e.getComponent().getWidth()/2;
+                HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
+                boardPanel.setPreferredSize(new Dimension(LEFT_PANEL_WIDTH, HEIGHT));
+                playerPanel.setPreferredSize(new Dimension(RIGHT_PANEL_WIDTH, HEIGHT));
+                repaint();
+            }
+        });
     }
 
     /**

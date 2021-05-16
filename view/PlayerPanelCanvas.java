@@ -66,7 +66,7 @@ public class PlayerPanelCanvas extends JPanel {
     /**
      * the width of the sub-panel for displaying profile picture
      */
-    private static int WEST_PANEL_WIDTH;
+    private static int WEST_PANEL_WIDTH = WIDTH / 7;
     /**
      * the width of the button panel on mid-east (of the BorderLayout, not of the
      * world...)
@@ -228,7 +228,7 @@ public class PlayerPanelCanvas extends JPanel {
         profileLabel = new JLabel();
         profileLabel.setOpaque(false);
         profileLabel
-                .setPreferredSize(new Dimension(0, CENTRE_PANEL_HEIGHT));
+                .setPreferredSize(new Dimension(WEST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
         profileLabel.setBorder(BorderFactory.createEmptyBorder(PADDING_LEFT, PADDING_TOP,
                 PADDING_LEFT, PADDING_LEFT));
 
@@ -277,7 +277,7 @@ public class PlayerPanelCanvas extends JPanel {
         buttonPanel.setBackground(null);
         buttonPanel.setOpaque(false);
         buttonPanel
-                .setPreferredSize(new Dimension(WIDTH, 200));
+                .setPreferredSize(new Dimension(EAST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(PADDING_LEFT, PADDING_LEFT,
                 PADDING_LEFT, PADDING_LEFT));
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
@@ -375,7 +375,7 @@ public class PlayerPanelCanvas extends JPanel {
         cardsInHandPanel = new JPanel();
         cardsInHandPanel.setBackground(null);
         cardsInHandPanel.setOpaque(false);
-        cardsInHandPanel.setPreferredSize(new Dimension(WIDTH, 100));
+        cardsInHandPanel.setPreferredSize(new Dimension(WIDTH, SOUTH_PANEL_HEIGHT));
         cardsInHandPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         cardsInHandPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
@@ -416,9 +416,11 @@ public class PlayerPanelCanvas extends JPanel {
         NORTH_PANEL_HEIGHT = SOUTH_PANEL_HEIGHT;
         CENTRE_PANEL_HEIGHT = HEIGHT - SOUTH_PANEL_HEIGHT
                 - NORTH_PANEL_HEIGHT;
-        EAST_PANEL_WIDTH = WIDTH / 2;
+        EAST_PANEL_WIDTH = WIDTH / 7;
 
     }
+
+
 
     /**
      * This method ask gui for game's status, and update the display of player panel.
@@ -439,6 +441,7 @@ public class PlayerPanelCanvas extends JPanel {
 
         // ============ east, buttons panel ===================
         validateButtons();
+
 
         // ================= south, cards in hand =================
         // remove old components
