@@ -72,7 +72,7 @@ public class Board {
 
                 // If the tile corresponds to a room
                 if (logicSymbolBoard >= '1' && logicSymbolBoard <= '9') {
-                    board[y][x] = new RoomTile(Configs.getRoom(java.lang.Character.getNumericValue(boardString.charAt(index)) - 1), x, y);
+                    board[y][x] = new RoomTile(Configs.getRoom(java.lang.Character.getNumericValue(logicSymbolBoard) - 1), x, y);
                 }
 
                 /*
@@ -83,7 +83,8 @@ public class Board {
                 if (logicSymbolBoard >= ';' && logicSymbolBoard <= '@') {
                     Tile starPositionCharacter = new Tile(x, y);
                     board[x][y] = starPositionCharacter;
-                    startPositions[java.lang.Character.getNumericValue(boardString.charAt(index)) - 59] = starPositionCharacter;
+                    int auxiliar = logicSymbolBoard;
+                    startPositions[auxiliar - 59] = starPositionCharacter;
                 }
 
                 /*
@@ -91,9 +92,10 @@ public class Board {
                  * 'b' to room '2', and so on.
                  */
                 if (logicSymbolBoard >= 'a' && logicSymbolBoard <= 'i') {
-                    Entrance entrance = new Entrance(x, y, Configs.getRoom(java.lang.Character.getNumericValue(boardString.charAt(index)) - 97));
+                    int auxiliar = logicSymbolBoard;
+                    Entrance entrance = new Entrance(x, y, Configs.getRoom(auxiliar - 97));
                     board[y][x] = entrance;
-                    Configs.getRoom(java.lang.Character.getNumericValue(boardString.charAt(index)) - 97).addEntrances(entrance);
+                    Configs.getRoom(auxiliar - 97).addEntrances(entrance);
                 }
             }
             index++;
