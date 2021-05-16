@@ -543,13 +543,22 @@ public class TextClient {
      * This method print out help message, now it only displays the legend
      */
     private static void helpMessage() {
-        String s = "[Legend]\n"
-                + "Characters are represented as a single upper-case character:\n"
-                + "Miss Scarlet:\t\tS\nColonel Mustard:\tM\nMrs White:\t\tW\n"
-                + "The Reverend Green:\tG\nMrs Peacock:\t\tC\nProfessor Plum:\t\tP\n"
-                + "Weapon are represented as a single lower-case character:\n"
-                + "Candlestick:\t\tc\nDagger:\t\t\td\nLead Pipe:\t\tp\n"
-                + "Revolver:\t\tg\nRope:\t\t\tr\nSpanner:\t\ts\n";
-        System.out.println(s);
+        StringBuilder message = new StringBuilder("[Legend]\n");
+
+        message.append("Characters are represented as a single upper-case character:\n");
+
+        for (int i = 0; i < Character.getNumberOfCharacters(); i++) {
+            Character character = Character.get(i);
+            message.append(character.toString()).append(":\t\t").append(character.toStringOnBoard()).append("\n");
+        }
+
+        message.append("Weapon are represented as a single lower-case character:\n");
+
+        for (int i = 0; i < Weapon.getNumberOfWeapons(); i++) {
+            Weapon weapon = Weapon.get(i);
+            message.append(weapon.toString()).append(":\t\t").append(weapon.toStringOnBoard()).append("\n");
+        }
+
+        System.out.println(message);
     }
 }
