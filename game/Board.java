@@ -58,118 +58,42 @@ public class Board {
                 continue;
             }
 
+            // ' ' (space) represents walls and unenterable tiles
+            if (boardString.charAt(index) == ' ') {
+                board[y][x] = null;
+            }
+
+            // walkable tiles, tiles that are out of all rooms
+            if (boardString.charAt(index) == '0') {
+                board[y][x] = new Tile(x, y);
+            }
+
             // If the tile corresponds to a room
-            if ( boardString.charAt(index) >= '1' && boardString.charAt(index) <= '9') {
+            if (boardString.charAt(index) >= '1' && boardString.charAt(index) <= '9') {
                 board[y][x] = new RoomTile(Configs.getRoom(java.lang.Character.getNumericValue(boardString.charAt(index)) - 1), x, y);
             }
 
-            // probably the longest switch in my life...
-            switch (boardString.charAt(index)) {
-
-            // walkable tiles, tiles that are out of all rooms
-            case '0':
-                board[y][x] = new Tile(x, y);
-                break;
-
-            // ' ' (space) represents walls and unenterable tiles
-            case ' ':
-                board[y][x] = null;
-                break;
-
-
             /*
-             * '!', '@', '#', '$', '%', '^' (shift + 1-6) represents six starting tiles
-             * for player tokens. '!' indicates Scarlet's start position, '@' for mustard,
+             * ';', '<', '=', '>', '?', '%' represents six starting tiles
+             * for player tokens. ';' indicates Scarlet's start position, '<' for Mustard,
              * and so on.
              */
-            case '!':
-                Tile scarletStart = new Tile(x, y);
-                board[y][x] = scarletStart;
-                startPositions[Character.Miss_Scarlet.ordinal()] = scarletStart;
-                break;
-            case '@':
-                Tile mustardStart = new Tile(x, y);
-                board[y][x] = mustardStart;
-                startPositions[Character.Colonel_Mustard.ordinal()] = mustardStart;
-                break;
-            case '#':
-                Tile whiteStart = new Tile(x, y);
-                board[y][x] = whiteStart;
-                startPositions[Character.Mrs_White.ordinal()] = whiteStart;
-                break;
-            case '$':
-                Tile greenStart = new Tile(x, y);
-                board[y][x] = greenStart;
-                startPositions[Character.The_Reverend_Green.ordinal()] = greenStart;
-                break;
-            case '%':
-                Tile peacockStart = new Tile(x, y);
-                board[y][x] = peacockStart;
-                startPositions[Character.Mrs_Peacock.ordinal()] = peacockStart;
-                break;
-            case '^':
-                Tile plumStart = new Tile(x, y);
-                board[y][x] = plumStart;
-                startPositions[Character.Professor_Plum.ordinal()] = plumStart;
-                break;
+            if (boardString.charAt(index) >= ';' && boardString.charAt(index) <= '@') {
+                Tile starPositionCharacter = new Tile(x, y);
+                board[x][y] = starPositionCharacter;
+                startPositions[java.lang.Character.getNumericValue(boardString.charAt(index)) - 59] = starPositionCharacter;
+            }
 
             /*
              * 'a' - 'i' represents entrance to each room, 'a' is entrance to room '1',
              * 'b' to room '2', and so on.
              */
-            case 'a':
-                Entrance entrToKitchen = new Entrance(x, y, Configs.getRoom(0));
-                board[y][x] = entrToKitchen;
-                Configs.getRoom(0).addEntrances(entrToKitchen);
-                break;
-            case 'b':
-                Entrance entrToBall = new Entrance(x, y, Configs.getRoom(1));
-                board[y][x] = entrToBall;
-                Configs.getRoom(1).addEntrances(entrToBall);
-                break;
-            case 'c':
-                Entrance entrToCSVY = new Entrance(x, y, Configs.getRoom(2));
-                board[y][x] = entrToCSVY;
-                Configs.getRoom(2).addEntrances(entrToCSVY);
-                break;
-            case 'd':
-                Entrance entrToBLDR = new Entrance(x, y, Configs.getRoom(3));
-                board[y][x] = entrToBLDR;
-                Configs.getRoom(3).addEntrances(entrToBLDR);
-                break;
-            case 'e':
-                Entrance entrToLBRY = new Entrance(x, y, Configs.getRoom(4));
-                board[y][x] = entrToLBRY;
-                Configs.getRoom(4).addEntrances(entrToLBRY);
-                break;
-            case 'f':
-                Entrance entrToSTDY = new Entrance(x, y, Configs.getRoom(5));
-                board[y][x] = entrToSTDY;
-                Configs.getRoom(5).addEntrances(entrToSTDY);
-                break;
-            case 'g':
-                Entrance entrToHall = new Entrance(x, y, Configs.getRoom(6));
-                board[y][x] = entrToHall;
-                Configs.getRoom(6).addEntrances(entrToHall);
-                break;
-            case 'h':
-                Entrance entrToLounge = new Entrance(x, y, Configs.getRoom(7));
-                board[y][x] = entrToLounge;
-                Configs.getRoom(7).addEntrances(entrToLounge);
-                break;
-            case 'i':
-                Entrance entrToDining = new Entrance(x, y, Configs.getRoom(8));
-                board[y][x] = entrToDining;
-                Configs.getRoom(8).addEntrances(entrToDining);
-                break;
-
-            default:
-                // temporary exception
-                if (!(boardString.charAt(index) >= '1' && boardString.charAt(index) <= '9')) {
-                    throw new GameError("Invalid board string, unknow character:"
-                            + boardString.charAt(index));
-                }
+            if (boardString.charAt(index) >= 'a' && boardString.charAt(index) <= 'i') {
+                Entrance entrance = new Entrance(x, y, Configs.getRoom(java.lang.Character.getNumericValue(boardString.charAt(index)) - 97));
+                board[y][x] = entrance;
+                Configs.getRoom(java.lang.Character.getNumericValue(boardString.charAt(index)) - 97).addEntrances(entrance);
             }
+
             index++;
         }
     }
