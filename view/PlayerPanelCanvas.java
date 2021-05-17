@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -38,7 +40,7 @@ import static ui.GUIClient.loadImage;
  *
  */
 
-public class PlayerPanelCanvas extends JPanel {
+public class PlayerPanelCanvas extends JPanel implements ComponentListener {
 
     // ============ some numbers for swing to set size =============
 
@@ -53,7 +55,7 @@ public class PlayerPanelCanvas extends JPanel {
     /**
      * the height of sub-panel for displaying cards in hand
      */
-    private static int SOUTH_PANEL_HEIGHT = HEIGHT / 4;
+    private static int SOUTH_PANEL_HEIGHT = HEIGHT / 3;
     /**
      * the height of sub-panel for displaying cards left undealt
      */
@@ -71,7 +73,7 @@ public class PlayerPanelCanvas extends JPanel {
      * the width of the button panel on mid-east (of the BorderLayout, not of the
      * world...)
      */
-    private static int EAST_PANEL_WIDTH = WIDTH;
+    private static int EAST_PANEL_WIDTH = WEST_PANEL_WIDTH;
     /**
      * the padding size on left
      */
@@ -95,6 +97,9 @@ public class PlayerPanelCanvas extends JPanel {
      * The sub-panel for displaying cards in hand
      */
     private JPanel cardsInHandPanel;
+
+    private JPanel buttonPanel;
+
     /**
      * The label for displaying profile picture
      */
@@ -175,20 +180,8 @@ public class PlayerPanelCanvas extends JPanel {
      */
     private int remainingSteps;
 
-    /**
-     * Construct a custom panel for display player related information
-     * 
-     * @param guiClient
-     *            --- the Main GUI of this game
-     */
-    public PlayerPanelCanvas(GUIClient guiClient) {
 
-        this.gui = guiClient;
-
-        // ================== BorderLayout =====================
-        this.setLayout(new BorderLayout(5, 5));
-
-        PlayerPanelCanvas.refreshScreen();
+    private void createRemainingCards(){
         // =================== North, remaining cards =====================
         remainingCardsPanel = new JPanel();
         remainingCardsPanel.setBackground(null);
@@ -196,7 +189,7 @@ public class PlayerPanelCanvas extends JPanel {
         remainingCardsPanel.setPreferredSize(new Dimension(WIDTH, NORTH_PANEL_HEIGHT));
         remainingCardsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         remainingCardsPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
+        this.addComponentListener(this);
         // a Label to show some artsy fonts
         JLabel remainingCardLabel = new JLabel(
                 new ImageIcon(loadImage("Remaining_Cards.png")), SwingConstants.CENTER);
@@ -223,6 +216,22 @@ public class PlayerPanelCanvas extends JPanel {
                 remainingCardsPanel.add(LOCATION_LABELS[lo.ordinal()]);
             }
         }
+    }
+    /**
+     * Construct a custom panel for display player related information
+     * 
+     * @param guiClient
+     *            --- the Main GUI of this game
+     */
+    public PlayerPanelCanvas(GUIClient guiClient) {
+
+        this.gui = guiClient;
+
+        // ================== BorderLayout =====================
+        this.setLayout(new BorderLayout(5, 5));
+
+        PlayerPanelCanvas.refreshScreen();
+        createRemainingCards();
 
         // ============== west, a player's profile picture ===============
         profileLabel = new JLabel();
@@ -273,7 +282,7 @@ public class PlayerPanelCanvas extends JPanel {
                 PADDING_LEFT, PADDING_LEFT));
 
         // ============ east, buttons ===================
-        JPanel buttonPanel = new JPanel();
+        buttonPanel = new JPanel();
         buttonPanel.setBackground(null);
         buttonPanel.setOpaque(false);
         buttonPanel
@@ -412,11 +421,11 @@ public class PlayerPanelCanvas extends JPanel {
 
         HEIGHT = WindowUtilities.getHeight();
         WIDTH = WindowUtilities.getWidth() / 2;
-        SOUTH_PANEL_HEIGHT = HEIGHT / 4;
+        SOUTH_PANEL_HEIGHT = HEIGHT / 3;
         NORTH_PANEL_HEIGHT = SOUTH_PANEL_HEIGHT;
         CENTRE_PANEL_HEIGHT = HEIGHT - SOUTH_PANEL_HEIGHT
                 - NORTH_PANEL_HEIGHT;
-        EAST_PANEL_WIDTH = WIDTH / 7;
+        EAST_PANEL_WIDTH = WIDTH / 3;
 
     }
 
@@ -426,12 +435,16 @@ public class PlayerPanelCanvas extends JPanel {
      * This method ask gui for game's status, and update the display of player panel.
      */
     public void update() {
+
+        PlayerPanelCanvas.refreshScreen();
+        remainingCardsPanel.setPreferredSize(new Dimension(WIDTH, NORTH_PANEL_HEIGHT));
+        buttonPanel.setPreferredSize(new Dimension(WIDTH, CENTRE_PANEL_HEIGHT));
+        cardsInHandPanel.setPreferredSize(new Dimension(WIDTH, SOUTH_PANEL_HEIGHT));
+
         // ============== west, a player's character picture ===============
         currentPlayer = gui.getCurrentPlayer();
         profileLabel.setIcon(PROFILE_IMG[currentPlayer.ordinal()]);
 
-        PlayerPanelCanvas.refreshScreen();
-        remainingCardsPanel.setPreferredSize(new Dimension(WIDTH, NORTH_PANEL_HEIGHT));
         // ============== centre, dice or dices ====================
         if (remainingSteps == 0) {
             for (int i = 0; i < diceLabels.length; i++) {
@@ -1198,4 +1211,23 @@ public class PlayerPanelCanvas extends JPanel {
     private static final ImageIcon ACCUSATION_PRESSED_IMG = new ImageIcon(
             loadImage("Button_Accusation_Pressed.png"));
 
+    @Override
+    public void componentResized(ComponentEvent e) {
+        update();
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {
+
+    }
+
+    @Override
+    public void componentShown(ComponentEvent e) {
+
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent e) {
+
+    }
 }

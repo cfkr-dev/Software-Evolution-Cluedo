@@ -745,13 +745,11 @@ public class GUIClient extends JFrame {
      * @param args --- who cares it in GUI?
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new GUIClient();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                new GUIClient();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }

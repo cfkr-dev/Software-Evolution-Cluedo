@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Set;
@@ -27,7 +29,7 @@ import view.token.WeaponToken;
 import static ui.GUIClient.loadImage;
 
 @SuppressWarnings("serial")
-public class BoardCanvas extends JPanel {
+public class BoardCanvas extends JPanel implements ComponentListener {
 
     /**
      * The width and Height of each Tile. Note this constant is important as most of board
@@ -64,6 +66,7 @@ public class BoardCanvas extends JPanel {
     public BoardCanvas(GUIClient guiClient) {
         super();
         this.gui = guiClient;
+        this.addComponentListener(this);
         int width = WindowUtilities.getWidth();
         int height = WindowUtilities.getHeight();
         TILE_WIDTH =  width / (2 * Configs.BOARD_WIDTH);
@@ -393,4 +396,24 @@ public class BoardCanvas extends JPanel {
      * player a help in easy mode
      */
     private static final JLabel[] QUESTION_ON_ROOM = creatQuestionOnRoom();
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+        update();
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {
+
+    }
+
+    @Override
+    public void componentShown(ComponentEvent e) {
+
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent e) {
+
+    }
 }
