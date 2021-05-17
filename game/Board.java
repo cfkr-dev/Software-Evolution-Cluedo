@@ -52,6 +52,7 @@ public class Board {
             x = index % (width + 1);
             y = index / (width + 1);
 
+
             // skip the '\n' character
             if (x == width) {
                 index++;
@@ -82,7 +83,7 @@ public class Board {
                  */
                 if (logicSymbolBoard >= ';' && logicSymbolBoard <= '@') {
                     Tile starPositionCharacter = new Tile(x, y);
-                    board[x][y] = starPositionCharacter;
+                    board[y][x] = starPositionCharacter;
                     int auxiliar = logicSymbolBoard;
                     startPositions[auxiliar - 59] = starPositionCharacter;
                 }

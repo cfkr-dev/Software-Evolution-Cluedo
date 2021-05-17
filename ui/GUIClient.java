@@ -357,7 +357,7 @@ public class GUIClient extends JFrame {
      *         represents 1 - 6 (for simplicity when calling graphical update)
      */
     public int[] rollDice(Character character) {
-        return game.rollDice(character);
+        return game.rollDice();
     }
 
     /**

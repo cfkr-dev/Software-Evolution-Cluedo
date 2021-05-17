@@ -124,7 +124,7 @@ public class TextClient {
 
         // if this player hasn't roll a dice, roll dice
         if (remainingSteps == 0) {
-            int[] roll = game.rollDice(currentPlayer);
+            int[] roll = game.rollDice();
             int total = 0;
             for (int j : roll) {
                 total += (j + 1);

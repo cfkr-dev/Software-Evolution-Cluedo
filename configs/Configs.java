@@ -30,7 +30,7 @@ public class Configs {
     /**
      * the vertical boundary coordinate of Cluedo game board.
      */
-    public static final int BOARD_HEIGHT = 50;
+    public static final int BOARD_HEIGHT = 25;
 
     /**
      * The static object of all locations
