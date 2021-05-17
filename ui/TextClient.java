@@ -2,7 +2,6 @@ package ui;
 
 import java.util.List;
 import java.util.Scanner;
-
 import card.Character;
 import card.Location;
 import card.Weapon;
@@ -16,7 +15,7 @@ import tile.Room;
  * A text based client for Cluedo. It use console to print out game board, and players use
  * console input to control the game process.
  * 
- * @author Hector
+ * @author EASG7
  *
  */
 public class TextClient {
@@ -28,8 +27,7 @@ public class TextClient {
 
     /**
      * Main function of this programme.
-     * 
-     * @param args
+     *
      */
     public static void main(String[] args) {
         // show some welcome message
@@ -71,29 +69,19 @@ public class TextClient {
         while (playerIndex != numPlayers) {
             playerIndex++;
             // list all choosable cards
-            // so I don't really have a good way to print 1st, 2nd, 3rd, 4th elegantly....
-            if (playerIndex == 1) {
-                System.out.println("Please choose the 1st character:");
-            } else if (playerIndex == 2) {
-                System.out.println("Please choose the 2nd character:");
-            } else if (playerIndex == 3) {
-                System.out.println("Please choose the 3rd character:");
-            } else {
-                System.out.println("Please choose the " + playerIndex + "th character:");
-            }
+            System.out.println("Please choose player " + playerIndex + "character:");
 
             List<Character> playableCharacters = game.getPlayableCharacters();
             int size = playableCharacters.size();
             for (int i = 0; i < size; i++) {
-                System.out.println(
-                        "" + (i + 1) + ". " + playableCharacters.get(i).toString());
+                System.out.println("" + (i + 1) + ". " + playableCharacters.get(i).toString());
             }
+
             // make a choice
             int choice = parseInt(1, size);
 
             // join this player in
             game.joinPlayer(playableCharacters.get(choice - 1), "");
-            choice = 0; // reset
         }
 
         // set which character is first to move
@@ -138,8 +126,8 @@ public class TextClient {
         if (remainingSteps == 0) {
             int[] roll = game.rollDice(currentPlayer);
             int total = 0;
-            for (int i = 0; i < roll.length; i++) {
-                total += (roll[i] + 1);
+            for (int j : roll) {
+                total += (j + 1);
             }
             System.out.println("You rolled " + total + ".");
             game.setRemainingSteps(currentPlayer, total);
@@ -201,16 +189,7 @@ public class TextClient {
                 // now compare the suggestion, and other players try to reject it
                 System.out.println(game.refuteSuggestion(suggestion));
 
-                // prompt if the player want to make accusation now
-                System.out.println("Do you want to make an accusation now?");
-                System.out.println("1. Yes");
-                System.out.println("2. No");
-
-                int yesNo = parseInt(1, 2);
-                if (yesNo == 1) {
-                    // made an accusation
-                    makeAccusation(game);
-                }
+                accusationChoice(game);
 
                 remainingSteps = 0;
 
@@ -232,16 +211,7 @@ public class TextClient {
                 // now other players try to reject it
                 System.out.println(game.refuteSuggestion(suggestion));
 
-                // prompt if the player want to make accusation now
-                System.out.println("Do you want to make an accusation now?");
-                System.out.println("1. Yes");
-                System.out.println("2. No");
-
-                int yesNo = parseInt(1, 2);
-                if (yesNo == 1) {
-                    // made an accusation
-                    makeAccusation(game);
-                }
+                accusationChoice(game);
 
                 remainingSteps = 0;
 
@@ -264,6 +234,27 @@ public class TextClient {
         }
     }
 
+
+    /**
+     * This procedure picks up if the player wants to make a accusation
+     *
+     * @param game
+     *             --- the running game
+     */
+    private static void accusationChoice(Game game) {
+        // prompt if the player want to make accusation now
+        System.out.println("Do you want to make an accusation now?");
+        System.out.println("1. Yes");
+        System.out.println("2. No");
+
+        int yesNo = parseInt(1, 2);
+        if (yesNo == 1) {
+            // made an accusation
+            makeAccusation(game);
+        }
+    }
+
+
     /**
      * This method let the player to make a suggestion.
      * 
@@ -277,80 +268,21 @@ public class TextClient {
         // safe cast
         Location location = ((Room) destination).getRoom();
 
-        System.out.println(
-                "What suggestion do you want to make in " + location.toString() + "?");
+        System.out.println("What suggestion do you want to make in " + location.toString() + "?");
 
-        // prompt all characters
-        for (Character c : Character.values()) {
-            System.out.println("" + (c.ordinal() + 1) + ". " + c.toString());
-        }
 
-        int choiceCharacter = parseInt(1, Character.values().length);
+        // choice a character suspect
+        Character suspect = choiceSuspect();
 
-        // get player's choice
-        Character suspect = null;
-        switch (choiceCharacter) {
-        case 1:
-            suspect = Character.Miss_Scarlet;
-            break;
-        case 2:
-            suspect = Character.Colonel_Mustard;
-            break;
-        case 3:
-            suspect = Character.Mrs_White;
-            break;
-        case 4:
-            suspect = Character.The_Reverend_Green;
-            break;
-        case 5:
-            suspect = Character.Mrs_Peacock;
-            break;
-        case 6:
-            suspect = Character.Professor_Plum;
-            break;
-        default: // dead code
-        }
-
-        System.out.println(suspect.toString() + " commited crime with:");
-
-        // prompt all weapons
-        for (Weapon w : Weapon.values()) {
-            System.out.println("" + (w.ordinal() + 1) + ". " + w.toString());
-        }
-
-        int choiceWeapon = parseInt(1, Weapon.values().length);
-
-        // get player's choice
-        Weapon weapon = null;
-        switch (choiceWeapon) {
-        case 1:
-            weapon = Weapon.Candlestick;
-            break;
-        case 2:
-            weapon = Weapon.Dagger;
-            break;
-        case 3:
-            weapon = Weapon.Lead_Pipe;
-            break;
-        case 4:
-            weapon = Weapon.Revolver;
-            break;
-        case 5:
-            weapon = Weapon.Rope;
-            break;
-        case 6:
-            weapon = Weapon.Spanner;
-            break;
-        default: // dead code
-        }
+        // choice of the object used
+        Weapon weapon = choiceObject();
 
         Suggestion suggestion = new Suggestion(suspect, weapon, location);
         game.moveTokensInvolvedInSuggestion(suggestion);
 
         // now the player has made a suggestion
         System.out.println(
-                "Your suggestion is:\nSuspect: " + suspect.toString() + "\nWeapon: "
-                        + weapon.toString() + "\nLocation: " + location.toString());
+                "Your suggestion is:\nSuspect: " + suspect.toString() + "\nWeapon: " + weapon.toString() + "\nLocation: " + location.toString());
 
         return suggestion;
     }
@@ -358,123 +290,32 @@ public class TextClient {
     /**
      * This method let the player make an accusation. If the accusation is correct, win;
      * if wrong, the player is out.
-     * 
-     * @param game
+     *
      */
     private static void makeAccusation(Game game) {
 
         System.out.println("What accusation do you want to make:");
 
-        // prompt all characters
-        for (Character c : Character.values()) {
-            System.out.println("" + (c.ordinal() + 1) + ". " + c.toString());
-        }
+        // choice a character suspect
+        Character suspect = choiceSuspect();
 
-        int choiceCharacter = parseInt(1, Character.values().length);
-
-        // get player's choice
-        Character suspect = null;
-        switch (choiceCharacter) {
-        case 1:
-            suspect = Character.Miss_Scarlet;
-            break;
-        case 2:
-            suspect = Character.Colonel_Mustard;
-            break;
-        case 3:
-            suspect = Character.Mrs_White;
-            break;
-        case 4:
-            suspect = Character.The_Reverend_Green;
-            break;
-        case 5:
-            suspect = Character.Mrs_Peacock;
-            break;
-        case 6:
-            suspect = Character.Professor_Plum;
-            break;
-        default: // dead code
-        }
-
-        System.out.println(suspect.toString() + " commited crime with:");
-
-        // prompt all weapons
-        for (Weapon w : Weapon.values()) {
-            System.out.println("" + (w.ordinal() + 1) + ". " + w.toString());
-        }
-
-        int choiceWeapon = parseInt(1, Weapon.values().length);
-
-        // get player's choice
-        Weapon weapon = null;
-        switch (choiceWeapon) {
-        case 1:
-            weapon = Weapon.Candlestick;
-            break;
-        case 2:
-            weapon = Weapon.Dagger;
-            break;
-        case 3:
-            weapon = Weapon.Lead_Pipe;
-            break;
-        case 4:
-            weapon = Weapon.Revolver;
-            break;
-        case 5:
-            weapon = Weapon.Rope;
-            break;
-        case 6:
-            weapon = Weapon.Spanner;
-            break;
-        default: // dead code
-        }
+        // choice of the object used
+        Weapon weapon = choiceObject();
 
         System.out.println("...in:");
 
         // prompt all rooms
-        for (Location l : Location.values()) {
-            System.out.println("" + (l.ordinal() + 1) + ". " + l.toString());
+        for(int i = 0; i < Location.getNumberOfLocations(); i++){
+            System.out.println("" + (i + 1) + ". " + Location.get(i).toString());
         }
 
-        int choiceRoom = parseInt(1, Location.values().length);
+        int choiceRoom = parseInt(1, Location.getNumberOfLocations());
 
         // get player's choice
-        Location location = null;
-        switch (choiceRoom) {
-        case 1:
-            location = Location.Kitchen;
-            break;
-        case 2:
-            location = Location.Ball_Room;
-            break;
-        case 3:
-            location = Location.Conservatory;
-            break;
-        case 4:
-            location = Location.Billard_Room;
-            break;
-        case 5:
-            location = Location.Library;
-            break;
-        case 6:
-            location = Location.Study;
-            break;
-        case 7:
-            location = Location.Hall;
-            break;
-        case 8:
-            location = Location.Lounge;
-            break;
-        case 9:
-            location = Location.Dining_Room;
-            break;
-        default: // dead code
-        }
+        Location location = Location.get(choiceRoom - 1);
 
         // the player has made an accusation
-        System.out.println(
-                "Your accusation is:\nSuspect: " + suspect.toString() + "\nWeapon: "
-                        + weapon.toString() + "\nLocation: " + location.toString());
+        System.out.println("Your accusation is:\nSuspect: " + suspect.toString() + "\nWeapon: " + weapon.toString() + "\nLocation: " + location.toString());
 
         Suggestion accusation = new Suggestion(suspect, weapon, location);
 
@@ -486,6 +327,43 @@ public class TextClient {
             // the player is out
             System.out.println("You are wrong!");
         }
+    }
+
+    /**
+     * This method returns the character chosen as a suspect
+     *
+     * @return  --- suspect
+     */
+    private static Character choiceSuspect() {
+        // prompt all characters
+        for(int i = 0; i < Character.getNumberOfCharacters(); i++) {
+            System.out.println("" + (i + 1) + ". " + Character.get(i).toString());
+        }
+
+        int choiceCharacter = parseInt(1, Character.getNumberOfCharacters());
+
+        // get player's choice
+        Character suspect = Character.get(choiceCharacter - 1);
+
+        System.out.println(suspect.toString() + " commited crime with:");
+        return suspect;
+    }
+
+    /**
+     * This method returns the weapon chosen as a murder weapon
+     *
+     * @return  --- weapon
+     */
+    private static Weapon choiceObject() {
+        // prompt all weapons
+        for(int i = 0; i < Weapon.getNumberOfWeapons(); i++) {
+            System.out.println("" + (i + 1) + ". " + Weapon.get(i).toString());
+        }
+
+        int choiceWeapon = parseInt(1,  Weapon.getNumberOfWeapons());
+
+        // get player's choice
+        return Weapon.get(choiceWeapon - 1);
     }
 
     /**
@@ -518,23 +396,23 @@ public class TextClient {
             if (line.equals("help")) {
                 helpMessage();
                 System.out.println("Please choose between " + min + " and " + max + ":");
-                continue;
             }
-
-            try {
-                // parse the input
-                int i = Integer.parseInt(line);
-                if (i >= min && i <= max) {
-                    // a good input
-                    return i;
-                } else {
-                    // a out of boundary input, let the user retry.
-                    System.out.println(
-                            "Please choose between " + min + " and " + max + ":");
+            else {
+                try {
+                    // parse the input
+                    int i = Integer.parseInt(line);
+                    if (i >= min && i <= max) {
+                        // a good input
+                        return i;
+                    } else {
+                        // a out of boundary input, let the user retry.
+                        System.out.println("Please choose between " + min + " and " + max + ":");
+                    }
                 }
-            } catch (NumberFormatException e) {
-                // the input is not an integer
-                System.out.println("Please enter an integer:");
+                catch (NumberFormatException e) {
+                    // the input is not an integer
+                    System.out.println("Please enter an integer:");
+                }
             }
         }
     }
