@@ -68,12 +68,12 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     /**
      * the width of the sub-panel for displaying profile picture
      */
-    private static int WEST_PANEL_WIDTH = WIDTH / 7;
+    private static int WEST_PANEL_WIDTH = (int) (WIDTH / 6.557);
     /**
      * the width of the button panel on mid-east (of the BorderLayout, not of the
      * world...)
      */
-    private static int EAST_PANEL_WIDTH = WEST_PANEL_WIDTH;
+    private static int EAST_PANEL_WIDTH = WEST_PANEL_WIDTH + 100;
     /**
      * the padding size on left
      */
@@ -438,8 +438,9 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
 
         PlayerPanelCanvas.refreshScreen();
         remainingCardsPanel.setPreferredSize(new Dimension(WIDTH, NORTH_PANEL_HEIGHT));
-        buttonPanel.setPreferredSize(new Dimension(WIDTH, CENTRE_PANEL_HEIGHT));
+        buttonPanel.setPreferredSize(new Dimension(EAST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
         cardsInHandPanel.setPreferredSize(new Dimension(WIDTH, SOUTH_PANEL_HEIGHT));
+        profileLabel.setPreferredSize(new Dimension(WEST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
 
         // ============== west, a player's character picture ===============
         currentPlayer = gui.getCurrentPlayer();
