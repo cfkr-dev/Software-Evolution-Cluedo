@@ -3,7 +3,11 @@ package view;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -55,7 +59,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     /**
      * the height of sub-panel for displaying cards in hand
      */
-    private static int SOUTH_PANEL_HEIGHT = HEIGHT / 3;
+    private static int SOUTH_PANEL_HEIGHT = HEIGHT / 4;
     /**
      * the height of sub-panel for displaying cards left undealt
      */
@@ -63,8 +67,8 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     /**
      * the height of sub-panel for displaying buttons, dices, and profile picture
      */
-    private static int CENTRE_PANEL_HEIGHT = HEIGHT - SOUTH_PANEL_HEIGHT
-            - NORTH_PANEL_HEIGHT;
+    private static int CENTRE_PANEL_HEIGHT = HEIGHT - (SOUTH_PANEL_HEIGHT
+            + NORTH_PANEL_HEIGHT);
     /**
      * the width of the sub-panel for displaying profile picture
      */
@@ -236,7 +240,6 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         // ================== BorderLayout =====================
         this.setLayout(new BorderLayout(5, 5));
 
-        PlayerPanelCanvas.refreshScreen();
         createRemainingCards();
 
         // ============== west, a player's profile picture ===============
@@ -422,19 +425,28 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
 
         // update the panel
         update();
+        refreshScreen();
     }
 
-    public static void refreshScreen() {
+    public void refreshScreen() {
 
         HEIGHT = WindowUtilities.getHeight();
         WIDTH = WindowUtilities.getWidth() / 2;
-        SOUTH_PANEL_HEIGHT = HEIGHT / 3;
+        SOUTH_PANEL_HEIGHT = HEIGHT / 4;
         NORTH_PANEL_HEIGHT = SOUTH_PANEL_HEIGHT;
-        CENTRE_PANEL_HEIGHT = HEIGHT - SOUTH_PANEL_HEIGHT
-                - NORTH_PANEL_HEIGHT;
+        CENTRE_PANEL_HEIGHT = HEIGHT - (SOUTH_PANEL_HEIGHT
+                + NORTH_PANEL_HEIGHT);
         EAST_PANEL_WIDTH = WIDTH / 2;
         WEST_PANEL_WIDTH = WIDTH / 4;
         CENTRE_PANEL_WIDTH = WIDTH - (EAST_PANEL_WIDTH + WEST_PANEL_WIDTH);
+        MOVE_BUTTON_SIZE = new Dimension(WIDTH / 18, HEIGHT / 15);
+        ACTION_BUTTON_SIZE = new Dimension(WIDTH / 11, HEIGHT / 15);
+
+        remainingCardsPanel.setPreferredSize(new Dimension(WIDTH, NORTH_PANEL_HEIGHT));
+        buttonPanel.setPreferredSize(new Dimension(EAST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
+        cardsInHandPanel.setPreferredSize(new Dimension(WIDTH, SOUTH_PANEL_HEIGHT));
+        profileLabel.setPreferredSize(new Dimension(WEST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
+        dicePanel.setPreferredSize(new Dimension(CENTRE_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
     }
 
 
@@ -444,12 +456,6 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
      */
     public void update() {
 
-        PlayerPanelCanvas.refreshScreen();
-        remainingCardsPanel.setPreferredSize(new Dimension(WIDTH, NORTH_PANEL_HEIGHT));
-        buttonPanel.setPreferredSize(new Dimension(EAST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
-        cardsInHandPanel.setPreferredSize(new Dimension(WIDTH, SOUTH_PANEL_HEIGHT));
-        profileLabel.setPreferredSize(new Dimension(WEST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
-        dicePanel.setPreferredSize(new Dimension(CENTRE_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
 
         // ============== west, a player's character picture ===============
         currentPlayer = gui.getCurrentPlayer();
@@ -1014,7 +1020,6 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        PlayerPanelCanvas.refreshScreen();
         g.drawImage(PLAYER_PANEL, 0, 0, this.getWidth(), this.getHeight(), this);
     }
 
@@ -1095,11 +1100,11 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     /**
      * The preferred size of move buttons
      */
-    private static final Dimension MOVE_BUTTON_SIZE = new Dimension(85, 55);
+    private static Dimension MOVE_BUTTON_SIZE = new Dimension(WIDTH / 18, HEIGHT / 15);
     /**
      * The preferred size of action buttons
      */
-    private static final Dimension ACTION_BUTTON_SIZE = new Dimension(135, 55);
+    private static Dimension ACTION_BUTTON_SIZE = new Dimension(WIDTH / 11, HEIGHT / 15);
     /**
      * An image for displaying disabled action button
      */
@@ -1223,7 +1228,21 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
 
     @Override
     public void componentResized(ComponentEvent e) {
-        update();
+        refreshScreen();
+
+        ImageIcon img = new ImageIcon(loadImage("Profile_Miss_Scarlet.png"));
+        BufferedImage bi = new BufferedImage(
+                img.getIconWidth(),
+                img.getIconHeight(),
+                BufferedImage.TYPE_INT_ARGB);
+        Graphics g = bi.createGraphics();
+        img.paintIcon(null, g, 0,0);
+        g.dispose();
+        Image dimg = bi.getScaledInstance((int) ((double) (img.getIconWidth()) * ((double) (WindowUtilities.getWidth()) / (double) (WindowUtilities.getLastWidth()))), (int) ((double) (img.getIconHeight()) * ((double) (WindowUtilities.getHeight()) / (double) (WindowUtilities.getLastheight()))),
+                Image.SCALE_SMOOTH);
+        ImageIcon imageIcon = new ImageIcon(dimg);
+        PROFILE_IMG[0] = imageIcon;
+
     }
 
     @Override

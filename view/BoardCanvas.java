@@ -188,10 +188,10 @@ public class BoardCanvas extends JPanel implements ComponentListener {
      *            --- the vertical coordinate
      */
     private void setCharacterTokenOnTile(CharacterToken characterToken, int x, int y) {
-        int height = TILE_HEIGHT + 9;
+        int height = TILE_HEIGHT;
         int width = TILE_WIDTH;
         characterToken.setBounds(TILE_WIDTH * x,
-                TILE_HEIGHT * y - (height - TILE_HEIGHT + 2), width, height);
+                TILE_HEIGHT * y, width, height);
     }
 
     /**

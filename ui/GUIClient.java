@@ -209,7 +209,9 @@ public class GUIClient extends JFrame {
         double height = screenSize.getHeight();
         window.setPreferredSize(
                 new Dimension((int) width, (int) height));
+        WindowUtilities.setLastWidth((int) width);
         WindowUtilities.setWidth((int) width);
+        WindowUtilities.setLastheight((int) height);
         WindowUtilities.setHeight((int) height);
         LEFT_PANEL_WIDTH = WindowUtilities.getWidth()/2;
         RIGHT_PANEL_WIDTH = WindowUtilities.getWidth()/2;
@@ -250,7 +252,6 @@ public class GUIClient extends JFrame {
                 WindowUtilities.setWidth(e.getComponent().getWidth());
                 WindowUtilities.setHeight(e.getComponent().getHeight());
                 BoardCanvas.refreshScreen();
-                PlayerPanelCanvas.refreshScreen();
                 LEFT_PANEL_WIDTH = e.getComponent().getWidth()/2;
                 RIGHT_PANEL_WIDTH = e.getComponent().getWidth()/2;
                 HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
