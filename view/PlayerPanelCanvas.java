@@ -68,12 +68,16 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     /**
      * the width of the sub-panel for displaying profile picture
      */
-    private static int WEST_PANEL_WIDTH = (int) (WIDTH / 6.557);
+    private static int WEST_PANEL_WIDTH = WIDTH / 4;
     /**
      * the width of the button panel on mid-east (of the BorderLayout, not of the
      * world...)
      */
-    private static int EAST_PANEL_WIDTH = WEST_PANEL_WIDTH + 100;
+    private static int EAST_PANEL_WIDTH = WIDTH / 2;
+    /**
+     * the width of the dice panel
+     */
+    private static int CENTRE_PANEL_WIDTH = WIDTH - (WEST_PANEL_WIDTH + EAST_PANEL_WIDTH);
     /**
      * the padding size on left
      */
@@ -99,6 +103,8 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     private JPanel cardsInHandPanel;
 
     private JPanel buttonPanel;
+
+    private JPanel dicePanel;
 
     /**
      * The label for displaying profile picture
@@ -244,10 +250,11 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         // ============== centre, dice or dices ====================
 
         // panel for dices
-        JPanel dicePanel = new JPanel();
+        dicePanel = new JPanel();
         dicePanel.setBackground(null);
         dicePanel.setOpaque(false);
         dicePanel.setLayout(new BoxLayout(dicePanel, BoxLayout.X_AXIS));
+        dicePanel.setPreferredSize(new Dimension(CENTRE_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
 
         // another panel to make the dice centre-aligned
         JPanel diceGroup = new JPanel();
@@ -425,8 +432,9 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         NORTH_PANEL_HEIGHT = SOUTH_PANEL_HEIGHT;
         CENTRE_PANEL_HEIGHT = HEIGHT - SOUTH_PANEL_HEIGHT
                 - NORTH_PANEL_HEIGHT;
-        EAST_PANEL_WIDTH = WIDTH / 3;
-
+        EAST_PANEL_WIDTH = WIDTH / 2;
+        WEST_PANEL_WIDTH = WIDTH / 4;
+        CENTRE_PANEL_WIDTH = WIDTH - (EAST_PANEL_WIDTH + WEST_PANEL_WIDTH);
     }
 
 
@@ -441,6 +449,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         buttonPanel.setPreferredSize(new Dimension(EAST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
         cardsInHandPanel.setPreferredSize(new Dimension(WIDTH, SOUTH_PANEL_HEIGHT));
         profileLabel.setPreferredSize(new Dimension(WEST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
+        dicePanel.setPreferredSize(new Dimension(CENTRE_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
 
         // ============== west, a player's character picture ===============
         currentPlayer = gui.getCurrentPlayer();
