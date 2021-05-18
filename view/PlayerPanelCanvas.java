@@ -201,8 +201,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         remainingCardsPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         this.addComponentListener(this);
         // a Label to show some artsy fonts
-        JLabel remainingCardLabel = new JLabel(
-                new ImageIcon(loadImage("Remaining_Cards.png")), SwingConstants.CENTER);
+        JLabel remainingCardLabel = new JLabel(REMAINING_CARDS_LABEL, SwingConstants.CENTER);
         remainingCardsPanel.add(remainingCardLabel);
 
         // display remaining cards.
@@ -1025,6 +1024,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
 
     // ============== Static Images ========================
 
+    public static ImageIcon REMAINING_CARDS_LABEL = new ImageIcon(loadImage("Remaining_Cards.png"), "Remaining_Cards.png");
     /**
      * The background image of player panel
      */
@@ -1034,8 +1034,8 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
      * Six profile images
      */
     public static final ImageIcon[] PROFILE_IMG = {
-            new ImageIcon(loadImage("Profile_Miss_Scarlet.png")),
-            new ImageIcon(loadImage("Profile_Colonel_Mustard.png")),
+            new ImageIcon(loadImage("Profile_Miss_Scarlet.png"), "Profile_Miss_Scarlet.png"),
+            new ImageIcon(loadImage("Profile_Colonel_Mustard.png"), "Profile_Colonel_Mustard.png"),
             new ImageIcon(loadImage("Profile_Mrs_White.png")),
             new ImageIcon(loadImage("Profile_The_Reverend_Green.png")),
             new ImageIcon(loadImage("Profile_Mrs_Peacock.png")),
@@ -1230,19 +1230,11 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     public void componentResized(ComponentEvent e) {
         refreshScreen();
 
-        ImageIcon img = new ImageIcon(loadImage("Profile_Miss_Scarlet.png"));
-        BufferedImage bi = new BufferedImage(
-                img.getIconWidth(),
-                img.getIconHeight(),
-                BufferedImage.TYPE_INT_ARGB);
-        Graphics g = bi.createGraphics();
-        img.paintIcon(null, g, 0,0);
-        g.dispose();
-        Image dimg = bi.getScaledInstance((int) ((double) (img.getIconWidth()) * ((double) (WindowUtilities.getWidth()) / (double) (WindowUtilities.getLastWidth()))), (int) ((double) (img.getIconHeight()) * ((double) (WindowUtilities.getHeight()) / (double) (WindowUtilities.getLastheight()))),
-                Image.SCALE_SMOOTH);
-        ImageIcon imageIcon = new ImageIcon(dimg);
-        PROFILE_IMG[0] = imageIcon;
-
+        REMAINING_CARDS_LABEL = WindowUtilities.resizeImage(REMAINING_CARDS_LABEL); // <--- Finally, the resizer works correctly :D
+        PROFILE_IMG[0] = WindowUtilities.resizeImage(PROFILE_IMG[0]);
+        // F*&!* Problem: It only works with profile images cause you are updating all time this component. If you resizes the screen other components like remaining_cards_label is not resizing too.
+        // We need to look for a solution that updates every component in every JPanel.
+        gui.update(); // <--- Here will come a new updater method for the components.
     }
 
     @Override

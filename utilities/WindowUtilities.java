@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import static ui.GUIClient.loadImage;
+
 public class WindowUtilities {
     private static int width;
     private static int lastWidth;
@@ -40,6 +42,20 @@ public class WindowUtilities {
 
     public static void setLastheight(int lastheight) {
         WindowUtilities.lastheight = lastheight;
+    }
+
+    public static ImageIcon resizeImage(ImageIcon imageToResize){
+        ImageIcon img = new ImageIcon(loadImage(imageToResize.getDescription()));
+        BufferedImage bi = new BufferedImage(
+                img.getIconWidth(),
+                img.getIconHeight(),
+                BufferedImage.TYPE_INT_ARGB);
+        Graphics g = bi.createGraphics();
+        img.paintIcon(null, g, 0,0);
+        g.dispose();
+        Image dimg = bi.getScaledInstance((int) ((double) (img.getIconWidth()) * ((double) (WindowUtilities.getWidth()) / (double) (WindowUtilities.getLastWidth()))), (int) ((double) (img.getIconHeight()) * ((double) (WindowUtilities.getHeight()) / (double) (WindowUtilities.getLastheight()))),
+                Image.SCALE_SMOOTH);
+        return new ImageIcon(dimg, imageToResize.getDescription());
     }
 
 }
