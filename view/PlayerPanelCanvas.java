@@ -204,7 +204,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         remainingCardsPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         this.addComponentListener(this);
         // a Label to show some artsy fonts
-        remainingCardLabel = new JLabel(REMAINING_CARDS_LABEL, SwingConstants.CENTER);
+        remainingCardLabel = new JLabel(REMAINING_CARDS_IMAGE, SwingConstants.CENTER);
         remainingCardsPanel.add(remainingCardLabel);
 
         // display remaining cards.
@@ -1020,7 +1020,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
 
     // ============== Static Images ========================
 
-    public static ImageIcon REMAINING_CARDS_LABEL = new ImageIcon(loadImage("Remaining_Cards.png"), "Remaining_Cards.png");
+    public static ImageIcon REMAINING_CARDS_IMAGE = new ImageIcon(loadImage("Remaining_Cards.png"), "Remaining_Cards.png");
     /**
      * The background image of player panel
      */
@@ -1032,10 +1032,10 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     public static final ImageIcon[] PROFILE_IMG = {
             new ImageIcon(loadImage("Profile_Miss_Scarlet.png"), "Profile_Miss_Scarlet.png"),
             new ImageIcon(loadImage("Profile_Colonel_Mustard.png"), "Profile_Colonel_Mustard.png"),
-            new ImageIcon(loadImage("Profile_Mrs_White.png")),
-            new ImageIcon(loadImage("Profile_The_Reverend_Green.png")),
-            new ImageIcon(loadImage("Profile_Mrs_Peacock.png")),
-            new ImageIcon(loadImage("Profile_Professor_Plum.png"))};
+            new ImageIcon(loadImage("Profile_Mrs_White.png"), "Profile_Mrs_White.png"),
+            new ImageIcon(loadImage("Profile_The_Reverend_Green.png"), "Profile_The_Reverend_Green.png"),
+            new ImageIcon(loadImage("Profile_Mrs_Peacock.png"), "Profile_Mrs_Peacock.png"),
+            new ImageIcon(loadImage("Profile_Professor_Plum.png"), "Profile_Professor_Plum.png")};
     /**
      * Images for displaying dices
      */
@@ -1225,12 +1225,12 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     @Override
     public void componentResized(ComponentEvent e) {
         refreshScreen();
-        REMAINING_CARDS_LABEL = WindowUtilities.resizeImage(REMAINING_CARDS_LABEL); // <--- Finally, the resizer works correctly :D
-        PROFILE_IMG[0] = WindowUtilities.resizeImage(PROFILE_IMG[0]);
+        REMAINING_CARDS_IMAGE = WindowUtilities.resizeImage(REMAINING_CARDS_IMAGE); // <--- Finally, the resizer works correctly :D
+        PROFILE_IMG[currentPlayer.ordinal()] = WindowUtilities.resizeImage(PROFILE_IMG[currentPlayer.ordinal()]);
 
         // Create a method with all label setters. Very important: we need to know inside which are the all current player images!!!
-        profileLabel.setIcon(PROFILE_IMG[0]);
-        remainingCardLabel.setIcon(REMAINING_CARDS_LABEL);
+        profileLabel.setIcon(PROFILE_IMG[currentPlayer.ordinal()]);
+        remainingCardLabel.setIcon(REMAINING_CARDS_IMAGE);
 
         // Reload all canvas components without calling update method
         this.setVisible(true);
