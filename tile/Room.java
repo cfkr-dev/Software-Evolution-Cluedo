@@ -2,7 +2,6 @@ package tile;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import card.Location;
 import game.GameError;
 
@@ -10,7 +9,7 @@ import game.GameError;
  * This class represents a room on Cluedo game board. Each room has one or more entrance
  * that allows player to enter into. Some rooms have secret passage to another room.
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
 public class Room extends Position {
@@ -127,16 +126,18 @@ public class Room extends Position {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Room other = (Room) obj;
-        if (room != other.room)
-            return false;
-        return secPasTo == other.secPasTo;
+        }
+        else {
+            Room other = (Room) obj;
+            if (room != other.room) {
+                return false;
+            }
+            else {
+                return secPasTo == other.secPasTo;
+            }
+        }
     }
 
     public void setSecPasTo(Location secPasTo) {
