@@ -39,9 +39,8 @@ import static ui.GUIClient.loadImage;
  * functionalities are: displaying cards in hand; displaying cards left undealt;
  * displaying dices; providing buttons to move, roll dice, make suggestion and make
  * accusation; and displaying a profile picture.
- * 
- * @author Hector
  *
+ * @author Hector
  */
 
 public class PlayerPanelCanvas extends JPanel implements ComponentListener {
@@ -93,7 +92,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     /**
      * the padding size on top
      */
-    private static final int PADDING_TOP =0;
+    private static final int PADDING_TOP = 0;
 
     // ============== swing components ======================
 
@@ -163,6 +162,10 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
      */
     private JButton accusationButton;
 
+    // ======== Test ========
+
+    private JLabel remainingCardLabel;
+
     // ======== Other fields that actually holds logic =========
 
     /**
@@ -191,7 +194,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     private int remainingSteps;
 
 
-    private void createRemainingCards(){
+    private void createRemainingCards() {
         // =================== North, remaining cards =====================
         remainingCardsPanel = new JPanel();
         remainingCardsPanel.setBackground(null);
@@ -201,7 +204,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         remainingCardsPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         this.addComponentListener(this);
         // a Label to show some artsy fonts
-        JLabel remainingCardLabel = new JLabel(REMAINING_CARDS_LABEL, SwingConstants.CENTER);
+        remainingCardLabel = new JLabel(REMAINING_CARDS_LABEL, SwingConstants.CENTER);
         remainingCardsPanel.add(remainingCardLabel);
 
         // display remaining cards.
@@ -226,11 +229,11 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
             }
         }
     }
+
     /**
      * Construct a custom panel for display player related information
-     * 
-     * @param guiClient
-     *            --- the Main GUI of this game
+     *
+     * @param guiClient --- the Main GUI of this game
      */
     public PlayerPanelCanvas(GUIClient guiClient) {
 
@@ -447,7 +450,6 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         profileLabel.setPreferredSize(new Dimension(WEST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
         dicePanel.setPreferredSize(new Dimension(CENTRE_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
     }
-
 
 
     /**
@@ -959,19 +961,15 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
 
     /**
      * A helper method to create a JButton object, and set its attributes to fit the GUI.
-     * 
-     * @param defaultIcon
-     *            --- the image used as the default image
-     * @param pressedIcon
-     *            --- the image used as the "pressed" image
-     * @param disabledIcon
-     *            --- the image used as the disabled image
-     * @param dimension
-     *            --- the preferred size of this JButton
+     *
+     * @param defaultIcon  --- the image used as the default image
+     * @param pressedIcon  --- the image used as the "pressed" image
+     * @param disabledIcon --- the image used as the disabled image
+     * @param dimension    --- the preferred size of this JButton
      * @return --- a JButton instance
      */
     private JButton createButton(ImageIcon defaultIcon, ImageIcon pressedIcon,
-            ImageIcon disabledIcon, Dimension dimension) {
+                                 ImageIcon disabledIcon, Dimension dimension) {
         JButton button = new JButton();
         button.setBackground(null);
         button.setPreferredSize(dimension);
@@ -989,13 +987,11 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
 
     /**
      * A helper method to create a JLabel object for displaying the cards.
-     * 
-     * @param cardImg
-     *            --- the image used to display the card
-     * @param example
-     *            --- a Character or a Weapon or a Location card, as example. This
-     *            argument is used to decide the type of this card, and look for
-     *            appropriate image accordingly
+     *
+     * @param cardImg --- the image used to display the card
+     * @param example --- a Character or a Weapon or a Location card, as example. This
+     *                argument is used to decide the type of this card, and look for
+     *                appropriate image accordingly
      * @return --- a JLabel object to represents the card
      */
     private static JLabel[] createCardLabel(ImageIcon[] cardImg, Card example) {
@@ -1039,16 +1035,16 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
             new ImageIcon(loadImage("Profile_Mrs_White.png")),
             new ImageIcon(loadImage("Profile_The_Reverend_Green.png")),
             new ImageIcon(loadImage("Profile_Mrs_Peacock.png")),
-            new ImageIcon(loadImage("Profile_Professor_Plum.png")) };
+            new ImageIcon(loadImage("Profile_Professor_Plum.png"))};
     /**
      * Images for displaying dices
      */
-    private static final ImageIcon[] DICE_IMG = { new ImageIcon(loadImage("Dice_1.png")),
+    private static final ImageIcon[] DICE_IMG = {new ImageIcon(loadImage("Dice_1.png")),
             new ImageIcon(loadImage("Dice_2.png")),
             new ImageIcon(loadImage("Dice_3.png")),
             new ImageIcon(loadImage("Dice_4.png")),
             new ImageIcon(loadImage("Dice_5.png")),
-            new ImageIcon(loadImage("Dice_6.png")) };
+            new ImageIcon(loadImage("Dice_6.png"))};
     /**
      * Images for displaying Character cards
      */
@@ -1058,7 +1054,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
             new ImageIcon(loadImage("Character_Mrs_White.png")),
             new ImageIcon(loadImage("Character_The_Reverend_Green.png")),
             new ImageIcon(loadImage("Character_Mrs_Peacock.png")),
-            new ImageIcon(loadImage("Character_Professor_Plum.png")) };
+            new ImageIcon(loadImage("Character_Professor_Plum.png"))};
     /**
      * Images for displaying Weapon cards
      */
@@ -1068,7 +1064,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
             new ImageIcon(loadImage("Weapon_Lead_Pipe.png")),
             new ImageIcon(loadImage("Weapon_Revolver.png")),
             new ImageIcon(loadImage("Weapon_Rope.png")),
-            new ImageIcon(loadImage("Weapon_Spanner.png")) };
+            new ImageIcon(loadImage("Weapon_Spanner.png"))};
     /**
      * Images for displaying Location cards
      */
@@ -1081,7 +1077,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
             new ImageIcon(loadImage("Location_Study.png")),
             new ImageIcon(loadImage("Location_Hall.png")),
             new ImageIcon(loadImage("Location_Lounge.png")),
-            new ImageIcon(loadImage("Location_Dining_Room.png")) };
+            new ImageIcon(loadImage("Location_Dining_Room.png"))};
     /**
      * JLabel objects for displaying Character cards
      */
@@ -1229,12 +1225,17 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     @Override
     public void componentResized(ComponentEvent e) {
         refreshScreen();
-
         REMAINING_CARDS_LABEL = WindowUtilities.resizeImage(REMAINING_CARDS_LABEL); // <--- Finally, the resizer works correctly :D
         PROFILE_IMG[0] = WindowUtilities.resizeImage(PROFILE_IMG[0]);
-        // F*&!* Problem: It only works with profile images cause you are updating all time this component. If you resizes the screen other components like remaining_cards_label is not resizing too.
-        // We need to look for a solution that updates every component in every JPanel.
-        gui.update(); // <--- Here will come a new updater method for the components.
+
+        // Create a method with all label setters. Very important: we need to know inside which are the all current player images!!!
+        profileLabel.setIcon(PROFILE_IMG[0]);
+        remainingCardLabel.setIcon(REMAINING_CARDS_LABEL);
+
+        // Reload all canvas components without calling update method
+        this.setVisible(true);
+        this.updateUI();
+        this.repaint();
     }
 
     @Override
