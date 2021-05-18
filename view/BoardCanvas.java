@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 import javax.swing.text.Utilities;
 
 import configs.Configs;
@@ -67,6 +68,7 @@ public class BoardCanvas extends JPanel implements ComponentListener {
         super();
         this.gui = guiClient;
         this.addComponentListener(this);
+        this.setBorder(new EmptyBorder(10,10,10,10));
         int width = WindowUtilities.getWidth();
         int height = WindowUtilities.getHeight();
         TILE_WIDTH =  width / (2 * Configs.BOARD_WIDTH);
@@ -348,11 +350,8 @@ public class BoardCanvas extends JPanel implements ComponentListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(GAME_BOARD, 0, 0, BOARD_IMG_WIDTH, BOARD_IMG_HEIGHT, this);
-        /*
-         * TODO draw rectangle on movable positions, so that a clicking on it can actually
-         * move the player there
-         */
+        g.drawImage(GAME_BOARD, 0, 5, BOARD_IMG_WIDTH, BOARD_IMG_HEIGHT, this);
+
         repaint();
     }
 

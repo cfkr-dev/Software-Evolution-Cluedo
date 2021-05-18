@@ -55,9 +55,9 @@ import configs.Configs;
 /**
  * A GUI client for Cluedo game.
  *
- * @author Hector
+ * @author G7EAS
  */
-@SuppressWarnings("serial")
+
 public class GUIClient extends JFrame {
 
     /**
@@ -72,6 +72,8 @@ public class GUIClient extends JFrame {
      * the width of game board (right panel)
      */
     public static int RIGHT_PANEL_WIDTH = WindowUtilities.getWidth()/2;
+
+    public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     // =========== Views ================
 
@@ -129,22 +131,18 @@ public class GUIClient extends JFrame {
                 g.drawImage(INIT_SCREEN, 0, 0, this.getWidth(), this.getHeight(), null);
             }
         };
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth();
-        double height = screenSize.getHeight();
-        window.setPreferredSize(
-                new Dimension((int) width, (int) height));
+
+        window.setPreferredSize(screenSize);
         getContentPane().addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
-                System.out.println("Resized... Dimensions: " + e.getComponent().getWidth() + ", " + e.getComponent().getHeight() + " Position: " + e.getComponent().getX() + ", " + e.getComponent().getY());
                 WindowUtilities.setWidth(e.getComponent().getWidth());
                 WindowUtilities.setHeight(e.getComponent().getHeight());
             }
         });
 
-        // pack and ... display (SHOUT: why not save?)
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.add(window);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(true);
@@ -195,6 +193,22 @@ public class GUIClient extends JFrame {
      */
     public void startGame() {
 
+        getContentPane().addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                WindowUtilities.setWidth(e.getComponent().getWidth());
+                WindowUtilities.setHeight(e.getComponent().getHeight());
+                BoardCanvas.refreshScreen();
+                LEFT_PANEL_WIDTH = e.getComponent().getWidth()/2;
+                RIGHT_PANEL_WIDTH = e.getComponent().getWidth()/2;
+                HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
+                boardPanel.setPreferredSize(new Dimension(LEFT_PANEL_WIDTH, HEIGHT));
+                playerPanel.setPreferredSize(new Dimension(RIGHT_PANEL_WIDTH, HEIGHT));
+                repaint();
+            }
+        });
+
         // first let's finish initialising the game
         game.decideWhoMoveFirst();
         game.creatSolution();
@@ -204,11 +218,9 @@ public class GUIClient extends JFrame {
         this.remove(window);
         window = new JPanel();
         window.setLayout(new BoxLayout(window, BoxLayout.X_AXIS));
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
         double height = screenSize.getHeight();
-        window.setPreferredSize(
-                new Dimension((int) width, (int) height));
+        window.setPreferredSize(screenSize);
         WindowUtilities.setLastWidth((int) width);
         WindowUtilities.setWidth((int) width);
         WindowUtilities.setLastheight((int) height);
@@ -239,27 +251,13 @@ public class GUIClient extends JFrame {
         ((CustomMenu) this.getJMenuBar()).enableEasyModeMenu();
 
         // last, pack and display
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.add(window);
         this.pack();
         this.validate();
         this.setResizable(true);
         this.setVisible(true);
 
-        getContentPane().addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                super.componentResized(e);
-                WindowUtilities.setWidth(e.getComponent().getWidth());
-                WindowUtilities.setHeight(e.getComponent().getHeight());
-                BoardCanvas.refreshScreen();
-                LEFT_PANEL_WIDTH = e.getComponent().getWidth()/2;
-                RIGHT_PANEL_WIDTH = e.getComponent().getWidth()/2;
-                HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
-                boardPanel.setPreferredSize(new Dimension(LEFT_PANEL_WIDTH, HEIGHT));
-                playerPanel.setPreferredSize(new Dimension(RIGHT_PANEL_WIDTH, HEIGHT));
-                repaint();
-            }
-        });
     }
 
     /**
