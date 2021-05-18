@@ -126,7 +126,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     /**
      * The button for taking the secret passage
      */
-    private JButton SecPasButton;
+    private JButton secPasButton;
     /**
      * The button for moving left
      */
@@ -322,9 +322,9 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         enterExitRoom.setEnabled(false);
         upButton = createButton(UP_DEFAULT_IMG, UP_PRESSED_IMG, MOVE_DISABLED_IMG,
                 MOVE_BUTTON_SIZE);
-        SecPasButton = createButton(SECPAS_DEFAULT_IMG, SECPAS_PRESSED_IMG,
+        secPasButton = createButton(SECPAS_DEFAULT_IMG, SECPAS_PRESSED_IMG,
                 MOVE_DISABLED_IMG, MOVE_BUTTON_SIZE);
-        SecPasButton.setEnabled(false);
+        secPasButton.setEnabled(false);
         leftButton = createButton(LEFT_DEFAULT_IMG, LEFT_PRESSED_IMG, MOVE_DISABLED_IMG,
                 MOVE_BUTTON_SIZE);
         downButton = createButton(DOWN_DEFAULT_IMG, DOWN_PRESSED_IMG, MOVE_DISABLED_IMG,
@@ -335,7 +335,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         // add listener on them
         enterExitRoom.addActionListener(e -> clickOnEnterExitRoom());
         upButton.addActionListener(e -> clickOnUp());
-        SecPasButton.addActionListener(e -> clickOnSecretPass());
+        secPasButton.addActionListener(e -> clickOnSecretPass());
         leftButton.addActionListener(e -> clickOnLeft());
         downButton.addActionListener(e -> clickOnDown());
         rightButton.addActionListener(e -> clickOnRight());
@@ -343,7 +343,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         // add button into the panel
         movePanel.add(enterExitRoom);
         movePanel.add(upButton);
-        movePanel.add(SecPasButton);
+        movePanel.add(secPasButton);
         movePanel.add(leftButton);
         movePanel.add(downButton);
         movePanel.add(rightButton);
@@ -513,7 +513,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         if (remainingSteps == 0) {
             enterExitRoom.setEnabled(false);
             upButton.setEnabled(false);
-            SecPasButton.setEnabled(false);
+            secPasButton.setEnabled(false);
             leftButton.setEnabled(false);
             downButton.setEnabled(false);
             rightButton.setEnabled(false);
@@ -527,7 +527,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         // let's disable most actions
         enterExitRoom.setEnabled(false);
         upButton.setEnabled(false);
-        SecPasButton.setEnabled(false);
+        secPasButton.setEnabled(false);
         leftButton.setEnabled(false);
         downButton.setEnabled(false);
         rightButton.setEnabled(false);
@@ -650,7 +650,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         // if the player is in a room, and there is a secret passage
         if (gui.getBoard().lookForSecPas(player) != null) {
             // in a room, have a secret passage
-            SecPasButton.setEnabled(true);
+            secPasButton.setEnabled(true);
         }
 
         // validate the roll dice button
@@ -926,7 +926,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
      * no, do nothing.
      */
     public void tryClickOnSecretOass() {
-        if (SecPasButton.isEnabled()) {
+        if (secPasButton.isEnabled()) {
             clickOnSecretPass();
         }
     }
@@ -1103,57 +1103,57 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     /**
      * An image for displaying disabled move button
      */
-    private static final ImageIcon MOVE_DISABLED_IMG = new ImageIcon(
+    private static ImageIcon MOVE_DISABLED_IMG = new ImageIcon(
             loadImage("Button_Movement_Disabled.png"), "Button_Movement_Disabled.png");
     /**
      * An image for displaying default up button
      */
-    private static final ImageIcon UP_DEFAULT_IMG = new ImageIcon(
+    private static ImageIcon UP_DEFAULT_IMG = new ImageIcon(
             loadImage("Button_Up_Default.png"), "Button_Up_Default.png");
     /**
      * An image for displaying pressed up button
      */
-    private static final ImageIcon UP_PRESSED_IMG = new ImageIcon(
+    private static ImageIcon UP_PRESSED_IMG = new ImageIcon(
             loadImage("Button_Up_Pressed.png"), "Button_Up_Pressed.png");
     /**
      * An image for displaying default down button
      */
-    private static final ImageIcon DOWN_DEFAULT_IMG = new ImageIcon(
+    private static ImageIcon DOWN_DEFAULT_IMG = new ImageIcon(
             loadImage("Button_Down_Default.png"), "Button_Down_Default.png");
     /**
      * An image for displaying pressed down button
      */
-    private static final ImageIcon DOWN_PRESSED_IMG = new ImageIcon(
+    private static ImageIcon DOWN_PRESSED_IMG = new ImageIcon(
             loadImage("Button_Down_Pressed.png"), "Button_Down_Pressed.png");
     /**
      * An image for displaying default left button
      */
-    private static final ImageIcon LEFT_DEFAULT_IMG = new ImageIcon(
+    private static ImageIcon LEFT_DEFAULT_IMG = new ImageIcon(
             loadImage("Button_Left_Default.png"), "Button_Left_Default.png");
     /**
      * An image for displaying pressed left button
      */
-    private static final ImageIcon LEFT_PRESSED_IMG = new ImageIcon(
+    private static ImageIcon LEFT_PRESSED_IMG = new ImageIcon(
             loadImage("Button_Left_Pressed.png"), "Button_Left_Pressed.png");
     /**
      * An image for displaying default right button
      */
-    private static final ImageIcon RIGHT_DEFAULT_IMG = new ImageIcon(
+    private static ImageIcon RIGHT_DEFAULT_IMG = new ImageIcon(
             loadImage("Button_Right_Default.png"), "Button_Right_Default.png");
     /**
      * An image for displaying pressed right button
      */
-    private static final ImageIcon RIGHT_PRESSED_IMG = new ImageIcon(
+    private static ImageIcon RIGHT_PRESSED_IMG = new ImageIcon(
             loadImage("Button_Right_Pressed.png"), "Button_Right_Pressed.png");
     /**
      * An image for displaying default enter room button
      */
-    private static final ImageIcon ENTER_DEFAULT_IMG = new ImageIcon(
+    private static ImageIcon ENTER_DEFAULT_IMG = new ImageIcon(
             loadImage("Button_EnterRoom_Default.png"), "Button_EnterRoom_Default.png");
     /**
      * An image for displaying pressed enter room button
      */
-    private static final ImageIcon ENTER_PRESSED_IMG = new ImageIcon(
+    private static ImageIcon ENTER_PRESSED_IMG = new ImageIcon(
             loadImage("Button_EnterRoom_Pressed.png"), "Button_EnterRoom_Pressed.png");
     /**
      * An image for displaying default exit room button
@@ -1168,12 +1168,12 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     /**
      * An image for displaying default secret passage button
      */
-    private static final ImageIcon SECPAS_DEFAULT_IMG = new ImageIcon(
+    private static ImageIcon SECPAS_DEFAULT_IMG = new ImageIcon(
             loadImage("Button_SecretPass_Default.png"), "Button_SecretPass_Default.png");
     /**
      * An image for displaying pressed secret passage button
      */
-    private static final ImageIcon SECPAS_PRESSED_IMG = new ImageIcon(
+    private static ImageIcon SECPAS_PRESSED_IMG = new ImageIcon(
             loadImage("Button_SecretPass_Pressed.png"), "Button_SecretPass_Pressed.png");
     /**
      * An image for displaying default roll dice button
@@ -1226,6 +1226,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         profileLabel.setIcon(PROFILE_IMG[currentPlayer.ordinal()]);
         remainingCardLabel.setIcon(REMAINING_CARDS_IMAGE);
 
+
         for (Card c : cardsInHand) {
             if (c instanceof Character) {
                 Character ch = (Character) c;
@@ -1257,6 +1258,51 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
                 LOCATION_LABELS[lo.ordinal()].setIcon(LOCATION_IMG[lo.ordinal()]);
             }
         }
+
+        /*Resizing upbutton*/
+        UP_DEFAULT_IMG = WindowUtilities.resizeImage(UP_DEFAULT_IMG);
+        UP_PRESSED_IMG = WindowUtilities.resizeImage(UP_PRESSED_IMG);
+        MOVE_DISABLED_IMG = WindowUtilities.resizeImage(MOVE_DISABLED_IMG);
+        upButton.setPreferredSize(new Dimension(MOVE_DISABLED_IMG.getIconWidth(), MOVE_DISABLED_IMG.getIconWidth()));
+        upButton.setIcon(UP_DEFAULT_IMG);
+        upButton.setPressedIcon(UP_PRESSED_IMG);
+        upButton.setDisabledIcon(MOVE_DISABLED_IMG);
+
+        DOWN_DEFAULT_IMG = WindowUtilities.resizeImage(DOWN_DEFAULT_IMG);
+        DOWN_PRESSED_IMG = WindowUtilities.resizeImage(DOWN_PRESSED_IMG);
+        downButton.setPreferredSize(new Dimension(MOVE_DISABLED_IMG.getIconWidth(), MOVE_DISABLED_IMG.getIconWidth()));
+        downButton.setIcon(DOWN_DEFAULT_IMG);
+        downButton.setPressedIcon(DOWN_PRESSED_IMG);
+        downButton.setDisabledIcon(MOVE_DISABLED_IMG);
+
+        LEFT_DEFAULT_IMG = WindowUtilities.resizeImage(LEFT_DEFAULT_IMG);
+        LEFT_PRESSED_IMG = WindowUtilities.resizeImage(LEFT_PRESSED_IMG);
+        leftButton.setPreferredSize(new Dimension(MOVE_DISABLED_IMG.getIconWidth(), MOVE_DISABLED_IMG.getIconWidth()));
+        leftButton.setIcon(LEFT_DEFAULT_IMG);
+        leftButton.setPressedIcon(LEFT_PRESSED_IMG);
+        leftButton.setDisabledIcon(MOVE_DISABLED_IMG);
+
+        RIGHT_DEFAULT_IMG = WindowUtilities.resizeImage(RIGHT_DEFAULT_IMG);
+        RIGHT_PRESSED_IMG = WindowUtilities.resizeImage(RIGHT_PRESSED_IMG);
+        rightButton.setPreferredSize(new Dimension(MOVE_DISABLED_IMG.getIconWidth(), MOVE_DISABLED_IMG.getIconWidth()));
+        rightButton.setIcon(RIGHT_DEFAULT_IMG);
+        rightButton.setPressedIcon(RIGHT_PRESSED_IMG);
+        rightButton.setDisabledIcon(MOVE_DISABLED_IMG);
+
+        ENTER_DEFAULT_IMG = WindowUtilities.resizeImage(ENTER_DEFAULT_IMG);
+        ENTER_PRESSED_IMG = WindowUtilities.resizeImage(ENTER_PRESSED_IMG);
+        enterExitRoom.setPreferredSize(new Dimension(MOVE_DISABLED_IMG.getIconWidth(), MOVE_DISABLED_IMG.getIconWidth()));
+        enterExitRoom.setIcon(ENTER_DEFAULT_IMG);
+        enterExitRoom.setPressedIcon(ENTER_PRESSED_IMG);
+        enterExitRoom.setDisabledIcon(MOVE_DISABLED_IMG);
+
+        SECPAS_DEFAULT_IMG = WindowUtilities.resizeImage(SECPAS_DEFAULT_IMG);
+        SECPAS_PRESSED_IMG = WindowUtilities.resizeImage(SECPAS_PRESSED_IMG);
+        secPasButton.setPreferredSize(new Dimension(MOVE_DISABLED_IMG.getIconWidth(), MOVE_DISABLED_IMG.getIconWidth()));
+        secPasButton.setIcon(SECPAS_DEFAULT_IMG);
+        secPasButton.setPressedIcon(SECPAS_PRESSED_IMG);
+        secPasButton.setDisabledIcon(MOVE_DISABLED_IMG);
+
 
         if (diceRolled != null) {
         for (int i = 0; i < diceRolled.length; i++) {
