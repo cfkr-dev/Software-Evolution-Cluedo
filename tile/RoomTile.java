@@ -4,7 +4,7 @@ package tile;
  * This class represents a tile inside a room. It mainly is used to hold weapon and
  * character tokens for displaying them on GUI or text-based ui.
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
 public class RoomTile extends Room {

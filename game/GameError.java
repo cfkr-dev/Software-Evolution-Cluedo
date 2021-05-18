@@ -3,7 +3,7 @@ package game;
 /**
  * This class represents a runtime exception in game.
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
 @SuppressWarnings("serial")
