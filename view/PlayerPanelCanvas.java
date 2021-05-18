@@ -3,11 +3,7 @@ package view;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -18,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import configs.Configs;
 import game.Player;
 import tile.Entrance;
 import tile.Room;
@@ -31,7 +26,6 @@ import card.Weapon;
 import utilities.WindowUtilities;
 import view.dialogs.ExitRoomDialog;
 
-import static ui.GUIClient.RIGHT_PANEL_WIDTH;
 import static ui.GUIClient.loadImage;
 
 /**
@@ -219,7 +213,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         for (Card c : remainingCards) {
             if (c instanceof Character) {
                 Character ch = (Character) c;
-                remainingCardsPanel.add(CHRACTER_LABELS[ch.ordinal()]);
+                remainingCardsPanel.add(CHARACTER_LABELS[ch.ordinal()]);
             } else if (c instanceof Weapon) {
                 Weapon we = (Weapon) c;
                 remainingCardsPanel.add(WEAPON_LABELS[we.ordinal()]);
@@ -407,7 +401,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         for (Card c : cardsInHand) {
             if (c instanceof Character) {
                 Character ch = (Character) c;
-                cardsInHandPanel.add(CHRACTER_LABELS[ch.ordinal()]);
+                cardsInHandPanel.add(CHARACTER_LABELS[ch.ordinal()]);
             } else if (c instanceof Weapon) {
                 Weapon we = (Weapon) c;
                 cardsInHandPanel.add(WEAPON_LABELS[we.ordinal()]);
@@ -483,7 +477,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         for (Card c : cardsInHand) {
             if (c instanceof Character) {
                 Character ch = (Character) c;
-                cardsInHandPanel.add(CHRACTER_LABELS[ch.ordinal()]);
+                cardsInHandPanel.add(CHARACTER_LABELS[ch.ordinal()]);
             } else if (c instanceof Weapon) {
                 Weapon we = (Weapon) c;
                 cardsInHandPanel.add(WEAPON_LABELS[we.ordinal()]);
@@ -1039,49 +1033,49 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     /**
      * Images for displaying dices
      */
-    private static final ImageIcon[] DICE_IMG = {new ImageIcon(loadImage("Dice_1.png")),
-            new ImageIcon(loadImage("Dice_2.png")),
-            new ImageIcon(loadImage("Dice_3.png")),
-            new ImageIcon(loadImage("Dice_4.png")),
-            new ImageIcon(loadImage("Dice_5.png")),
-            new ImageIcon(loadImage("Dice_6.png"))};
+    private static final ImageIcon[] DICE_IMG = {new ImageIcon(loadImage("Dice_1.png"), "Dice_1.png"),
+            new ImageIcon(loadImage("Dice_2.png"), "Dice_2.png"),
+            new ImageIcon(loadImage("Dice_3.png"), "Dice_3.png"),
+            new ImageIcon(loadImage("Dice_4.png"), "Dice_4.png"),
+            new ImageIcon(loadImage("Dice_5.png"), "Dice_5.png"),
+            new ImageIcon(loadImage("Dice_6.png"), "Dice_5.png")};
     /**
      * Images for displaying Character cards
      */
     public static final ImageIcon[] CHARACTER_IMG = {
-            new ImageIcon(loadImage("Character_Miss_Scarlet.png")),
-            new ImageIcon(loadImage("Character_Colonel_Mustard.png")),
-            new ImageIcon(loadImage("Character_Mrs_White.png")),
-            new ImageIcon(loadImage("Character_The_Reverend_Green.png")),
-            new ImageIcon(loadImage("Character_Mrs_Peacock.png")),
-            new ImageIcon(loadImage("Character_Professor_Plum.png"))};
+            new ImageIcon(loadImage("Character_Miss_Scarlet.png"), "Character_Miss_Scarlet.png"),
+            new ImageIcon(loadImage("Character_Colonel_Mustard.png"), "Character_Colonel_Mustard.png"),
+            new ImageIcon(loadImage("Character_Mrs_White.png"), "Character_Mrs_White.png"),
+            new ImageIcon(loadImage("Character_The_Reverend_Green.png"), "Character_The_Reverend_Green.png"),
+            new ImageIcon(loadImage("Character_Mrs_Peacock.png"), "Character_Mrs_Peacock.png"),
+            new ImageIcon(loadImage("Character_Professor_Plum.png"), "Character_Professor_Plum.png")};
     /**
      * Images for displaying Weapon cards
      */
     public static final ImageIcon[] WEAPON_IMG = {
-            new ImageIcon(loadImage("Weapon_Candlestick.png")),
-            new ImageIcon(loadImage("Weapon_Dagger.png")),
-            new ImageIcon(loadImage("Weapon_Lead_Pipe.png")),
-            new ImageIcon(loadImage("Weapon_Revolver.png")),
-            new ImageIcon(loadImage("Weapon_Rope.png")),
-            new ImageIcon(loadImage("Weapon_Spanner.png"))};
+            new ImageIcon(loadImage("Weapon_Candlestick.png"), "Weapon_Candlestick.png"),
+            new ImageIcon(loadImage("Weapon_Dagger.png"), "Weapon_Dagger.png"),
+            new ImageIcon(loadImage("Weapon_Lead_Pipe.png"), "Weapon_Lead_Pipe.png"),
+            new ImageIcon(loadImage("Weapon_Revolver.png"), "Weapon_Revolver.png"),
+            new ImageIcon(loadImage("Weapon_Rope.png"), "Weapon_Rope.png"),
+            new ImageIcon(loadImage("Weapon_Spanner.png"), "Weapon_Spanner.png")};
     /**
      * Images for displaying Location cards
      */
     public static final ImageIcon[] LOCATION_IMG = {
-            new ImageIcon(loadImage("Location_Kitchen.png")),
-            new ImageIcon(loadImage("Location_Ball_room.png")),
-            new ImageIcon(loadImage("Location_Conservatory.png")),
-            new ImageIcon(loadImage("Location_Billard_Room.png")),
-            new ImageIcon(loadImage("Location_Library.png")),
-            new ImageIcon(loadImage("Location_Study.png")),
-            new ImageIcon(loadImage("Location_Hall.png")),
-            new ImageIcon(loadImage("Location_Lounge.png")),
-            new ImageIcon(loadImage("Location_Dining_Room.png"))};
+            new ImageIcon(loadImage("Location_Kitchen.png"), "Location_Kitchen.png"),
+            new ImageIcon(loadImage("Location_Ball_room.png"), "Location_Ball_room.png"),
+            new ImageIcon(loadImage("Location_Conservatory.png"), "Location_Conservatory.png"),
+            new ImageIcon(loadImage("Location_Billard_Room.png"), "Location_Billard_Room.png"),
+            new ImageIcon(loadImage("Location_Library.png"), "Location_Library.png"),
+            new ImageIcon(loadImage("Location_Study.png"), "Location_Study.png"),
+            new ImageIcon(loadImage("Location_Hall.png"), "Location_Hall.png"),
+            new ImageIcon(loadImage("Location_Lounge.png"), "Location_Lounge.png"),
+            new ImageIcon(loadImage("Location_Dining_Room.png"), "Location_Dining_Room.png")};
     /**
      * JLabel objects for displaying Character cards
      */
-    private static final JLabel[] CHRACTER_LABELS = createCardLabel(CHARACTER_IMG,
+    private static final JLabel[] CHARACTER_LABELS = createCardLabel(CHARACTER_IMG,
             Character.get(0));
     /**
      * JLabel objects for displaying Weapon cards
@@ -1104,123 +1098,123 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     /**
      * An image for displaying disabled action button
      */
-    private static final ImageIcon ACTION_DISABLED_IMG = new ImageIcon(
-            loadImage("Button_Action_Disabled.png"));
+    private static ImageIcon ACTION_DISABLED_IMG = new ImageIcon(
+            loadImage("Button_Action_Disabled.png"), "Button_Action_Disabled.png");
     /**
      * An image for displaying disabled move button
      */
     private static final ImageIcon MOVE_DISABLED_IMG = new ImageIcon(
-            loadImage("Button_Movement_Disabled.png"));
+            loadImage("Button_Movement_Disabled.png"), "Button_Movement_Disabled.png");
     /**
      * An image for displaying default up button
      */
     private static final ImageIcon UP_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_Up_Default.png"));
+            loadImage("Button_Up_Default.png"), "Button_Up_Default.png");
     /**
      * An image for displaying pressed up button
      */
     private static final ImageIcon UP_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_Up_Pressed.png"));
+            loadImage("Button_Up_Pressed.png"), "Button_Up_Pressed.png");
     /**
      * An image for displaying default down button
      */
     private static final ImageIcon DOWN_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_Down_Default.png"));
+            loadImage("Button_Down_Default.png"), "Button_Down_Default.png");
     /**
      * An image for displaying pressed down button
      */
     private static final ImageIcon DOWN_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_Down_Pressed.png"));
+            loadImage("Button_Down_Pressed.png"), "Button_Down_Pressed.png");
     /**
      * An image for displaying default left button
      */
     private static final ImageIcon LEFT_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_Left_Default.png"));
+            loadImage("Button_Left_Default.png"), "Button_Left_Default.png");
     /**
      * An image for displaying pressed left button
      */
     private static final ImageIcon LEFT_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_Left_Pressed.png"));
+            loadImage("Button_Left_Pressed.png"), "Button_Left_Pressed.png");
     /**
      * An image for displaying default right button
      */
     private static final ImageIcon RIGHT_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_Right_Default.png"));
+            loadImage("Button_Right_Default.png"), "Button_Right_Default.png");
     /**
      * An image for displaying pressed right button
      */
     private static final ImageIcon RIGHT_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_Right_Pressed.png"));
+            loadImage("Button_Right_Pressed.png"), "Button_Right_Pressed.png");
     /**
      * An image for displaying default enter room button
      */
     private static final ImageIcon ENTER_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_EnterRoom_Default.png"));
+            loadImage("Button_EnterRoom_Default.png"), "Button_EnterRoom_Default.png");
     /**
      * An image for displaying pressed enter room button
      */
     private static final ImageIcon ENTER_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_EnterRoom_Pressed.png"));
+            loadImage("Button_EnterRoom_Pressed.png"), "Button_EnterRoom_Pressed.png");
     /**
      * An image for displaying default exit room button
      */
     private static final ImageIcon EXIT_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_ExitRoom_Default.png"));
+            loadImage("Button_ExitRoom_Default.png"), "Button_ExitRoom_Default.png");
     /**
      * An image for displaying pressed exit room button
      */
     private static final ImageIcon EXIT_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_ExitRoom_Pressed.png"));
+            loadImage("Button_ExitRoom_Pressed.png"), "Button_ExitRoom_Pressed.png");
     /**
      * An image for displaying default secret passage button
      */
     private static final ImageIcon SECPAS_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_SecretPass_Default.png"));
+            loadImage("Button_SecretPass_Default.png"), "Button_SecretPass_Default.png");
     /**
      * An image for displaying pressed secret passage button
      */
     private static final ImageIcon SECPAS_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_SecretPass_Pressed.png"));
+            loadImage("Button_SecretPass_Pressed.png"), "Button_SecretPass_Pressed.png");
     /**
      * An image for displaying default roll dice button
      */
-    private static final ImageIcon ROLLDICE_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_RollDice_Default.png"));
+    private static ImageIcon ROLLDICE_DEFAULT_IMG = new ImageIcon(
+            loadImage("Button_RollDice_Default.png"), "Button_RollDice_Default.png");
     /**
      * An image for displaying pressed roll dice button
      */
-    private static final ImageIcon ROLLDICE_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_RollDice_Pressed.png"));
+    private static ImageIcon ROLLDICE_PRESSED_IMG = new ImageIcon(
+            loadImage("Button_RollDice_Pressed.png"), "Button_RollDice_Pressed.png");
     /**
      * An image for displaying default end turn button
      */
     private static final ImageIcon ENDTURN_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_EndTuen_Default.png"));
+            loadImage("Button_EndTuen_Default.png"), "Button_EndTuen_Default.png");
     /**
      * An image for displaying pressed end turn button
      */
     private static final ImageIcon ENDTURN_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_EndTuen_Pressed.png"));
+            loadImage("Button_EndTuen_Pressed.png"), "Button_EndTuen_Pressed.png");
     /**
      * An image for displaying default suggestion button
      */
     private static final ImageIcon SUGGESTION_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_Suggestion_Default.png"));
+            loadImage("Button_Suggestion_Default.png"), "Button_Suggestion_Default.png");
     /**
      * An image for displaying pressed suggestion button
      */
     private static final ImageIcon SUGGESTION_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_Suggestion_Pressed.png"));
+            loadImage("Button_Suggestion_Pressed.png"), "Button_Suggestion_Pressed.png");
     /**
      * An image for displaying default accusation button
      */
     private static final ImageIcon ACCUSATION_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_Accusation_Default.png"));
+            loadImage("Button_Accusation_Default.png"), "Button_Accusation_Default.png");
     /**
      * An image for displaying pressed accusation button
      */
     private static final ImageIcon ACCUSATION_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_Accusation_Pressed.png"));
+            loadImage("Button_Accusation_Pressed.png"), "Button_Accusation_Pressed.png");
 
     @Override
     public void componentResized(ComponentEvent e) {
@@ -1231,6 +1225,45 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         // Create a method with all label setters. Very important: we need to know inside which are the all current player images!!!
         profileLabel.setIcon(PROFILE_IMG[currentPlayer.ordinal()]);
         remainingCardLabel.setIcon(REMAINING_CARDS_IMAGE);
+
+        for (Card c : cardsInHand) {
+            if (c instanceof Character) {
+                Character ch = (Character) c;
+                CHARACTER_IMG[ch.ordinal()] = WindowUtilities.resizeImage(CHARACTER_IMG[ch.ordinal()]);
+                CHARACTER_LABELS[ch.ordinal()].setIcon(CHARACTER_IMG[ch.ordinal()]);
+            } else if (c instanceof Weapon) {
+                Weapon we = (Weapon) c;
+                WEAPON_IMG[we.ordinal()] = WindowUtilities.resizeImage(WEAPON_IMG[we.ordinal()]);
+                WEAPON_LABELS[we.ordinal()].setIcon(WEAPON_IMG[we.ordinal()]);
+            } else {
+                Location lo = (Location) c;
+                LOCATION_IMG[lo.ordinal()] = WindowUtilities.resizeImage(LOCATION_IMG[lo.ordinal()]);
+                LOCATION_LABELS[lo.ordinal()].setIcon(LOCATION_IMG[lo.ordinal()]);
+            }
+        }
+
+        for (Card c : remainingCards) {
+            if (c instanceof Character) {
+                Character ch = (Character) c;
+                CHARACTER_IMG[ch.ordinal()] = WindowUtilities.resizeImage(CHARACTER_IMG[ch.ordinal()]);
+                CHARACTER_LABELS[ch.ordinal()].setIcon(CHARACTER_IMG[ch.ordinal()]);
+            } else if (c instanceof Weapon) {
+                Weapon we = (Weapon) c;
+                WEAPON_IMG[we.ordinal()] = WindowUtilities.resizeImage(WEAPON_IMG[we.ordinal()]);
+                WEAPON_LABELS[we.ordinal()].setIcon(WEAPON_IMG[we.ordinal()]);
+            } else {
+                Location lo = (Location) c;
+                LOCATION_IMG[lo.ordinal()] = WindowUtilities.resizeImage(LOCATION_IMG[lo.ordinal()]);
+                LOCATION_LABELS[lo.ordinal()].setIcon(LOCATION_IMG[lo.ordinal()]);
+            }
+        }
+
+        if (diceRolled != null) {
+        for (int i = 0; i < diceRolled.length; i++) {
+                DICE_IMG[diceRolled[i]] = WindowUtilities.resizeImage(DICE_IMG[diceRolled[i]]);
+                diceLabels[i].setIcon(DICE_IMG[diceRolled[i]]);
+            }
+        }
 
         // Reload all canvas components without calling update method
         this.setVisible(true);
