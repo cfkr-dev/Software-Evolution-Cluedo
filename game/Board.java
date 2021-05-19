@@ -1,20 +1,16 @@
 package game;
 
-import java.util.List;
-
-import tile.Entrance;
-import tile.Position;
-import tile.Room;
-import tile.RoomTile;
-import tile.Tile;
-import view.token.WeaponToken;
 import card.Character;
 import card.Location;
 import configs.Configs;
+import tile.*;
+import view.token.WeaponToken;
+
+import java.util.List;
 
 /**
  * This class represents a Cluedo game board.
- * 
+ *
  * @author G7EAS
  *
  */
@@ -36,6 +32,8 @@ public class Board {
     public Board() {
 
         Configs configurations = new Configs();
+
+        Configs.DimensionCounter();
 
         startPositions = new Tile[Character.values().length];
 
@@ -105,7 +103,7 @@ public class Board {
 
     /**
      * Get the Position at given coordinate
-     * 
+     *
      * @param x
      *            --- the horizontal coordinate
      * @param y
@@ -118,7 +116,7 @@ public class Board {
 
     /**
      * get the start position of given character.
-     * 
+     *
      * @param character
      *            --- the character
      * @return --- the start position of this character
@@ -130,7 +128,7 @@ public class Board {
     /**
      * This method finds the next empty spot in a given room to display player or weapon
      * tokens.
-     * 
+     *
      * @param location
      *            --- which room we want to display a token
      * @return --- an empty spot to display a token in the given room, or null if the room
@@ -150,11 +148,62 @@ public class Board {
         return null;
     }
 
+    public Boolean ThereIsNoConstraints(Position playerPos, Tile playerTile, int index) {
+        // Player can only look north out of rooms
+        if (playerPos instanceof Room) {
+            return false;
+        }
+
+        Boolean[] Constraints= new Boolean[4];
+
+        // boundary check
+
+
+        Constraints[0]= playerTile.y - 1 < 0; //NorthBoundaryCheck
+        Constraints[1]= playerTile.y + 1 > Configs.BOARD_HEIGHT - 1; //SouthBoundaryCheck
+        Constraints[2]= playerTile.x + 1 > Configs.BOARD_WIDTH - 1; //EastBoundaryCheck
+        Constraints[3]= playerTile.x - 1 < 0; //WestBoundaryCheck
+
+        int a  = playerTile.x;
+        int b = playerTile.y;
+
+        if (Constraints[index]) {
+            return false;
+        }
+
+        // this method should not return a Room
+
+        switch (index) {
+            case 0:
+                Constraints[0] = board[playerTile.y - 1][playerTile.x] instanceof Room; //NorthInRoom
+                break;
+            case 1:
+                Constraints[1] = board[playerTile.y + 1][playerTile.x] instanceof Room; //SouthInRoom
+                break;
+            case 2:
+                Constraints[2] = board[playerTile.y][playerTile.x + 1] instanceof Room; //EastInRoom
+                break;
+            case 3:
+                Constraints[3] = board[playerTile.y][playerTile.x - 1] instanceof Room; //WestInRoom
+                break;
+
+        }
+
+        if (Constraints[index]) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+
+
     /**
      * Let the player look at north, see which *Tile* or *Entrance* is there. Note that
      * the player cannot see a room even if a room is at north. Also note that the player
      * cannot see anything at north if he is standing inside a room.
-     * 
+     *
      * @param player
      *            --- the player
      * @return --- the Tile or Entrance at north, one step away, if there is one. Or null
@@ -163,17 +212,11 @@ public class Board {
      */
     public Tile lookNorth(Player player) {
         Position playerPos = player.getPosition();
-        // Player can only look north out of rooms
-        if (playerPos instanceof Room) {
-            return null;
-        }
         Tile playerTile = (Tile) playerPos;
-        // boundary check
-        if (playerTile.y - 1 < 0) {
-            return null;
-        }
+        int index= 0;
+
         // this method should not return a Room
-        if (board[playerTile.y - 1][playerTile.x] instanceof Room) {
+        if (!ThereIsNoConstraints(playerPos, playerTile, index)) {
             return null;
         }
         // only return a Tile or a Entrance
@@ -184,7 +227,7 @@ public class Board {
      * Let the player look at south, see which *Tile* or *Entrance* is there. Note that
      * the player cannot see a room even if a room is at south. Also note that the player
      * cannot see anything at south if he is standing inside a room.
-     * 
+     *
      * @param player
      *            --- the player
      * @return --- the Tile or Entrance at south, one step away, if there is one. Or null
@@ -193,17 +236,11 @@ public class Board {
      */
     public Tile lookSouth(Player player) {
         Position playerPos = player.getPosition();
-        // Player can only look south out of rooms
-        if (playerPos instanceof Room) {
-            return null;
-        }
         Tile playerTile = (Tile) playerPos;
-        // boundary check
-        if (playerTile.y + 1 > Configs.BOARD_HEIGHT - 1) {
-            return null;
-        }
+        int index= 1;
+
         // this method should not return a Room
-        if (board[playerTile.y + 1][playerTile.x] instanceof Room) {
+        if (!ThereIsNoConstraints(playerPos, playerTile, index)) {
             return null;
         }
         // only return a Tile or a Entrance
@@ -214,7 +251,7 @@ public class Board {
      * Let the player look at east, see which *Tile* or *Entrance* is there. Note that the
      * player cannot see a room even if a room is at east. Also note that the player
      * cannot see anything at east if he is standing inside a room.
-     * 
+     *
      * @param player
      *            --- the player
      * @return --- the Tile or Entrance at east, one step away, if there is one. Or null
@@ -223,17 +260,11 @@ public class Board {
      */
     public Tile lookEast(Player player) {
         Position playerPos = player.getPosition();
-        // Player can only look east out of rooms
-        if (playerPos instanceof Room) {
-            return null;
-        }
         Tile playerTile = (Tile) playerPos;
-        // boundary check
-        if (playerTile.x + 1 > Configs.BOARD_WIDTH - 1) {
-            return null;
-        }
+        int index= 2;
+
         // this method should not return a Room
-        if (board[playerTile.y][playerTile.x + 1] instanceof Room) {
+        if (!ThereIsNoConstraints(playerPos, playerTile, index)) {
             return null;
         }
         // only return a Tile or a Entrance
@@ -244,7 +275,7 @@ public class Board {
      * Let the player look at west, see which *Tile* or *Entrance* is there. Note that the
      * player cannot see a room even if a room is at west. Also note that the player
      * cannot see anything at west if he is standing inside a room.
-     * 
+     *
      * @param player
      *            --- the player
      * @return --- the Tile or Entrance at west, one step away, if there is one. Or null
@@ -253,17 +284,11 @@ public class Board {
      */
     public Tile lookWest(Player player) {
         Position playerPos = player.getPosition();
-        // Player can only look west out of rooms
-        if (playerPos instanceof Room) {
-            return null;
-        }
         Tile playerTile = (Tile) playerPos;
-        // boundary check
-        if (playerTile.x - 1 < 0) {
-            return null;
-        }
+        int index= 3;
+
         // this method should not return a Room
-        if (board[playerTile.y][playerTile.x - 1] instanceof Room) {
+        if (!ThereIsNoConstraints(playerPos, playerTile, index)) {
             return null;
         }
         // only return a Tile or a Entrance
@@ -273,7 +298,7 @@ public class Board {
     /**
      * Let the player look around, see whether he/she is standing at an entrance to a
      * room.
-     * 
+     *
      * @param player
      *            --- the player
      * @return --- the room that can enter within one step, if there is one. Or null if
@@ -293,7 +318,7 @@ public class Board {
     /**
      * Let the player look for exits of the room that he / she is standing in. Note that
      * if the player is not standing in a room, this method will always return null.
-     * 
+     *
      * @param player
      *            --- the player
      * @return --- all exits of current room as a list. If the player is not standing in a
@@ -313,7 +338,7 @@ public class Board {
      * Let the player look for secret passage to another room if he / she is standing in a
      * room. Note that if the player is not standing in a room, this method will always
      * return null.
-     * 
+     *
      * @param player
      *            --- the player
      * @return --- the end of the secret passage if there is one in current room. If not,
@@ -339,7 +364,7 @@ public class Board {
      * Note that this method does no sanity checks, so it should be always guarded by
      * calling lookNorth / lookSouth / lookWest / lookEast / atEntrance / lookForExit in
      * advance.
-     * 
+     *
      * @param player
      *            --- the player
      * @param position
@@ -351,7 +376,7 @@ public class Board {
 
     /**
      * This method moves a weapon token to another room.
-     * 
+     *
      * @param weaponToken
      *            --- the weapon token
      */

@@ -2,6 +2,7 @@ package configs;
 
 import card.Location;
 import tile.Room;
+
 import java.util.ArrayList;
 
 /**
@@ -26,16 +27,35 @@ public class Configs {
     /**
      * the horizontal boundary coordinate of Cluedo game board.
      */
-    public static final int BOARD_WIDTH = 48;
+    public static int BOARD_WIDTH = 48;
     /**
      * the vertical boundary coordinate of Cluedo game board.
      */
-    public static final int BOARD_HEIGHT = 25;
+    public static int BOARD_HEIGHT = 25;
 
     /**
      * The static object of all locations
      */
     public static ArrayList<Room> ROOMS = new ArrayList<>();
+
+
+    public static void DimensionCounter(){
+
+        int character= 0;
+        int height= 0;
+        int width;
+        for(int i= 0; i< BOARD_STRING_B.length(); i++){
+            character++;
+            if(BOARD_STRING_B.charAt(i) == '\n'){
+                height++;
+            }
+        }
+
+        width= (character/height) - 1 ;
+
+        BOARD_HEIGHT= height;
+        BOARD_WIDTH= width;
+    }
 
 
     public Configs() {
@@ -44,6 +64,7 @@ public class Configs {
             ROOMS.add(room);
         }
         assignShortcuts(ROOMS);
+        DimensionCounter();
     }
 
     /**
@@ -202,5 +223,8 @@ public class Configs {
             "  8888888888  0000  77777777  0000  6666666666  \n" +
             "  88888888    0000  77777777  0000    66666666  \n" +
             "              ;                  0      666666  \n";
+
+
+
 
 }
