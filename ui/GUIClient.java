@@ -1,5 +1,6 @@
 package ui;
 
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
@@ -32,6 +33,7 @@ import game.Game;
 import game.GameError;
 import game.Player;
 import game.Suggestion;
+
 import tile.Position;
 import tile.Room;
 import tile.RoomTile;
@@ -41,13 +43,22 @@ import view.BoardCanvas;
 import view.CustomMenu;
 import view.dialogs.*;
 import view.PlayerPanelCanvas;
+
 import view.token.CharacterToken;
 import view.token.WeaponToken;
-import card.Card;
-import card.Character;
-import card.Location;
-import card.Weapon;
-import configs.Configs;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.Set;
 
 /**
  * A GUI client for Cluedo game.
@@ -57,22 +68,7 @@ import configs.Configs;
 
 public class GUIClient extends JFrame {
 
-    /**
-     * The height of main frame
-     */
-    public static int HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
-    /**
-     * The width of game board (left panel)
-     */
-    public static int LEFT_PANEL_WIDTH = WindowUtilities.getWidth()/2;
-    /**
-     * the width of game board (right panel)
-     */
-    public static int RIGHT_PANEL_WIDTH = WindowUtilities.getWidth()/2;
-
     public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-    // =========== Views ================
 
     /**
      * the main window
@@ -86,6 +82,22 @@ public class GUIClient extends JFrame {
      * player panel on right
      */
     private PlayerPanelCanvas playerPanel;
+
+
+    /**
+     * The height of main frame
+     */
+    public static int HEIGHT;
+    /**
+     * The width of game board (left panel)
+     */
+    public static int LEFT_PANEL_WIDTH;
+    /**
+     * the width of game board (right panel)
+     */
+    public static int RIGHT_PANEL_WIDTH;
+
+
 
     // ============= models ===================
 
@@ -318,7 +330,7 @@ public class GUIClient extends JFrame {
      */
     public void makeSuggestion(Suggestion sug) {
         // move the involved character and weapon into the involved location
-        movePlayer(sug.character, Configs.getRoom(sug.location));
+        movePlayer(sug.character, Configs.getRoom(sug.location.ordinal()));
         moveWeapon(sug.weapon, getAvailableRoomTile(sug.location));
 
         // let's see how others refute it
@@ -356,7 +368,7 @@ public class GUIClient extends JFrame {
      */
     public void makeAccusation(Suggestion accusation) {
         // move the involved character and weapon into the involved location
-        movePlayer(accusation.character, Configs.getRoom(accusation.location));
+        movePlayer(accusation.character, Configs.getRoom(accusation.location.ordinal()));
         moveWeapon(accusation.weapon, getAvailableRoomTile(accusation.location));
 
         // let's see if the accusation is right or wrong
@@ -392,7 +404,7 @@ public class GUIClient extends JFrame {
      * represents 1 - 6 (for simplicity when calling graphical update)
      */
     public int[] rollDice(Character character) {
-        return game.rollDice(character);
+        return game.rollDice();
     }
 
     /**
@@ -414,8 +426,8 @@ public class GUIClient extends JFrame {
         // we move the corresponding character token as well
         CharacterToken[] characterTokens = boardPanel.getCharacterTokens();
         if (position instanceof Tile) {
-            // Tile tile = (Tile) position;
-            // characterTokens[character.ordinal()].moveToTile(tile);
+             //Tile tile = (Tile) position;
+             //characterTokens[character.ordinal()].moveToTile(tile);
         } else if (position instanceof Room) {
             Room room = (Room) position;
             RoomTile destRoomTile = getAvailableRoomTile(room.getRoom());

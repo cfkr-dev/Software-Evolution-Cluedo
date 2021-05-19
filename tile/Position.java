@@ -4,15 +4,15 @@ package tile;
  * This abstract class represents a position on Cluedo game board. It can either be a
  * tile, or a Room.
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
 public abstract class Position {
 
     /**
      * This method looks at the type of this Position and the other Position passed by
-     * argument, and then form a String as the option menu used in text gui.<br>
-     * <br>
+     * argument, and then form a String as the option menu used in text gui.
+     *
      * For example, if this Position is a Tile, and the argument Position is another Tile,
      * then the returned String will be "Move north / east / south / west" according to
      * the direction. If this Position is a Room, and the argument Position is another

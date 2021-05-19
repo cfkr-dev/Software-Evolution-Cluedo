@@ -1,5 +1,6 @@
 package view;
 
+
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -13,9 +14,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.Utilities;
 
 import configs.Configs;
+
 import card.Card;
 import card.Character;
 import card.Location;
+import configs.Configs;
 import game.Player;
 import tile.Position;
 import tile.Room;
@@ -27,10 +30,17 @@ import view.token.AbstractToken;
 import view.token.CharacterToken;
 import view.token.WeaponToken;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Set;
+
 import static ui.GUIClient.loadImage;
 
-@SuppressWarnings("serial")
+
 public class BoardCanvas extends JPanel implements ComponentListener {
+
 
     /**
      * The width and Height of each Tile. Note this constant is important as most of board
@@ -43,11 +53,13 @@ public class BoardCanvas extends JPanel implements ComponentListener {
     /**
      * The width of board
      */
+
     public static int BOARD_IMG_WIDTH;
     /**
      * The height of board
      */
     public static int BOARD_IMG_HEIGHT;
+
 
     /**
      * Game's main GUI
@@ -101,6 +113,9 @@ public class BoardCanvas extends JPanel implements ComponentListener {
         for (int i = 0; i < CROSS_ON_ROOM.length; i++) {
             this.add(CROSS_ON_ROOM[i]);
         }
+
+        BOARD_IMG_WIDTH = TILE_WIDTH * Configs.BOARD_WIDTH;
+        BOARD_IMG_HEIGHT = TILE_WIDTH * Configs.BOARD_HEIGHT;
 
         // update tokens' positions
         update();

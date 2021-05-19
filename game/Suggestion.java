@@ -2,7 +2,6 @@ package game;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import card.Card;
 import card.Character;
 import card.Location;
@@ -13,7 +12,7 @@ import card.Weapon;
  * Essentially it could be a suggestion or an accusation made by a player, or the solution
  * selected at beginning.
  * 
- * @author Hector
+ * @author G7EAS
  * 
  */
 public class Suggestion {
@@ -73,18 +72,12 @@ public class Suggestion {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Suggestion other = (Suggestion) obj;
-        if (character != other.character)
-            return false;
-        if (location != other.location)
-            return false;
-        return weapon != other.weapon;
+        }
+        else {
+            Suggestion proposal = (Suggestion) obj;
+            return character == proposal.character && location == proposal.location && weapon == proposal.weapon;
+        }
     }
-
 }

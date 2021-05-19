@@ -2,7 +2,6 @@ package tile;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import card.Location;
 import game.GameError;
 
@@ -10,7 +9,7 @@ import game.GameError;
  * This class represents a room on Cluedo game board. Each room has one or more entrance
  * that allows player to enter into. Some rooms have secret passage to another room.
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
 public class Room extends Position {
@@ -19,10 +18,11 @@ public class Room extends Position {
      * The Location
      */
     private final Location room;
+
     /**
      * The end of the secret passage if this room has one. null if it doesn't have one.
      */
-    private final Location secPasTo;
+    private  Location secPasTo;
     /**
      * a list of entrance tiles only on which a player can enter this room. The order is
      * crucial as we identify each entrance by it's index inside this list. Also, we need
@@ -101,7 +101,7 @@ public class Room extends Position {
     public String optionString(Position destination) {
         if (destination instanceof Room) {
             Room destinationRoom = (Room) destination;
-            return "Take the secret passage to " + destinationRoom.toString() + ".";
+            return "Take the secret passage to " + destinationRoom + ".";
         } else if (destination instanceof Entrance) {
             Entrance exitOfRoom = (Entrance) destination;
             return "Exit room from exit (" + exitOfRoom.x + ", " + exitOfRoom.y + ").";
@@ -126,16 +126,21 @@ public class Room extends Position {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Room other = (Room) obj;
-        if (room != other.room)
-            return false;
-        return secPasTo == other.secPasTo;
+        }
+        else {
+            Room other = (Room) obj;
+            if (room != other.room) {
+                return false;
+            }
+            else {
+                return secPasTo == other.secPasTo;
+            }
+        }
     }
 
+    public void setSecPasTo(Location secPasTo) {
+        this.secPasTo = secPasTo;
+    }
 }

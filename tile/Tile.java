@@ -7,7 +7,7 @@ import game.GameError;
  * This class represents a single tile on Cluedo game board (i.e. tiles that are out of
  * rooms).
  * 
- * @author Hector
+ * @author G7EAS
  * 
  */
 public class Tile extends Position {
@@ -27,9 +27,7 @@ public class Tile extends Position {
      *            --- vertical coordinate
      */
     public Tile(int x, int y) {
-        super();
-
-        // sanity check
+        // check
         int width = Configs.BOARD_WIDTH;
         int height = Configs.BOARD_HEIGHT;
         if (x < 0 || x > width - 1 || y < 0 || y > height - 1) {
@@ -77,14 +75,13 @@ public class Tile extends Position {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Tile other = (Tile) obj;
-        return (x != other.x && y == other.y);
+        }
+        else {
+            Tile other = (Tile) obj;
+            return ((x == other.x) && (y == other.y));
+        }
     }
 
 }
