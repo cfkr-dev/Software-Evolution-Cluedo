@@ -148,12 +148,13 @@ public class Board {
         return null;
     }
 
-    public Boolean ThereIsNoConstraints(Position playerPos, Tile playerTile, int index) {
+    public Boolean ThereIsNoConstraints(Position playerPos, int index) {
         // Player can only look north out of rooms
         if (playerPos instanceof Room) {
             return false;
         }
 
+        Tile playerTile = (Tile) playerPos;
         Boolean[] Constraints= new Boolean[4];
 
         // boundary check
@@ -163,9 +164,6 @@ public class Board {
         Constraints[1]= playerTile.y + 1 > Configs.BOARD_HEIGHT - 1; //SouthBoundaryCheck
         Constraints[2]= playerTile.x + 1 > Configs.BOARD_WIDTH - 1; //EastBoundaryCheck
         Constraints[3]= playerTile.x - 1 < 0; //WestBoundaryCheck
-
-        int a  = playerTile.x;
-        int b = playerTile.y;
 
         if (Constraints[index]) {
             return false;
@@ -189,11 +187,7 @@ public class Board {
 
         }
 
-        if (Constraints[index]) {
-            return false;
-        }
-
-        return true;
+        return !Constraints[index];
     }
 
 
@@ -212,14 +206,14 @@ public class Board {
      */
     public Tile lookNorth(Player player) {
         Position playerPos = player.getPosition();
-        Tile playerTile = (Tile) playerPos;
         int index= 0;
 
         // this method should not return a Room
-        if (!ThereIsNoConstraints(playerPos, playerTile, index)) {
+        if (!ThereIsNoConstraints(playerPos, index)) {
             return null;
         }
         // only return a Tile or a Entrance
+        Tile playerTile = (Tile) playerPos;
         return (Tile) board[playerTile.y - 1][playerTile.x];
     }
 
@@ -236,14 +230,14 @@ public class Board {
      */
     public Tile lookSouth(Player player) {
         Position playerPos = player.getPosition();
-        Tile playerTile = (Tile) playerPos;
         int index= 1;
 
         // this method should not return a Room
-        if (!ThereIsNoConstraints(playerPos, playerTile, index)) {
+        if (!ThereIsNoConstraints(playerPos, index)) {
             return null;
         }
         // only return a Tile or a Entrance
+        Tile playerTile = (Tile) playerPos;
         return (Tile) board[playerTile.y + 1][playerTile.x];
     }
 
@@ -260,14 +254,14 @@ public class Board {
      */
     public Tile lookEast(Player player) {
         Position playerPos = player.getPosition();
-        Tile playerTile = (Tile) playerPos;
         int index= 2;
 
         // this method should not return a Room
-        if (!ThereIsNoConstraints(playerPos, playerTile, index)) {
+        if (!ThereIsNoConstraints(playerPos, index)) {
             return null;
         }
         // only return a Tile or a Entrance
+        Tile playerTile = (Tile) playerPos;
         return (Tile) board[playerTile.y][playerTile.x + 1];
     }
 
@@ -284,14 +278,14 @@ public class Board {
      */
     public Tile lookWest(Player player) {
         Position playerPos = player.getPosition();
-        Tile playerTile = (Tile) playerPos;
         int index= 3;
 
         // this method should not return a Room
-        if (!ThereIsNoConstraints(playerPos, playerTile, index)) {
+        if (!ThereIsNoConstraints(playerPos, index)) {
             return null;
         }
         // only return a Tile or a Entrance
+        Tile playerTile = (Tile) playerPos;
         return (Tile) board[playerTile.y][playerTile.x - 1];
     }
 
