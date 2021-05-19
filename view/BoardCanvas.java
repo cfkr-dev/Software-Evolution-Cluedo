@@ -35,9 +35,9 @@ public class BoardCanvas extends JPanel implements ComponentListener {
      * The width and Height of each Tile. Note this constant is important as most of board
      * display is calculated based upon this value
      */
-    private static int TILE_WIDTH;
+    private static int TILE_WIDTH = WindowUtilities.getWidth() / (2 * Configs.BOARD_WIDTH);
 
-    private static int TILE_HEIGHT;
+    private static int TILE_HEIGHT = WindowUtilities.getHeight() / (Configs.BOARD_HEIGHT);
 
     /**
      * The width of board
@@ -88,6 +88,9 @@ public class BoardCanvas extends JPanel implements ComponentListener {
         for (int i = 0; i < weaponTokens.length; i++) {
             this.add(weaponTokens[i]);
         }
+
+        CROSS_ON_ROOM = createCrossOnRoom();
+        QUESTION_ON_ROOM = creatQuestionOnRoom();
 
         // add question marks and cross for easy mode
         for (int i = 0; i < QUESTION_ON_ROOM.length; i++) {
@@ -390,12 +393,12 @@ public class BoardCanvas extends JPanel implements ComponentListener {
      * A serious of cross icons for each room. These icons are used to give the player a
      * help in easy mode
      */
-    private static final JLabel[] CROSS_ON_ROOM = createCrossOnRoom();
+    private static JLabel[] CROSS_ON_ROOM;
     /**
      * a serious of question mark icons for each room. These icons are used to give the
      * player a help in easy mode
      */
-    private static final JLabel[] QUESTION_ON_ROOM = creatQuestionOnRoom();
+    private static JLabel[] QUESTION_ON_ROOM;
 
     @Override
     public void componentResized(ComponentEvent e) {
