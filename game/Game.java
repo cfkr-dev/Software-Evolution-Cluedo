@@ -74,6 +74,8 @@ public class Game {
      */
     private boolean isEasyMode = false;
 
+    private Configs configurations = Configs.getConfiguration();
+
     /**
      * Construct the game.
      * 
@@ -83,7 +85,7 @@ public class Game {
      *            --- how many dices are used in this game
      */
     public Game(int numPlayers, int numDices) {
-        if (numPlayers < Configs.MIN_PLAYER || numPlayers > Configs.MAX_PLAYER) {
+        if (numPlayers < configurations.getMinPlayer() || numPlayers > configurations.getMaxPlayer()) {
             throw new GameError("Invalid number of players");
         }
         else {
@@ -303,7 +305,7 @@ public class Game {
      */
     public void moveTokensInvolvedInSuggestion(Suggestion suggestion) {
         moveWeapon(suggestion.weapon, board.getAvailableRoomTile(suggestion.location));
-        movePlayer(suggestion.character, Configs.getRoom(suggestion.location.ordinal()));
+        movePlayer(suggestion.character, configurations.getRoom(suggestion.location.ordinal()));
     }
 
     /**
@@ -640,10 +642,10 @@ public class Game {
 
         BOARD_STRING.append("=======Game Board=======\n");
 
-        int width = Configs.BOARD_WIDTH + 1;
+        int width = configurations.getBoardWidth() + 1;
 
         // get the canvas first
-        char[] boardChars = Configs.UI_STRING_B.toCharArray();
+        char[] boardChars = configurations.getUiStringB().toCharArray();
 
         // draw players by replacing his character on his position
         for (Player p : players) {

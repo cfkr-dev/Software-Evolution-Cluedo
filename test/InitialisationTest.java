@@ -85,7 +85,7 @@ public class InitialisationTest {
             for (int j = 0; j < diceRoll.length; j++) {
                 total += (diceRoll[j] + 1);
             }
-            if (total < Configs.NUM_DICE || total > Configs.NUM_DICE * 6) {
+            if (total < configurations.getNumDice() || total > configurations.getNumDice() * 6) {
                 fail("Strange dice!!!");
             }
         }
@@ -125,8 +125,8 @@ public class InitialisationTest {
      */
     @Test
     public void creatSolution() {
-        for (int numPlayers = Configs.MIN_PLAYER; numPlayers <= Configs.MAX_PLAYER; numPlayers++) {
-            Game game = new Game(numPlayers, Configs.NUM_DICE);
+        for (int numPlayers = configurations.getMinPlayer(); numPlayers <= configurations.getMaxPlayer(); numPlayers++) {
+            Game game = new Game(numPlayers, configurations.getNumDice());
 
             List<Player> players = new ArrayList<>();
 
@@ -170,8 +170,8 @@ public class InitialisationTest {
      */
     @Test
     public void dealingCards() {
-        for (int numPlayers = Configs.MIN_PLAYER; numPlayers <= Configs.MAX_PLAYER; numPlayers++) {
-            Game game = new Game(numPlayers, Configs.NUM_DICE);
+        for (int numPlayers = configurations.getMinPlayer(); numPlayers <= configurations.getMaxPlayer(); numPlayers++) {
+            Game game = new Game(numPlayers, configurations.getNumDice());
 
             List<Player> players = new ArrayList<>();
 
@@ -233,8 +233,8 @@ public class InitialisationTest {
      */
     @Test
     public void noDuplicateCards() {
-        for (int numPlayers = Configs.MIN_PLAYER; numPlayers <= Configs.MAX_PLAYER; numPlayers++) {
-            Game game = new Game(numPlayers, Configs.NUM_DICE);
+        for (int numPlayers = configurations.getMinPlayer(); numPlayers <= configurations.getMaxPlayer(); numPlayers++) {
+            Game game = new Game(numPlayers, configurations.getNumDice());
             List<Player> players = new ArrayList<>();
             Set<Card> cardPile = new HashSet<>();
             for (int i = 0; i < numPlayers; i++) {

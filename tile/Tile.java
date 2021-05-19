@@ -17,6 +17,8 @@ public class Tile extends Position {
      */
     public final int x, y;
 
+    private Configs configurations = Configs.getConfiguration();
+
     /**
      * Takes the coordinates and construct a Tile. Coordinate are checked against board's
      * width and height.
@@ -28,8 +30,8 @@ public class Tile extends Position {
      */
     public Tile(int x, int y) {
         // check
-        int width = Configs.BOARD_WIDTH;
-        int height = Configs.BOARD_HEIGHT;
+        int width = configurations.getBoardWidth();
+        int height = configurations.getBoardHeight();
         if (x < 0 || x > width - 1 || y < 0 || y > height - 1) {
             throw new GameError("Invalid Coordinates");
         }

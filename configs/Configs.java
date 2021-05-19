@@ -3,6 +3,7 @@ package configs;
 import card.Location;
 import tile.Room;
 
+import java.io.ObjectInputFilter;
 import java.util.ArrayList;
 
 /**
@@ -15,31 +16,33 @@ public class Configs {
     /**
      * The number of dices used in game
      */
-    public static final int NUM_DICE = 2;
+    private final int NUM_DICE = 2;
     /**
      * Minimum player needed
      */
-    public static final int MIN_PLAYER = 3;
+    private final int MIN_PLAYER = 3;
     /**
      * Maximum player to join into game.
      */
-    public static final int MAX_PLAYER = 6;
+    private final int MAX_PLAYER = 6;
     /**
      * the horizontal boundary coordinate of Cluedo game board.
      */
-    public static int BOARD_WIDTH = 48;
+    private int BOARD_WIDTH = 48;
     /**
      * the vertical boundary coordinate of Cluedo game board.
      */
-    public static int BOARD_HEIGHT = 25;
+    private int BOARD_HEIGHT = 25;
 
     /**
-     * The static object of all locations
+     * The  object of all locations
      */
-    public static ArrayList<Room> ROOMS = new ArrayList<>();
+    private ArrayList<Room> ROOMS = new ArrayList<>();
+    
+    private static Configs configurations;
 
 
-    public static void DimensionCounter(){
+    public  void DimensionCounter(){
 
         int character= 0;
         int height= 0;
@@ -58,13 +61,21 @@ public class Configs {
     }
 
 
-    public Configs() {
+    private Configs() {
         for (int i = 0; i < Location.getNumberOfLocations(); i++) {
             Room room = new Room(Location.get(i),null);
             ROOMS.add(room);
         }
         assignShortcuts(ROOMS);
         DimensionCounter();
+    }
+
+    public static Configs getConfiguration() {
+        if (configurations == null) {
+            configurations = new Configs();
+        }
+        
+        return configurations;
     }
 
     /**
@@ -86,16 +97,16 @@ public class Configs {
      *
      * @param symbolLocation
      *            --- symbolic location (integer)
-     * @return --- the corresponding, static Room object
+     * @return --- the corresponding,  Room object
      */
-    public static Room getRoom(int symbolLocation) {
+    public  Room getRoom(int symbolLocation) {
         return ROOMS.get(symbolLocation);
     }
 
     /**
      *  a string used to print out text-based UI. This is used as a canvas.
      */
-    public static final String UI_STRING_A =
+    private  final String UI_STRING_A =
             "■■■■■■■■■ ■■■■ ■■■■■■■■■\n" +
             "┌KIT─□■   ┌──┐   ■┌CSTY┐\n" +
             "│    │  B─L  R─M  │    │\n" +
@@ -128,7 +139,7 @@ public class Configs {
      *  <br>
      *  NOTE: it's not used currently.
      */
-    public static final String UI_STRING_B =
+    private  final String UI_STRING_B =
             "■■■■■■■■■■■■■■■■■■  ■■■■■■■■  ■■■■■■■■■■■■■■■■■■\n" +
             "┌──────────□■■      ┌──────┐      ■■┌──────────┐\n" +
             "│ KITCHEN  │    ┌───┘      └───┐    │          │\n" +
@@ -170,7 +181,7 @@ public class Configs {
      * a-i : represents entrance to each room, 'a' is entrance to room '1',
      * 'b' to room '2', and so on.<br>
      */
-    public static final String BOARD_STRING_A =
+    private  final String BOARD_STRING_A =
             "         =    >         \n" +
             "       000    000       \n" +
             " 1111 00   22   00 3333 \n" +
@@ -197,7 +208,7 @@ public class Configs {
             " 8888  00 7777 00  6666 \n" +
             "       ;        0   666 \n";
 
-    public static final String BOARD_STRING_B =
+    private  final String BOARD_STRING_B =
             "                  =          >                  \n" +
             "              000000        000000              \n" +
             "  11111111  0000      2222      0000  33333333  \n" +
@@ -225,6 +236,43 @@ public class Configs {
             "              ;                  0      666666  \n";
 
 
+    public  int getNumDice() {
+        return NUM_DICE;
+    }
 
+    public  int getMinPlayer() {
+        return MIN_PLAYER;
+    }
 
+    public  int getMaxPlayer() {
+        return MAX_PLAYER;
+    }
+
+    public  int getBoardWidth() {
+        return BOARD_WIDTH;
+    }
+
+    public  int getBoardHeight() {
+        return BOARD_HEIGHT;
+    }
+    
+    public  ArrayList<Room> getROOMS() {
+        return ROOMS;
+    }
+    
+    public  String getUiStringA() {
+        return UI_STRING_A;
+    }
+
+    public  String getUiStringB() {
+        return UI_STRING_B;
+    }
+
+    public  String getBoardStringA() {
+        return BOARD_STRING_A;
+    }
+
+    public  String getBoardStringB() {
+        return BOARD_STRING_B;
+    }
 }

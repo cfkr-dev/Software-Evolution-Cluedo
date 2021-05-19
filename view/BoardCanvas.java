@@ -41,14 +41,15 @@ import static ui.GUIClient.loadImage;
 
 public class BoardCanvas extends JPanel implements ComponentListener {
 
+    private Configs configurations = Configs.getConfiguration();
 
     /**
      * The width and Height of each Tile. Note this constant is important as most of board
      * display is calculated based upon this value
      */
-    private static int TILE_WIDTH = WindowUtilities.getWidth() / (2 * Configs.BOARD_WIDTH);
+    private static int TILE_WIDTH;
 
-    private static int TILE_HEIGHT = WindowUtilities.getHeight() / (Configs.BOARD_HEIGHT);
+    private static int TILE_HEIGHT;
 
     /**
      * The width of board
@@ -83,8 +84,8 @@ public class BoardCanvas extends JPanel implements ComponentListener {
         this.setBorder(new EmptyBorder(10,10,10,10));
         int width = WindowUtilities.getWidth();
         int height = WindowUtilities.getHeight();
-        TILE_WIDTH =  width / (2 * Configs.BOARD_WIDTH);
-        TILE_HEIGHT = height / (Configs.BOARD_HEIGHT);
+        TILE_WIDTH =  width / (2 * configurations.getBoardWidth());
+        TILE_HEIGHT = height / (configurations.getBoardHeight());
         BOARD_IMG_WIDTH = WindowUtilities.getWidth() / 2;
         BOARD_IMG_HEIGHT = WindowUtilities.getHeight();
         addMouseListenerOnBoard(this);
@@ -114,18 +115,19 @@ public class BoardCanvas extends JPanel implements ComponentListener {
             this.add(CROSS_ON_ROOM[i]);
         }
 
-        BOARD_IMG_WIDTH = TILE_WIDTH * Configs.BOARD_WIDTH;
-        BOARD_IMG_HEIGHT = TILE_WIDTH * Configs.BOARD_HEIGHT;
+        BOARD_IMG_WIDTH = TILE_WIDTH * configurations.getBoardWidth();
+        BOARD_IMG_HEIGHT = TILE_HEIGHT * configurations.getBoardHeight();
 
         // update tokens' positions
         update();
     }
 
     public static void refreshScreen() {
-        TILE_WIDTH = WindowUtilities.getWidth() / (2 * Configs.BOARD_WIDTH);
-        TILE_HEIGHT = WindowUtilities.getHeight() / (Configs.BOARD_HEIGHT);
+        Configs configurations = Configs.getConfiguration();
+        TILE_WIDTH = WindowUtilities.getWidth() / (2 * configurations.getBoardWidth());
+        TILE_HEIGHT = WindowUtilities.getHeight() / (configurations.getBoardHeight());
         BOARD_IMG_WIDTH = WindowUtilities.getWidth() / 2;
-        BOARD_IMG_HEIGHT = TILE_HEIGHT * Configs.BOARD_HEIGHT;
+        BOARD_IMG_HEIGHT = TILE_HEIGHT * configurations.getBoardHeight();
     }
 
     /**

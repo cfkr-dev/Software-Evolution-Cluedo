@@ -59,10 +59,11 @@ public class TextClient {
      * @return --- the initialised, running game
      */
     private static Game setupGame() {
+        Configs configurations = Configs.getConfiguration();
         // set how many players
         System.out.println("How many players?");
-        int numPlayers = parseInt(Configs.MIN_PLAYER, Configs.MAX_PLAYER);
-        Game game = new Game(numPlayers, Configs.NUM_DICE);
+        int numPlayers = parseInt(configurations.getMinPlayer(), configurations.getMaxPlayer());
+        Game game = new Game(numPlayers, configurations.getNumDice());
 
         // let players choose which character to play with
         int playerIndex = 0;

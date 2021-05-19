@@ -6,7 +6,6 @@ package game;
  * @author G7EAS
  *
  */
-@SuppressWarnings("serial")
 public class GameError extends RuntimeException {
 
     /**

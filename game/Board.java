@@ -26,21 +26,20 @@ public class Board {
      */
     private final Tile[] startPositions;
 
+    private Configs configurations = Configs.getConfiguration();
+
     /**
      * Construct a board.
      */
     public Board() {
-
-        Configs configurations = new Configs();
-
-        Configs.DimensionCounter();
+        configurations.DimensionCounter();
 
         startPositions = new Tile[Character.values().length];
 
-        String boardString = Configs.BOARD_STRING_B;
+        String boardString = configurations.getBoardStringB();
 
-        int height = Configs.BOARD_HEIGHT;
-        int width = Configs.BOARD_WIDTH;
+        int height = configurations.getBoardHeight();
+        int width = configurations.getBoardWidth();
 
         board = new Position[height][width];
         int index = 0; // index to track chars
@@ -71,7 +70,7 @@ public class Board {
 
                 // If the tile corresponds to a room
                 if (logicSymbolBoard >= '1' && logicSymbolBoard <= '9') {
-                    board[y][x] = new RoomTile(Configs.getRoom(java.lang.Character.getNumericValue(logicSymbolBoard) - 1), x, y);
+                    board[y][x] = new RoomTile(configurations.getRoom(java.lang.Character.getNumericValue(logicSymbolBoard) - 1), x, y);
                 }
 
                 /*
@@ -92,9 +91,9 @@ public class Board {
                  */
                 if (logicSymbolBoard >= 'a' && logicSymbolBoard <= 'i') {
                     int auxiliar = logicSymbolBoard;
-                    Entrance entrance = new Entrance(x, y, Configs.getRoom(auxiliar - 97));
+                    Entrance entrance = new Entrance(x, y, configurations.getRoom(auxiliar - 97));
                     board[y][x] = entrance;
-                    Configs.getRoom(auxiliar - 97).addEntrances(entrance);
+                    configurations.getRoom(auxiliar - 97).addEntrances(entrance);
                 }
             }
             index++;
@@ -161,8 +160,8 @@ public class Board {
 
 
         Constraints[0]= playerTile.y - 1 < 0; //NorthBoundaryCheck
-        Constraints[1]= playerTile.y + 1 > Configs.BOARD_HEIGHT - 1; //SouthBoundaryCheck
-        Constraints[2]= playerTile.x + 1 > Configs.BOARD_WIDTH - 1; //EastBoundaryCheck
+        Constraints[1]= playerTile.y + 1 > configurations.getBoardHeight() - 1; //SouthBoundaryCheck
+        Constraints[2]= playerTile.x + 1 > configurations.getBoardWidth() - 1; //EastBoundaryCheck
         Constraints[3]= playerTile.x - 1 < 0; //WestBoundaryCheck
 
         if (Constraints[index]) {
@@ -344,7 +343,7 @@ public class Board {
         if (playerPos instanceof Room) {
             Room room = (Room) playerPos;
             if (room.hasSecPas()) {
-                return Configs.getRoom(room.getSecPasTo().ordinal());
+                return configurations.getRoom(room.getSecPasTo().ordinal());
             }
         }
         return null;

@@ -104,6 +104,7 @@ public class GUIClient extends JFrame {
     public static int RIGHT_PANEL_WIDTH;
 
 
+    private Configs configurations = Configs.getConfiguration();
 
     // ============= models ===================
 
@@ -336,7 +337,7 @@ public class GUIClient extends JFrame {
      */
     public void makeSuggestion(Suggestion sug) {
         // move the involved character and weapon into the involved location
-        movePlayer(sug.character, Configs.getRoom(sug.location.ordinal()));
+        movePlayer(sug.character, configurations.getRoom(sug.location.ordinal()));
         moveWeapon(sug.weapon, getAvailableRoomTile(sug.location));
 
         // let's see how others refute it
@@ -374,7 +375,7 @@ public class GUIClient extends JFrame {
      */
     public void makeAccusation(Suggestion accusation) {
         // move the involved character and weapon into the involved location
-        movePlayer(accusation.character, Configs.getRoom(accusation.location.ordinal()));
+        movePlayer(accusation.character, configurations.getRoom(accusation.location.ordinal()));
         moveWeapon(accusation.weapon, getAvailableRoomTile(accusation.location));
 
         // let's see if the accusation is right or wrong

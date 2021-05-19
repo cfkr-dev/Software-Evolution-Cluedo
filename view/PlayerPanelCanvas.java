@@ -1046,7 +1046,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
             new ImageIcon(loadImage("Dice_3.png"), "Dice_3.png"),
             new ImageIcon(loadImage("Dice_4.png"), "Dice_4.png"),
             new ImageIcon(loadImage("Dice_5.png"), "Dice_5.png"),
-            new ImageIcon(loadImage("Dice_6.png"), "Dice_5.png")};
+            new ImageIcon(loadImage("Dice_6.png"), "Dice_6.png")};
     /**
      * Images for displaying Character cards
      */
