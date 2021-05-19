@@ -69,7 +69,7 @@ public class InitialisationTest {
      */
     @Test
     public void validDiceRoll() {
-        Game game = new Game(3, Configs.NUM_DICE);
+        Game game = new Game(3, configurations.getNumDice());
         game.joinPlayer(Character.Miss_Scarlet, "");
         game.joinPlayer(Character.Mrs_White, "");
         game.joinPlayer(Character.Mrs_Peacock, "");
@@ -97,8 +97,8 @@ public class InitialisationTest {
      */
     @Test
     public void choosingCharacter() {
-        for (int numPlayers = Configs.MIN_PLAYER; numPlayers <= Configs.MAX_PLAYER; numPlayers++) {
-            Game game = new Game(numPlayers, Configs.NUM_DICE);
+        for (int numPlayers = configurations.getMinPlayer(); numPlayers <= configurations.getMaxPlayer(); numPlayers++) {
+            Game game = new Game(numPlayers, configurations.getNumDice());
 
             game.joinPlayer(Character.Miss_Scarlet, "");
             game.joinPlayer(Character.Mrs_White, "");

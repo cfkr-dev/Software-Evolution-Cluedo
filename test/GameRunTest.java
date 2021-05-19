@@ -371,8 +371,8 @@ public class GameRunTest {
      */
     @Test
     public void correctAccusationWins() {
-        for (int numPlayers = Configs.MIN_PLAYER; numPlayers <= Configs.MAX_PLAYER; numPlayers++) {
-            Game game = new Game(numPlayers, Configs.NUM_DICE);
+        for (int numPlayers = configurations.getMinPlayer(); numPlayers <= configurations.getMaxPlayer(); numPlayers++) {
+            Game game = new Game(numPlayers, configurations.getNumDice());
             for (int i = 0; i < numPlayers; i++) {
                 game.joinPlayer(Character.values()[i], "");
             }
@@ -403,8 +403,8 @@ public class GameRunTest {
      */
     @Test
     public void wrongAccuserOut() {
-        for (int numPlayers = Configs.MIN_PLAYER; numPlayers <= Configs.MAX_PLAYER; numPlayers++) {
-            Game game = new Game(numPlayers, Configs.NUM_DICE);
+        for (int numPlayers = configurations.getMinPlayer(); numPlayers <= configurations.getMaxPlayer(); numPlayers++) {
+            Game game = new Game(numPlayers, configurations.getNumDice());
             for (int i = 0; i < numPlayers; i++) {
                 game.joinPlayer(Character.values()[i], "");
             }
@@ -437,8 +437,8 @@ public class GameRunTest {
      */
     @Test
     public void lastSurvivorWin() {
-        for (int numPlayers = Configs.MIN_PLAYER; numPlayers <= Configs.MAX_PLAYER; numPlayers++) {
-            Game game = new Game(numPlayers, Configs.NUM_DICE);
+        for (int numPlayers = configurations.getMinPlayer(); numPlayers <= configurations.getMaxPlayer(); numPlayers++) {
+            Game game = new Game(numPlayers, configurations.getNumDice());
             for (int i = 0; i < numPlayers; i++) {
                 game.joinPlayer(Character.values()[i], "");
             }
@@ -470,8 +470,8 @@ public class GameRunTest {
 
     @Test
     public void suggestionMovesCharacterAndWeapon() {
-        for (int numPlayers = Configs.MIN_PLAYER; numPlayers <= Configs.MAX_PLAYER; numPlayers++) {
-            Game game = new Game(numPlayers, Configs.NUM_DICE);
+        for (int numPlayers = configurations.getMinPlayer(); numPlayers <= configurations.getMaxPlayer(); numPlayers++) {
+            Game game = new Game(numPlayers, configurations.getNumDice());
             for (int i = 0; i < numPlayers; i++) {
                 game.joinPlayer(Character.values()[i], "");
             }
@@ -497,7 +497,7 @@ public class GameRunTest {
             for (Character ch : Character.values()) {
                 if (ch == c) {
                     if (!game.getPlayerByCharacter(ch).getPosition()
-                            .equals(Configs.getRoom(numberLocation))) {
+                            .equals(configurations.getRoom(numberLocation))) {
                         fail("Player mentioned in suggestion should be moved in the mentioned room");
                     }
                 }
@@ -506,8 +506,8 @@ public class GameRunTest {
 
             for (WeaponToken wt : game.getWeaponTokens()) {
                 if (wt.getWeapon() == w) {
-                    if (!Configs.getRoom(wt.getRoomTile().getRoom().ordinal())
-                            .equals(Configs.getRoom(numberLocation))) {
+                    if (!configurations.getRoom(wt.getRoomTile().getRoom().ordinal())
+                            .equals(configurations.getRoom(numberLocation))) {
                         fail("weapon mentioned in suggestion should be moved in the mentioned room");
                     }
                 }
