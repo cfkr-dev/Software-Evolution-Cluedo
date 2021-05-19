@@ -28,6 +28,12 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import card.Card;
+import card.Character;
+import card.Location;
+import card.Weapon;
+
+import configs.Configs;
 import game.Board;
 import game.Game;
 import game.GameError;
