@@ -1,22 +1,49 @@
 package ui;
 
-import card.Card;
-import card.Character;
-import card.Location;
-import card.Weapon;
-import configs.Configs;
-import game.*;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.Set;
+import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.InputMap;
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
+
+import game.Board;
+import game.Game;
+import game.GameError;
+import game.Player;
+import game.Suggestion;
+
 import tile.Position;
 import tile.Room;
 import tile.RoomTile;
 import tile.Tile;
+import utilities.WindowUtilities;
 import view.BoardCanvas;
 import view.CustomMenu;
+import view.dialogs.*;
 import view.PlayerPanelCanvas;
-import view.dialogs.HelpDialog;
-import view.dialogs.NumberSetupDialog;
-import view.dialogs.PlayerSetupDialog;
-import view.dialogs.SuggestionDialog;
+
 import view.token.CharacterToken;
 import view.token.WeaponToken;
 
@@ -35,14 +62,13 @@ import java.util.Set;
 
 /**
  * A GUI client for Cluedo game.
- * 
- * @author Hector
  *
+ * @author G7EAS
  */
-@SuppressWarnings("serial")
+
 public class GUIClient extends JFrame {
 
-    // =========== Views ================
+    public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     /**
      * the main window
@@ -111,16 +137,24 @@ public class GUIClient extends JFrame {
         // ============ then the welcome screen =====================
         window = new JPanel() {
             protected void paintComponent(Graphics g) {
-                g.drawImage(INIT_SCREEN, 0, 0, this);
+                g.drawImage(INIT_SCREEN, 0, 0, this.getWidth(), this.getHeight(), null);
             }
         };
-        window.setPreferredSize(
-                new Dimension(INIT_SCREEN.getWidth(this), INIT_SCREEN.getHeight(this)));
 
-        // pack and ... display (SHOUT: why not save?)
+        window.setPreferredSize(screenSize);
+        getContentPane().addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                WindowUtilities.setWidth(e.getComponent().getWidth());
+                WindowUtilities.setHeight(e.getComponent().getHeight());
+            }
+        });
+
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.add(window);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setResizable(false);
+        this.setResizable(true);
         this.pack();
         this.setVisible(true);
     }
@@ -133,6 +167,14 @@ public class GUIClient extends JFrame {
                 "Setup Wizard");
     }
 
+    public Suggestion getSolution(){
+        return game.getSolution();
+    }
+
+    public void displaySolution(){
+        new SolutionDialog(this, SwingUtilities.windowForComponent(this), "Game solution");
+    }
+
     /**
      * Pop up a dialog to join players
      */
@@ -143,11 +185,9 @@ public class GUIClient extends JFrame {
 
     /**
      * Initialise the game with the given number of players and number of dices
-     * 
-     * @param numPlayers
-     *            --- how many players
-     * @param numDices
-     *            --- how many dices are used in game
+     *
+     * @param numPlayers --- how many players
+     * @param numDices   --- how many dices are used in game
      */
     public void createNewGame(int numPlayers, int numDices) {
         this.numPlayers = numPlayers;
@@ -157,11 +197,9 @@ public class GUIClient extends JFrame {
 
     /**
      * Set the given player as human controlled, give it a name.
-     * 
-     * @param playerChoice
-     *            --- the character chosen by a player
-     * @param name
-     *            --- the customised name
+     *
+     * @param playerChoice --- the character chosen by a player
+     * @param name         --- the customised name
      */
     public void joinPlayer(Character playerChoice, String name) {
         game.joinPlayer(playerChoice, name);
@@ -172,6 +210,22 @@ public class GUIClient extends JFrame {
      */
     public void startGame() {
 
+        getContentPane().addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                WindowUtilities.setWidth(e.getComponent().getWidth());
+                WindowUtilities.setHeight(e.getComponent().getHeight());
+                BoardCanvas.refreshScreen();
+                LEFT_PANEL_WIDTH = e.getComponent().getWidth()/2;
+                RIGHT_PANEL_WIDTH = e.getComponent().getWidth()/2;
+                HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
+                boardPanel.setPreferredSize(new Dimension(LEFT_PANEL_WIDTH, HEIGHT));
+                playerPanel.setPreferredSize(new Dimension(RIGHT_PANEL_WIDTH, HEIGHT));
+                repaint();
+            }
+        });
+
         // first let's finish initialising the game
         game.decideWhoMoveFirst();
         game.creatSolution();
@@ -181,6 +235,16 @@ public class GUIClient extends JFrame {
         this.remove(window);
         window = new JPanel();
         window.setLayout(new BoxLayout(window, BoxLayout.X_AXIS));
+        double width = screenSize.getWidth();
+        double height = screenSize.getHeight();
+        window.setPreferredSize(screenSize);
+        WindowUtilities.setLastWidth((int) width);
+        WindowUtilities.setWidth((int) width);
+        WindowUtilities.setLastheight((int) height);
+        WindowUtilities.setHeight((int) height);
+        LEFT_PANEL_WIDTH = WindowUtilities.getWidth()/2;
+        RIGHT_PANEL_WIDTH = WindowUtilities.getWidth()/2;
+
 
         // now make the left panel, which is game board
         boardPanel = new BoardCanvas(this);
@@ -196,6 +260,7 @@ public class GUIClient extends JFrame {
         window.add(boardPanel);
         window.add(playerPanel);
 
+
         // add key bindings
         addKeyBindings(window);
 
@@ -203,11 +268,13 @@ public class GUIClient extends JFrame {
         ((CustomMenu) this.getJMenuBar()).enableEasyModeMenu();
 
         // last, pack and display
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.add(window);
         this.pack();
         this.validate();
-        this.setResizable(false);
+        this.setResizable(true);
         this.setVisible(true);
+
     }
 
     /**
@@ -219,20 +286,21 @@ public class GUIClient extends JFrame {
             boardPanel.update();
             playerPanel.update();
         } else {
-            // game stopped, we must have a winner
-            int choice = JOptionPane.showConfirmDialog(window,
-                    game.getWinner().toString()
+            String[] options = new String[] {"Okay", "Show solution", "Exit"};
+            int choice = JOptionPane.showOptionDialog(window, game.getWinner().toString()
                             + " are the only player left. Congratulations, "
                             + game.getPlayerByCharacter(game.getWinner()).getName()
-                            + " are the winner!\n" + "Do you want to play again?",
-                    game.getWinner().toString() + " won!", JOptionPane.OK_CANCEL_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE, CORRECT);
+                            + " are the winner!\n" + "Do you want to play again?", "Game ended",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                    null, options, options[0]);
 
-            if (choice == JOptionPane.OK_OPTION) {
+            if (choice == 0) {
                 // start a new game
                 setupNumPlayers();
-            } else {
-                // exit
+            } else if (choice == 1){
+                displaySolution();
+            }
+            else{
                 System.exit(0);
             }
         }
@@ -257,9 +325,8 @@ public class GUIClient extends JFrame {
     /**
      * After the player has made his suggestion, this method evaluate the suggestion, and
      * pop up a option panel to show how other players refuted this suggestion.
-     * 
-     * @param sug
-     *            --- the suggestion made by player
+     *
+     * @param sug --- the suggestion made by player
      */
     public void makeSuggestion(Suggestion sug) {
         // move the involved character and weapon into the involved location
@@ -296,9 +363,8 @@ public class GUIClient extends JFrame {
     /**
      * After the player has made his accusation, this method evaluate the suggestion, and
      * pop up a option panel to show if he is the winner or he loses the game.
-     * 
-     * @param accusation
-     *            --- the accusation made by player
+     *
+     * @param accusation --- the accusation made by player
      */
     public void makeAccusation(Suggestion accusation) {
         // move the involved character and weapon into the involved location
@@ -334,8 +400,8 @@ public class GUIClient extends JFrame {
      * Let the player roll dices.
      *
      * @return --- an array of integer, whose length is the number of dice, and each
-     *         number is the rolled number of individual dice. Here we use 0 to 5 to
-     *         represents 1 - 6 (for simplicity when calling graphical update)
+     * number is the rolled number of individual dice. Here we use 0 to 5 to
+     * represents 1 - 6 (for simplicity when calling graphical update)
      */
     public int[] rollDice(Character character) {
         return game.rollDice();
@@ -350,11 +416,9 @@ public class GUIClient extends JFrame {
 
     /**
      * Move a character to the given position.
-     * 
-     * @param character
-     *            --- the character to be moved
-     * @param position
-     *            --- where to move
+     *
+     * @param character --- the character to be moved
+     * @param position  --- where to move
      */
     public void movePlayer(Character character, Position position) {
         // move the player
@@ -373,11 +437,9 @@ public class GUIClient extends JFrame {
 
     /**
      * Move a weapon to the given room.
-     * 
-     * @param weapon
-     *            --- the character to be moved
-     * @param roomTile
-     *            --- which room to move into, and on which tile is this token put
+     *
+     * @param weapon   --- the character to be moved
+     * @param roomTile --- which room to move into, and on which tile is this token put
      */
     public void moveWeapon(Weapon weapon, RoomTile roomTile) {
         // move the weapon
@@ -389,7 +451,7 @@ public class GUIClient extends JFrame {
 
     /**
      * Get the number of players
-     * 
+     *
      * @return --- the number of players (3 to 6 inclusive)
      */
     public int getNumPlayers() {
@@ -398,7 +460,7 @@ public class GUIClient extends JFrame {
 
     /**
      * Get the number of dices
-     * 
+     *
      * @return --- the number of dices (1 to 3 inclusive)
      */
     public int getNumDices() {
@@ -407,7 +469,7 @@ public class GUIClient extends JFrame {
 
     /**
      * Get the game board
-     * 
+     *
      * @return --- the game board
      */
     public Board getBoard() {
@@ -416,7 +478,7 @@ public class GUIClient extends JFrame {
 
     /**
      * Get all players (including dummy token not controlled by human).
-     * 
+     *
      * @return --- all players (including dummy token not controlled by human) as a list
      */
     public List<Player> getAllPlayers() {
@@ -425,7 +487,7 @@ public class GUIClient extends JFrame {
 
     /**
      * Get the player who needs to move.
-     * 
+     *
      * @return --- the current player
      */
     public Character getCurrentPlayer() {
@@ -434,9 +496,8 @@ public class GUIClient extends JFrame {
 
     /**
      * A helper method to get the corresponding Player of given Character.
-     * 
-     * @param character
-     *            --- the given character
+     *
+     * @param character --- the given character
      * @return --- the corresponding Player of given Character
      */
     public Player getPlayerByCharacter(Character character) {
@@ -445,7 +506,7 @@ public class GUIClient extends JFrame {
 
     /**
      * Get all weapon tokens as a list
-     * 
+     *
      * @return --- all weapon tokens
      */
     public WeaponToken[] getWeaponTokens() {
@@ -455,7 +516,7 @@ public class GUIClient extends JFrame {
     /**
      * Get the remaining cards as a list. Note that the returned list could be empty if
      * all cards are dealt.
-     * 
+     *
      * @return --- the remaining cards as a list
      */
     public List<Card> getRemainingCards() {
@@ -464,7 +525,7 @@ public class GUIClient extends JFrame {
 
     /**
      * Is the game run on easy mode?
-     * 
+     *
      * @return --- true if the game run on easy mode, or false if not.
      */
     public boolean isEasyMode() {
@@ -474,9 +535,8 @@ public class GUIClient extends JFrame {
     /**
      * Set the game to easy mode (so that the game will remember clues for
      * player...cheating).
-     * 
-     * @param isEasyMode
-     *            --- a flag to turn on or off easy mode
+     *
+     * @param isEasyMode --- a flag to turn on or off easy mode
      */
     public void setEasyMode(boolean isEasyMode) {
         game.setEasyMode(isEasyMode);
@@ -484,7 +544,7 @@ public class GUIClient extends JFrame {
 
     /**
      * Whether game has a winner (i.e. game end)
-     * 
+     *
      * @return --- true if game is still running, there is no winner yet; false if not.
      */
     public boolean isGameRunning() {
@@ -498,11 +558,10 @@ public class GUIClient extends JFrame {
     /**
      * This method finds the next empty spot in a given room to display player or weapon
      * tokens.
-     * 
-     * @param location
-     *            --- which room we want to display a token
+     *
+     * @param location --- which room we want to display a token
      * @return --- an empty spot to display a token in the given room, or null if the room
-     *         is full (impossible to happen with the default board)
+     * is full (impossible to happen with the default board)
      */
     public RoomTile getAvailableRoomTile(Location location) {
         return game.getAvailableRoomTile(location);
@@ -510,9 +569,8 @@ public class GUIClient extends JFrame {
 
     /**
      * get the start position of given character.
-     * 
-     * @param character
-     *            --- the character
+     *
+     * @param character --- the character
      * @return --- the start position of this character
      */
     public Tile getStartPosition(Character character) {
@@ -521,9 +579,8 @@ public class GUIClient extends JFrame {
 
     /**
      * Get the player's position.
-     * 
-     * @param character
-     *            --- the player
+     *
+     * @param character --- the player
      * @return --- the player's position
      */
     public Position getPlayerPosition(Character character) {
@@ -532,7 +589,7 @@ public class GUIClient extends JFrame {
 
     /**
      * This method gets all cards that is known as not involved in crime.
-     * 
+     *
      * @return --- all cards that is known as not involved in crime.
      */
     public Set<Card> getKnownCards() {
@@ -541,9 +598,8 @@ public class GUIClient extends JFrame {
 
     /**
      * Get how many steps left for the player to move.
-     * 
-     * @param character
-     *            --- the player
+     *
+     * @param character --- the player
      * @return --- how many steps left for the player to move.
      */
     public int getRemainingSteps(Character character) {
@@ -552,11 +608,9 @@ public class GUIClient extends JFrame {
 
     /**
      * Set how many steps left for the player to move.
-     * 
-     * @param character
-     *            --- the player
-     * @param remainingSteps
-     *            --- how many steps left for the player to move.
+     *
+     * @param character      --- the player
+     * @param remainingSteps --- how many steps left for the player to move.
      */
     public void setRemainingSteps(Character character, int remainingSteps) {
         game.setRemainingSteps(character, remainingSteps);
@@ -572,9 +626,8 @@ public class GUIClient extends JFrame {
      * be added in.<br>
      * <br>
      * This ensured order is to make the option menu more predictable.
-     * 
-     * @param character
-     *            --- the player
+     *
+     * @param character --- the player
      * @return --- a list of positions that are all movable.
      */
     public List<Position> getMovablePositions(Character character) {
@@ -690,9 +743,8 @@ public class GUIClient extends JFrame {
 
     /**
      * A helper method to create a titled border
-     * 
-     * @param string
-     *            --- the border tile
+     *
+     * @param string --- the border tile
      * @return --- a titled border
      */
     private TitledBorder creatTitledBorder(String string) {
@@ -706,27 +758,23 @@ public class GUIClient extends JFrame {
 
     /**
      * Main method to start the game.
-     * 
-     * @param args
-     *            --- who cares it in GUI?
+     *
+     * @param args --- who cares it in GUI?
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new GUIClient();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                new GUIClient();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
 
     /**
      * A helper method to load image
-     * 
-     * @param filename
-     *            --- the file name
+     *
+     * @param filename --- the file name
      * @return --- the Image object of the given file
      */
     public static Image loadImage(String filename) {

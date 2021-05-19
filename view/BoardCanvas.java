@@ -1,5 +1,20 @@
 package view;
 
+
+import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Set;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.text.Utilities;
+
+import configs.Configs;
+
 import card.Card;
 import card.Character;
 import card.Location;
@@ -10,6 +25,7 @@ import tile.Room;
 import tile.RoomTile;
 import tile.Tile;
 import ui.GUIClient;
+import utilities.WindowUtilities;
 import view.token.AbstractToken;
 import view.token.CharacterToken;
 import view.token.WeaponToken;
@@ -22,38 +38,29 @@ import java.util.Set;
 
 import static ui.GUIClient.loadImage;
 
-@SuppressWarnings("serial")
-public class  BoardCanvas extends JPanel {
+
+public class BoardCanvas extends JPanel implements ComponentListener {
+
 
     /**
      * The width and Height of each Tile. Note this constant is important as most of board
      * display is calculated based upon this value
      */
-    private static final int TILE_WIDTH = 32;
+    private static int TILE_WIDTH = WindowUtilities.getWidth() / (2 * Configs.BOARD_WIDTH);
+
+    private static int TILE_HEIGHT = WindowUtilities.getHeight() / (Configs.BOARD_HEIGHT);
+
     /**
      * The width of board
      */
-    public static int BOARD_IMG_WIDTH = TILE_WIDTH * Configs.BOARD_WIDTH;
+
+    public static int BOARD_IMG_WIDTH;
     /**
      * The height of board
      */
-    public static int BOARD_IMG_HEIGHT = TILE_WIDTH * Configs.BOARD_HEIGHT;
-    /**
-     * the padding size on left
-     */
-    public static final int PADDING_LEFT = 10;
-    /**
-     * the padding size on right
-     */
-    public static final int PADDING_RIGHT = PADDING_LEFT;
-    /**
-     * the padding size on Top
-     */
-    public static final int PADDING_TOP = 20;
-    /**
-     * the padding size on down
-     */
-    public static final int PADDING_DOWN = PADDING_LEFT;
+    public static int BOARD_IMG_HEIGHT;
+
+
     /**
      * Game's main GUI
      */
@@ -72,6 +79,14 @@ public class  BoardCanvas extends JPanel {
     public BoardCanvas(GUIClient guiClient) {
         super();
         this.gui = guiClient;
+        this.addComponentListener(this);
+        this.setBorder(new EmptyBorder(10,10,10,10));
+        int width = WindowUtilities.getWidth();
+        int height = WindowUtilities.getHeight();
+        TILE_WIDTH =  width / (2 * Configs.BOARD_WIDTH);
+        TILE_HEIGHT = height / (Configs.BOARD_HEIGHT);
+        BOARD_IMG_WIDTH = WindowUtilities.getWidth() / 2;
+        BOARD_IMG_HEIGHT = WindowUtilities.getHeight();
         addMouseListenerOnBoard(this);
 
         // we use absolute layout
@@ -88,6 +103,9 @@ public class  BoardCanvas extends JPanel {
             this.add(weaponTokens[i]);
         }
 
+        CROSS_ON_ROOM = createCrossOnRoom();
+        QUESTION_ON_ROOM = creatQuestionOnRoom();
+
         // add question marks and cross for easy mode
         for (int i = 0; i < QUESTION_ON_ROOM.length; i++) {
             this.add(QUESTION_ON_ROOM[i]);
@@ -103,6 +121,13 @@ public class  BoardCanvas extends JPanel {
         update();
     }
 
+    public static void refreshScreen() {
+        TILE_WIDTH = WindowUtilities.getWidth() / (2 * Configs.BOARD_WIDTH);
+        TILE_HEIGHT = WindowUtilities.getHeight() / (Configs.BOARD_HEIGHT);
+        BOARD_IMG_WIDTH = WindowUtilities.getWidth() / 2;
+        BOARD_IMG_HEIGHT = TILE_HEIGHT * Configs.BOARD_HEIGHT;
+    }
+
     /**
      * This method ask gui for game's status, and update the display of player panel.
      */
@@ -111,7 +136,8 @@ public class  BoardCanvas extends JPanel {
         WeaponToken[] weaponTokens = gui.getWeaponTokens();
         Set<Card> knownCards = gui.getKnownCards();
         boolean isEasyMode = gui.isEasyMode();
-
+        BoardCanvas.refreshScreen();
+        setPreferredSize(new Dimension(BOARD_IMG_WIDTH,BOARD_IMG_HEIGHT));
         // if it is easy mode, draw some cross or question marks on rooms
         if (isEasyMode) {
             for (Location l : Location.values()) {
@@ -182,10 +208,10 @@ public class  BoardCanvas extends JPanel {
      *            --- the vertical coordinate
      */
     private void setCharacterTokenOnTile(CharacterToken characterToken, int x, int y) {
-        int height = characterToken.getIcon().getIconHeight();
-        int width = characterToken.getIcon().getIconWidth();
-        characterToken.setBounds(PADDING_LEFT + TILE_WIDTH * x,
-                PADDING_TOP + TILE_WIDTH * y - (height - TILE_WIDTH + 2), width, height);
+        int height = TILE_HEIGHT;
+        int width = TILE_WIDTH;
+        characterToken.setBounds(TILE_WIDTH * x,
+                TILE_HEIGHT * y, width, height);
     }
 
     /**
@@ -199,8 +225,8 @@ public class  BoardCanvas extends JPanel {
     private void setTokenInRoom(JLabel token, RoomTile roomTile) {
         int height = token.getIcon().getIconHeight();
         int width = token.getIcon().getIconWidth();
-        token.setBounds(PADDING_LEFT + TILE_WIDTH * roomTile.getX(),
-                PADDING_TOP + TILE_WIDTH * roomTile.getY() - (height - TILE_WIDTH + 2),
+        token.setBounds( TILE_WIDTH * roomTile.getX(),
+                TILE_HEIGHT * roomTile.getY() - (height - TILE_HEIGHT + 2),
                 width, height);
     }
 
@@ -237,8 +263,8 @@ public class  BoardCanvas extends JPanel {
             int width = AbstractToken.QUESTION_ICON.getIconWidth();
             int Height = AbstractToken.QUESTION_ICON.getIconHeight();
 
-            questionIcons[i].setBounds(PADDING_LEFT + TILE_WIDTH * EASYMODE_POS[i][0],
-                    PADDING_TOP + TILE_WIDTH * EASYMODE_POS[i][1], width, Height);
+            questionIcons[i].setBounds( TILE_WIDTH * EASYMODE_POS[i][0],
+                    TILE_HEIGHT * EASYMODE_POS[i][1], width, Height);
             questionIcons[i].setVisible(false);
         }
         return questionIcons;
@@ -257,8 +283,8 @@ public class  BoardCanvas extends JPanel {
             int width = AbstractToken.CROSS_ICON.getIconWidth();
             int Height = AbstractToken.CROSS_ICON.getIconHeight();
 
-            crossIcons[i].setBounds(PADDING_LEFT + TILE_WIDTH * EASYMODE_POS[i][0],
-                    PADDING_TOP + TILE_WIDTH * EASYMODE_POS[i][1], width, Height);
+            crossIcons[i].setBounds(TILE_WIDTH * EASYMODE_POS[i][0],
+                    TILE_HEIGHT * EASYMODE_POS[i][1], width, Height);
             crossIcons[i].setVisible(false);
         }
         return crossIcons;
@@ -342,11 +368,9 @@ public class  BoardCanvas extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(GAME_BOARD, PADDING_LEFT, PADDING_TOP, this);
-        /*
-         * TODO draw rectangle on movable positions, so that a clicking on it can actually
-         * move the player there
-         */
+        g.drawImage(GAME_BOARD, 0, 5, BOARD_IMG_WIDTH, BOARD_IMG_HEIGHT, this);
+
+        repaint();
     }
 
     /**
@@ -383,10 +407,30 @@ public class  BoardCanvas extends JPanel {
      * A serious of cross icons for each room. These icons are used to give the player a
      * help in easy mode
      */
-    private static final JLabel[] CROSS_ON_ROOM = createCrossOnRoom();
+    private static JLabel[] CROSS_ON_ROOM;
     /**
      * a serious of question mark icons for each room. These icons are used to give the
      * player a help in easy mode
      */
-    private static final JLabel[] QUESTION_ON_ROOM = creatQuestionOnRoom();
+    private static JLabel[] QUESTION_ON_ROOM;
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+        update();
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {
+
+    }
+
+    @Override
+    public void componentShown(ComponentEvent e) {
+
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent e) {
+
+    }
 }

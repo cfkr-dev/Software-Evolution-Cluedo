@@ -1,15 +1,8 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Insets;
+import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -30,6 +23,7 @@ import card.Card;
 import card.Character;
 import card.Location;
 import card.Weapon;
+import utilities.WindowUtilities;
 import view.dialogs.ExitRoomDialog;
 
 import static ui.GUIClient.loadImage;
@@ -39,57 +33,62 @@ import static ui.GUIClient.loadImage;
  * functionalities are: displaying cards in hand; displaying cards left undealt;
  * displaying dices; providing buttons to move, roll dice, make suggestion and make
  * accusation; and displaying a profile picture.
- * 
- * @author Hector
  *
+ * @author Hector
  */
 
-public class PlayerPanelCanvas extends JPanel {
+public class PlayerPanelCanvas extends JPanel implements ComponentListener {
 
     // ============ some numbers for swing to set size =============
 
     /**
      * Panel width
      */
-    public static final int WIDTH = 700;
+    public static int WIDTH = BoardCanvas.BOARD_IMG_WIDTH;
     /**
      * Panel height
      */
-    private static final int HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
+    private static int HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
     /**
      * the height of sub-panel for displaying cards in hand
      */
-    private static final int SOUTH_PANEL_HEIGHT = 220;
+    private static int SOUTH_PANEL_HEIGHT = HEIGHT / 4;
     /**
      * the height of sub-panel for displaying cards left undealt
      */
-    private static final int NORTH_PANEL_HEIGHT = SOUTH_PANEL_HEIGHT;
+    private static int NORTH_PANEL_HEIGHT = SOUTH_PANEL_HEIGHT;
     /**
      * the height of sub-panel for displaying buttons, dices, and profile picture
      */
-    private static final int CENTRE_PANEL_HEIGHT = HEIGHT - SOUTH_PANEL_HEIGHT
-            - NORTH_PANEL_HEIGHT;
+    private static int CENTRE_PANEL_HEIGHT = HEIGHT - (SOUTH_PANEL_HEIGHT
+            + NORTH_PANEL_HEIGHT);
     /**
      * the width of the sub-panel for displaying profile picture
      */
-    private static final int WEST_PANEL_WIDTH = 230;
+    private static int WEST_PANEL_WIDTH = WIDTH / 4;
     /**
      * the width of the button panel on mid-east (of the BorderLayout, not of the
      * world...)
      */
-    private static final int EAST_PANEL_WIDTH = 320;
+    private static int EAST_PANEL_WIDTH = WIDTH / 2;
+    /**
+     * the width of the dice panel
+     */
+    private static int CENTRE_PANEL_WIDTH = WIDTH - (WEST_PANEL_WIDTH + EAST_PANEL_WIDTH);
     /**
      * the padding size on left
      */
-    public static final int PADDING_LEFT = BoardCanvas.PADDING_LEFT;
+    public static final int PADDING_LEFT = 0;
     /**
      * the padding size on right
      */
-    public static final int PADDING_RIGHT = BoardCanvas.PADDING_RIGHT;
+    public static final int PADDING_RIGHT = 0;
     /**
      * the padding size on top
      */
-    private static final int PADDING_TOP = BoardCanvas.PADDING_TOP;
+    private static final int PADDING_TOP = 0;
+
+    private static int FONT_SIZE;
 
     // ============== swing components ======================
 
@@ -101,6 +100,11 @@ public class PlayerPanelCanvas extends JPanel {
      * The sub-panel for displaying cards in hand
      */
     private JPanel cardsInHandPanel;
+
+    private JPanel buttonPanel;
+
+    private JPanel dicePanel;
+
     /**
      * The label for displaying profile picture
      */
@@ -124,7 +128,7 @@ public class PlayerPanelCanvas extends JPanel {
     /**
      * The button for taking the secret passage
      */
-    private JButton SecPasButton;
+    private JButton secPasButton;
     /**
      * The button for moving left
      */
@@ -154,6 +158,10 @@ public class PlayerPanelCanvas extends JPanel {
      */
     private JButton accusationButton;
 
+    // ======== Test ========
+
+    private JLabel remainingCardLabel;
+
     // ======== Other fields that actually holds logic =========
 
     /**
@@ -181,19 +189,8 @@ public class PlayerPanelCanvas extends JPanel {
      */
     private int remainingSteps;
 
-    /**
-     * Construct a custom panel for display player related information
-     * 
-     * @param guiClient
-     *            --- the Main GUI of this game
-     */
-    public PlayerPanelCanvas(GUIClient guiClient) {
 
-        this.gui = guiClient;
-
-        // ================== BorderLayout =====================
-        this.setLayout(new BorderLayout(5, 5));
-
+    private void createRemainingCards() {
         // =================== North, remaining cards =====================
         remainingCardsPanel = new JPanel();
         remainingCardsPanel.setBackground(null);
@@ -201,10 +198,10 @@ public class PlayerPanelCanvas extends JPanel {
         remainingCardsPanel.setPreferredSize(new Dimension(WIDTH, NORTH_PANEL_HEIGHT));
         remainingCardsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         remainingCardsPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
+        this.addComponentListener(this);
         // a Label to show some artsy fonts
-        JLabel remainingCardLabel = new JLabel(
-                new ImageIcon(loadImage("Remaining_Cards.png")), SwingConstants.CENTER);
+        remainingCardLabel = new JLabel(REMAINING_CARDS_IMAGE, SwingConstants.CENTER);
+        remainingCardLabel.setFont(new Font("Calibre", 1, FONT_SIZE));
         remainingCardsPanel.add(remainingCardLabel);
 
         // display remaining cards.
@@ -219,7 +216,7 @@ public class PlayerPanelCanvas extends JPanel {
         for (Card c : remainingCards) {
             if (c instanceof Character) {
                 Character ch = (Character) c;
-                remainingCardsPanel.add(CHRACTER_LABELS[ch.ordinal()]);
+                remainingCardsPanel.add(CHARACTER_LABELS[ch.ordinal()]);
             } else if (c instanceof Weapon) {
                 Weapon we = (Weapon) c;
                 remainingCardsPanel.add(WEAPON_LABELS[we.ordinal()]);
@@ -228,6 +225,21 @@ public class PlayerPanelCanvas extends JPanel {
                 remainingCardsPanel.add(LOCATION_LABELS[lo.ordinal()]);
             }
         }
+    }
+
+    /**
+     * Construct a custom panel for display player related information
+     *
+     * @param guiClient --- the Main GUI of this game
+     */
+    public PlayerPanelCanvas(GUIClient guiClient) {
+
+        this.gui = guiClient;
+
+        // ================== BorderLayout =====================
+        this.setLayout(new BorderLayout(5, 5));
+
+        createRemainingCards();
 
         // ============== west, a player's profile picture ===============
         profileLabel = new JLabel();
@@ -240,10 +252,11 @@ public class PlayerPanelCanvas extends JPanel {
         // ============== centre, dice or dices ====================
 
         // panel for dices
-        JPanel dicePanel = new JPanel();
+        dicePanel = new JPanel();
         dicePanel.setBackground(null);
         dicePanel.setOpaque(false);
         dicePanel.setLayout(new BoxLayout(dicePanel, BoxLayout.X_AXIS));
+        dicePanel.setPreferredSize(new Dimension(CENTRE_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
 
         // another panel to make the dice centre-aligned
         JPanel diceGroup = new JPanel();
@@ -278,7 +291,7 @@ public class PlayerPanelCanvas extends JPanel {
                 PADDING_LEFT, PADDING_LEFT));
 
         // ============ east, buttons ===================
-        JPanel buttonPanel = new JPanel();
+        buttonPanel = new JPanel();
         buttonPanel.setBackground(null);
         buttonPanel.setOpaque(false);
         buttonPanel
@@ -291,7 +304,7 @@ public class PlayerPanelCanvas extends JPanel {
         remainingStepLabel = new JLabel();
         remainingStepLabel.setBackground(null);
         remainingStepLabel.setOpaque(false);
-        remainingStepLabel.setFont(new Font("Calibre", 1, 20));
+        remainingStepLabel.setFont(new Font("Calibre", 1, FONT_SIZE));
         remainingStepLabel.setForeground(Color.DARK_GRAY);
         remainingStepLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         remainingStepLabel.setBorder(BorderFactory.createEmptyBorder(PADDING_LEFT,
@@ -312,9 +325,9 @@ public class PlayerPanelCanvas extends JPanel {
         enterExitRoom.setEnabled(false);
         upButton = createButton(UP_DEFAULT_IMG, UP_PRESSED_IMG, MOVE_DISABLED_IMG,
                 MOVE_BUTTON_SIZE);
-        SecPasButton = createButton(SECPAS_DEFAULT_IMG, SECPAS_PRESSED_IMG,
+        secPasButton = createButton(SECPAS_DEFAULT_IMG, SECPAS_PRESSED_IMG,
                 MOVE_DISABLED_IMG, MOVE_BUTTON_SIZE);
-        SecPasButton.setEnabled(false);
+        secPasButton.setEnabled(false);
         leftButton = createButton(LEFT_DEFAULT_IMG, LEFT_PRESSED_IMG, MOVE_DISABLED_IMG,
                 MOVE_BUTTON_SIZE);
         downButton = createButton(DOWN_DEFAULT_IMG, DOWN_PRESSED_IMG, MOVE_DISABLED_IMG,
@@ -325,7 +338,7 @@ public class PlayerPanelCanvas extends JPanel {
         // add listener on them
         enterExitRoom.addActionListener(e -> clickOnEnterExitRoom());
         upButton.addActionListener(e -> clickOnUp());
-        SecPasButton.addActionListener(e -> clickOnSecretPass());
+        secPasButton.addActionListener(e -> clickOnSecretPass());
         leftButton.addActionListener(e -> clickOnLeft());
         downButton.addActionListener(e -> clickOnDown());
         rightButton.addActionListener(e -> clickOnRight());
@@ -333,7 +346,7 @@ public class PlayerPanelCanvas extends JPanel {
         // add button into the panel
         movePanel.add(enterExitRoom);
         movePanel.add(upButton);
-        movePanel.add(SecPasButton);
+        movePanel.add(secPasButton);
         movePanel.add(leftButton);
         movePanel.add(downButton);
         movePanel.add(rightButton);
@@ -391,7 +404,7 @@ public class PlayerPanelCanvas extends JPanel {
         for (Card c : cardsInHand) {
             if (c instanceof Character) {
                 Character ch = (Character) c;
-                cardsInHandPanel.add(CHRACTER_LABELS[ch.ordinal()]);
+                cardsInHandPanel.add(CHARACTER_LABELS[ch.ordinal()]);
             } else if (c instanceof Weapon) {
                 Weapon we = (Weapon) c;
                 cardsInHandPanel.add(WEAPON_LABELS[we.ordinal()]);
@@ -411,12 +424,40 @@ public class PlayerPanelCanvas extends JPanel {
 
         // update the panel
         update();
+        refreshScreen();
     }
+
+    public void refreshScreen() {
+
+        HEIGHT = WindowUtilities.getHeight();
+        WIDTH = WindowUtilities.getWidth() / 2;
+        SOUTH_PANEL_HEIGHT = HEIGHT / 4;
+        NORTH_PANEL_HEIGHT = SOUTH_PANEL_HEIGHT;
+        CENTRE_PANEL_HEIGHT = HEIGHT - (SOUTH_PANEL_HEIGHT
+                + NORTH_PANEL_HEIGHT);
+        EAST_PANEL_WIDTH = WIDTH / 2;
+        WEST_PANEL_WIDTH = WIDTH / 4;
+        CENTRE_PANEL_WIDTH = WIDTH - (EAST_PANEL_WIDTH + WEST_PANEL_WIDTH);
+        MOVE_BUTTON_SIZE = new Dimension(WIDTH / 18, HEIGHT / 15);
+        ACTION_BUTTON_SIZE = new Dimension(WIDTH / 11, HEIGHT / 15);
+        FONT_SIZE = HEIGHT / 41;
+
+        remainingCardsPanel.setPreferredSize(new Dimension(WIDTH, NORTH_PANEL_HEIGHT));
+        buttonPanel.setPreferredSize(new Dimension(EAST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
+        cardsInHandPanel.setPreferredSize(new Dimension(WIDTH, SOUTH_PANEL_HEIGHT));
+        profileLabel.setPreferredSize(new Dimension(WEST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
+        dicePanel.setPreferredSize(new Dimension(CENTRE_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
+        remainingStepLabel.setFont(new Font("Calibre", 1, FONT_SIZE));
+        remainingCardLabel.setFont(new Font("Calibre", 1, FONT_SIZE));
+    }
+
 
     /**
      * This method ask gui for game's status, and update the display of player panel.
      */
     public void update() {
+
+
         // ============== west, a player's character picture ===============
         currentPlayer = gui.getCurrentPlayer();
         profileLabel.setIcon(PROFILE_IMG[currentPlayer.ordinal()]);
@@ -431,6 +472,7 @@ public class PlayerPanelCanvas extends JPanel {
         // ============ east, buttons panel ===================
         validateButtons();
 
+
         // ================= south, cards in hand =================
         // remove old components
         for (Component com : cardsInHandPanel.getComponents()) {
@@ -441,7 +483,7 @@ public class PlayerPanelCanvas extends JPanel {
         for (Card c : cardsInHand) {
             if (c instanceof Character) {
                 Character ch = (Character) c;
-                cardsInHandPanel.add(CHRACTER_LABELS[ch.ordinal()]);
+                cardsInHandPanel.add(CHARACTER_LABELS[ch.ordinal()]);
             } else if (c instanceof Weapon) {
                 Weapon we = (Weapon) c;
                 cardsInHandPanel.add(WEAPON_LABELS[we.ordinal()]);
@@ -459,7 +501,8 @@ public class PlayerPanelCanvas extends JPanel {
         this.setVisible(true);
         this.updateUI();
         this.repaint();
-        this.repaint();
+        refreshScreen();
+        resetImages();
     }
 
     /**
@@ -478,7 +521,7 @@ public class PlayerPanelCanvas extends JPanel {
         if (remainingSteps == 0) {
             enterExitRoom.setEnabled(false);
             upButton.setEnabled(false);
-            SecPasButton.setEnabled(false);
+            secPasButton.setEnabled(false);
             leftButton.setEnabled(false);
             downButton.setEnabled(false);
             rightButton.setEnabled(false);
@@ -492,7 +535,7 @@ public class PlayerPanelCanvas extends JPanel {
         // let's disable most actions
         enterExitRoom.setEnabled(false);
         upButton.setEnabled(false);
-        SecPasButton.setEnabled(false);
+        secPasButton.setEnabled(false);
         leftButton.setEnabled(false);
         downButton.setEnabled(false);
         rightButton.setEnabled(false);
@@ -615,7 +658,7 @@ public class PlayerPanelCanvas extends JPanel {
         // if the player is in a room, and there is a secret passage
         if (gui.getBoard().lookForSecPas(player) != null) {
             // in a room, have a secret passage
-            SecPasButton.setEnabled(true);
+            secPasButton.setEnabled(true);
         }
 
         // validate the roll dice button
@@ -891,7 +934,7 @@ public class PlayerPanelCanvas extends JPanel {
      * no, do nothing.
      */
     public void tryClickOnSecretOass() {
-        if (SecPasButton.isEnabled()) {
+        if (secPasButton.isEnabled()) {
             clickOnSecretPass();
         }
     }
@@ -920,19 +963,15 @@ public class PlayerPanelCanvas extends JPanel {
 
     /**
      * A helper method to create a JButton object, and set its attributes to fit the GUI.
-     * 
-     * @param defaultIcon
-     *            --- the image used as the default image
-     * @param pressedIcon
-     *            --- the image used as the "pressed" image
-     * @param disabledIcon
-     *            --- the image used as the disabled image
-     * @param dimension
-     *            --- the preferred size of this JButton
+     *
+     * @param defaultIcon  --- the image used as the default image
+     * @param pressedIcon  --- the image used as the "pressed" image
+     * @param disabledIcon --- the image used as the disabled image
+     * @param dimension    --- the preferred size of this JButton
      * @return --- a JButton instance
      */
     private JButton createButton(ImageIcon defaultIcon, ImageIcon pressedIcon,
-            ImageIcon disabledIcon, Dimension dimension) {
+                                 ImageIcon disabledIcon, Dimension dimension) {
         JButton button = new JButton();
         button.setBackground(null);
         button.setPreferredSize(dimension);
@@ -950,13 +989,11 @@ public class PlayerPanelCanvas extends JPanel {
 
     /**
      * A helper method to create a JLabel object for displaying the cards.
-     * 
-     * @param cardImg
-     *            --- the image used to display the card
-     * @param example
-     *            --- a Character or a Weapon or a Location card, as example. This
-     *            argument is used to decide the type of this card, and look for
-     *            appropriate image accordingly
+     *
+     * @param cardImg --- the image used to display the card
+     * @param example --- a Character or a Weapon or a Location card, as example. This
+     *                argument is used to decide the type of this card, and look for
+     *                appropriate image accordingly
      * @return --- a JLabel object to represents the card
      */
     private static JLabel[] createCardLabel(ImageIcon[] cardImg, Card example) {
@@ -980,11 +1017,12 @@ public class PlayerPanelCanvas extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(PLAYER_PANEL, PADDING_LEFT, PADDING_TOP, WIDTH, HEIGHT, this);
+        g.drawImage(PLAYER_PANEL, 0, 0, this.getWidth(), this.getHeight(), this);
     }
 
     // ============== Static Images ========================
 
+    public static ImageIcon REMAINING_CARDS_IMAGE = new ImageIcon(loadImage("Remaining_Cards.png"), "Remaining_Cards.png");
     /**
      * The background image of player panel
      */
@@ -994,58 +1032,58 @@ public class PlayerPanelCanvas extends JPanel {
      * Six profile images
      */
     public static final ImageIcon[] PROFILE_IMG = {
-            new ImageIcon(loadImage("Profile_Miss_Scarlet.png")),
-            new ImageIcon(loadImage("Profile_Colonel_Mustard.png")),
-            new ImageIcon(loadImage("Profile_Mrs_White.png")),
-            new ImageIcon(loadImage("Profile_The_Reverend_Green.png")),
-            new ImageIcon(loadImage("Profile_Mrs_Peacock.png")),
-            new ImageIcon(loadImage("Profile_Professor_Plum.png")) };
+            new ImageIcon(loadImage("Profile_Miss_Scarlet.png"), "Profile_Miss_Scarlet.png"),
+            new ImageIcon(loadImage("Profile_Colonel_Mustard.png"), "Profile_Colonel_Mustard.png"),
+            new ImageIcon(loadImage("Profile_Mrs_White.png"), "Profile_Mrs_White.png"),
+            new ImageIcon(loadImage("Profile_The_Reverend_Green.png"), "Profile_The_Reverend_Green.png"),
+            new ImageIcon(loadImage("Profile_Mrs_Peacock.png"), "Profile_Mrs_Peacock.png"),
+            new ImageIcon(loadImage("Profile_Professor_Plum.png"), "Profile_Professor_Plum.png")};
     /**
      * Images for displaying dices
      */
-    private static final ImageIcon[] DICE_IMG = { new ImageIcon(loadImage("Dice_1.png")),
-            new ImageIcon(loadImage("Dice_2.png")),
-            new ImageIcon(loadImage("Dice_3.png")),
-            new ImageIcon(loadImage("Dice_4.png")),
-            new ImageIcon(loadImage("Dice_5.png")),
-            new ImageIcon(loadImage("Dice_6.png")) };
+    private static final ImageIcon[] DICE_IMG = {new ImageIcon(loadImage("Dice_1.png"), "Dice_1.png"),
+            new ImageIcon(loadImage("Dice_2.png"), "Dice_2.png"),
+            new ImageIcon(loadImage("Dice_3.png"), "Dice_3.png"),
+            new ImageIcon(loadImage("Dice_4.png"), "Dice_4.png"),
+            new ImageIcon(loadImage("Dice_5.png"), "Dice_5.png"),
+            new ImageIcon(loadImage("Dice_6.png"), "Dice_5.png")};
     /**
      * Images for displaying Character cards
      */
     public static final ImageIcon[] CHARACTER_IMG = {
-            new ImageIcon(loadImage("Character_Miss_Scarlet.png")),
-            new ImageIcon(loadImage("Character_Colonel_Mustard.png")),
-            new ImageIcon(loadImage("Character_Mrs_White.png")),
-            new ImageIcon(loadImage("Character_The_Reverend_Green.png")),
-            new ImageIcon(loadImage("Character_Mrs_Peacock.png")),
-            new ImageIcon(loadImage("Character_Professor_Plum.png")) };
+            new ImageIcon(loadImage("Character_Miss_Scarlet.png"), "Character_Miss_Scarlet.png"),
+            new ImageIcon(loadImage("Character_Colonel_Mustard.png"), "Character_Colonel_Mustard.png"),
+            new ImageIcon(loadImage("Character_Mrs_White.png"), "Character_Mrs_White.png"),
+            new ImageIcon(loadImage("Character_The_Reverend_Green.png"), "Character_The_Reverend_Green.png"),
+            new ImageIcon(loadImage("Character_Mrs_Peacock.png"), "Character_Mrs_Peacock.png"),
+            new ImageIcon(loadImage("Character_Professor_Plum.png"), "Character_Professor_Plum.png")};
     /**
      * Images for displaying Weapon cards
      */
     public static final ImageIcon[] WEAPON_IMG = {
-            new ImageIcon(loadImage("Weapon_Candlestick.png")),
-            new ImageIcon(loadImage("Weapon_Dagger.png")),
-            new ImageIcon(loadImage("Weapon_Lead_Pipe.png")),
-            new ImageIcon(loadImage("Weapon_Revolver.png")),
-            new ImageIcon(loadImage("Weapon_Rope.png")),
-            new ImageIcon(loadImage("Weapon_Spanner.png")) };
+            new ImageIcon(loadImage("Weapon_Candlestick.png"), "Weapon_Candlestick.png"),
+            new ImageIcon(loadImage("Weapon_Dagger.png"), "Weapon_Dagger.png"),
+            new ImageIcon(loadImage("Weapon_Lead_Pipe.png"), "Weapon_Lead_Pipe.png"),
+            new ImageIcon(loadImage("Weapon_Revolver.png"), "Weapon_Revolver.png"),
+            new ImageIcon(loadImage("Weapon_Rope.png"), "Weapon_Rope.png"),
+            new ImageIcon(loadImage("Weapon_Spanner.png"), "Weapon_Spanner.png")};
     /**
      * Images for displaying Location cards
      */
     public static final ImageIcon[] LOCATION_IMG = {
-            new ImageIcon(loadImage("Location_Kitchen.png")),
-            new ImageIcon(loadImage("Location_Ball_room.png")),
-            new ImageIcon(loadImage("Location_Conservatory.png")),
-            new ImageIcon(loadImage("Location_Billard_Room.png")),
-            new ImageIcon(loadImage("Location_Library.png")),
-            new ImageIcon(loadImage("Location_Study.png")),
-            new ImageIcon(loadImage("Location_Hall.png")),
-            new ImageIcon(loadImage("Location_Lounge.png")),
-            new ImageIcon(loadImage("Location_Dining_Room.png")) };
+            new ImageIcon(loadImage("Location_Kitchen.png"), "Location_Kitchen.png"),
+            new ImageIcon(loadImage("Location_Ball_room.png"), "Location_Ball_room.png"),
+            new ImageIcon(loadImage("Location_Conservatory.png"), "Location_Conservatory.png"),
+            new ImageIcon(loadImage("Location_Billard_Room.png"), "Location_Billard_Room.png"),
+            new ImageIcon(loadImage("Location_Library.png"), "Location_Library.png"),
+            new ImageIcon(loadImage("Location_Study.png"), "Location_Study.png"),
+            new ImageIcon(loadImage("Location_Hall.png"), "Location_Hall.png"),
+            new ImageIcon(loadImage("Location_Lounge.png"), "Location_Lounge.png"),
+            new ImageIcon(loadImage("Location_Dining_Room.png"), "Location_Dining_Room.png")};
     /**
      * JLabel objects for displaying Character cards
      */
-    private static final JLabel[] CHRACTER_LABELS = createCardLabel(CHARACTER_IMG,
+    private static final JLabel[] CHARACTER_LABELS = createCardLabel(CHARACTER_IMG,
             Character.get(0));
     /**
      * JLabel objects for displaying Weapon cards
@@ -1060,130 +1098,286 @@ public class PlayerPanelCanvas extends JPanel {
     /**
      * The preferred size of move buttons
      */
-    private static final Dimension MOVE_BUTTON_SIZE = new Dimension(85, 55);
+    private static Dimension MOVE_BUTTON_SIZE = new Dimension(WIDTH / 18, HEIGHT / 15);
     /**
      * The preferred size of action buttons
      */
-    private static final Dimension ACTION_BUTTON_SIZE = new Dimension(135, 55);
+    private static Dimension ACTION_BUTTON_SIZE = new Dimension(WIDTH / 11, HEIGHT / 15);
     /**
      * An image for displaying disabled action button
      */
-    private static final ImageIcon ACTION_DISABLED_IMG = new ImageIcon(
-            loadImage("Button_Action_Disabled.png"));
+    private static ImageIcon ACTION_DISABLED_IMG = new ImageIcon(
+            loadImage("Button_Action_Disabled.png"), "Button_Action_Disabled.png");
     /**
      * An image for displaying disabled move button
      */
-    private static final ImageIcon MOVE_DISABLED_IMG = new ImageIcon(
-            loadImage("Button_Movement_Disabled.png"));
+    private static ImageIcon MOVE_DISABLED_IMG = new ImageIcon(
+            loadImage("Button_Movement_Disabled.png"), "Button_Movement_Disabled.png");
     /**
      * An image for displaying default up button
      */
-    private static final ImageIcon UP_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_Up_Default.png"));
+    private static ImageIcon UP_DEFAULT_IMG = new ImageIcon(
+            loadImage("Button_Up_Default.png"), "Button_Up_Default.png");
     /**
      * An image for displaying pressed up button
      */
-    private static final ImageIcon UP_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_Up_Pressed.png"));
+    private static ImageIcon UP_PRESSED_IMG = new ImageIcon(
+            loadImage("Button_Up_Pressed.png"), "Button_Up_Pressed.png");
     /**
      * An image for displaying default down button
      */
-    private static final ImageIcon DOWN_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_Down_Default.png"));
+    private static ImageIcon DOWN_DEFAULT_IMG = new ImageIcon(
+            loadImage("Button_Down_Default.png"), "Button_Down_Default.png");
     /**
      * An image for displaying pressed down button
      */
-    private static final ImageIcon DOWN_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_Down_Pressed.png"));
+    private static ImageIcon DOWN_PRESSED_IMG = new ImageIcon(
+            loadImage("Button_Down_Pressed.png"), "Button_Down_Pressed.png");
     /**
      * An image for displaying default left button
      */
-    private static final ImageIcon LEFT_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_Left_Default.png"));
+    private static ImageIcon LEFT_DEFAULT_IMG = new ImageIcon(
+            loadImage("Button_Left_Default.png"), "Button_Left_Default.png");
     /**
      * An image for displaying pressed left button
      */
-    private static final ImageIcon LEFT_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_Left_Pressed.png"));
+    private static ImageIcon LEFT_PRESSED_IMG = new ImageIcon(
+            loadImage("Button_Left_Pressed.png"), "Button_Left_Pressed.png");
     /**
      * An image for displaying default right button
      */
-    private static final ImageIcon RIGHT_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_Right_Default.png"));
+    private static ImageIcon RIGHT_DEFAULT_IMG = new ImageIcon(
+            loadImage("Button_Right_Default.png"), "Button_Right_Default.png");
     /**
      * An image for displaying pressed right button
      */
-    private static final ImageIcon RIGHT_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_Right_Pressed.png"));
+    private static ImageIcon RIGHT_PRESSED_IMG = new ImageIcon(
+            loadImage("Button_Right_Pressed.png"), "Button_Right_Pressed.png");
     /**
      * An image for displaying default enter room button
      */
-    private static final ImageIcon ENTER_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_EnterRoom_Default.png"));
+    private static ImageIcon ENTER_DEFAULT_IMG = new ImageIcon(
+            loadImage("Button_EnterRoom_Default.png"), "Button_EnterRoom_Default.png");
     /**
      * An image for displaying pressed enter room button
      */
-    private static final ImageIcon ENTER_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_EnterRoom_Pressed.png"));
+    private static ImageIcon ENTER_PRESSED_IMG = new ImageIcon(
+            loadImage("Button_EnterRoom_Pressed.png"), "Button_EnterRoom_Pressed.png");
     /**
      * An image for displaying default exit room button
      */
-    private static final ImageIcon EXIT_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_ExitRoom_Default.png"));
+    private static ImageIcon EXIT_DEFAULT_IMG = new ImageIcon(
+            loadImage("Button_ExitRoom_Default.png"), "Button_ExitRoom_Default.png");
     /**
      * An image for displaying pressed exit room button
      */
-    private static final ImageIcon EXIT_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_ExitRoom_Pressed.png"));
+    private static ImageIcon EXIT_PRESSED_IMG = new ImageIcon(
+            loadImage("Button_ExitRoom_Pressed.png"), "Button_ExitRoom_Pressed.png");
     /**
      * An image for displaying default secret passage button
      */
-    private static final ImageIcon SECPAS_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_SecretPass_Default.png"));
+    private static ImageIcon SECPAS_DEFAULT_IMG = new ImageIcon(
+            loadImage("Button_SecretPass_Default.png"), "Button_SecretPass_Default.png");
     /**
      * An image for displaying pressed secret passage button
      */
-    private static final ImageIcon SECPAS_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_SecretPass_Pressed.png"));
+    private static ImageIcon SECPAS_PRESSED_IMG = new ImageIcon(
+            loadImage("Button_SecretPass_Pressed.png"), "Button_SecretPass_Pressed.png");
     /**
      * An image for displaying default roll dice button
      */
-    private static final ImageIcon ROLLDICE_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_RollDice_Default.png"));
+    private static ImageIcon ROLLDICE_DEFAULT_IMG = new ImageIcon(
+            loadImage("Button_RollDice_Default.png"), "Button_RollDice_Default.png");
     /**
      * An image for displaying pressed roll dice button
      */
-    private static final ImageIcon ROLLDICE_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_RollDice_Pressed.png"));
+    private static ImageIcon ROLLDICE_PRESSED_IMG = new ImageIcon(
+            loadImage("Button_RollDice_Pressed.png"), "Button_RollDice_Pressed.png");
     /**
      * An image for displaying default end turn button
      */
-    private static final ImageIcon ENDTURN_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_EndTuen_Default.png"));
+    private static ImageIcon ENDTURN_DEFAULT_IMG = new ImageIcon(
+            loadImage("Button_EndTuen_Default.png"), "Button_EndTuen_Default.png");
     /**
      * An image for displaying pressed end turn button
      */
-    private static final ImageIcon ENDTURN_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_EndTuen_Pressed.png"));
+    private static ImageIcon ENDTURN_PRESSED_IMG = new ImageIcon(
+            loadImage("Button_EndTuen_Pressed.png"), "Button_EndTuen_Pressed.png");
     /**
      * An image for displaying default suggestion button
      */
-    private static final ImageIcon SUGGESTION_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_Suggestion_Default.png"));
+    private static ImageIcon SUGGESTION_DEFAULT_IMG = new ImageIcon(
+            loadImage("Button_Suggestion_Default.png"), "Button_Suggestion_Default.png");
     /**
      * An image for displaying pressed suggestion button
      */
-    private static final ImageIcon SUGGESTION_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_Suggestion_Pressed.png"));
+    private static ImageIcon SUGGESTION_PRESSED_IMG = new ImageIcon(
+            loadImage("Button_Suggestion_Pressed.png"), "Button_Suggestion_Pressed.png");
     /**
      * An image for displaying default accusation button
      */
-    private static final ImageIcon ACCUSATION_DEFAULT_IMG = new ImageIcon(
-            loadImage("Button_Accusation_Default.png"));
+    private static ImageIcon ACCUSATION_DEFAULT_IMG = new ImageIcon(
+            loadImage("Button_Accusation_Default.png"), "Button_Accusation_Default.png");
     /**
      * An image for displaying pressed accusation button
      */
-    private static final ImageIcon ACCUSATION_PRESSED_IMG = new ImageIcon(
-            loadImage("Button_Accusation_Pressed.png"));
+    private static ImageIcon ACCUSATION_PRESSED_IMG = new ImageIcon(
+            loadImage("Button_Accusation_Pressed.png"), "Button_Accusation_Pressed.png");
 
+    public void resetImages(){
+        REMAINING_CARDS_IMAGE = WindowUtilities.resizeImage(REMAINING_CARDS_IMAGE); // <--- Finally, the resizer works correctly :D
+        PROFILE_IMG[currentPlayer.ordinal()] = WindowUtilities.resizeImage(PROFILE_IMG[currentPlayer.ordinal()]);
+
+        // Create a method with all label setters. Very important: we need to know inside which are the all current player images!!!
+        profileLabel.setIcon(PROFILE_IMG[currentPlayer.ordinal()]);
+        remainingCardLabel.setIcon(REMAINING_CARDS_IMAGE);
+
+
+        for (Card c : cardsInHand) {
+            if (c instanceof Character) {
+                Character ch = (Character) c;
+                CHARACTER_IMG[ch.ordinal()] = WindowUtilities.resizeImage(CHARACTER_IMG[ch.ordinal()]);
+                CHARACTER_LABELS[ch.ordinal()].setIcon(CHARACTER_IMG[ch.ordinal()]);
+            } else if (c instanceof Weapon) {
+                Weapon we = (Weapon) c;
+                WEAPON_IMG[we.ordinal()] = WindowUtilities.resizeImage(WEAPON_IMG[we.ordinal()]);
+                WEAPON_LABELS[we.ordinal()].setIcon(WEAPON_IMG[we.ordinal()]);
+            } else {
+                Location lo = (Location) c;
+                LOCATION_IMG[lo.ordinal()] = WindowUtilities.resizeImage(LOCATION_IMG[lo.ordinal()]);
+                LOCATION_LABELS[lo.ordinal()].setIcon(LOCATION_IMG[lo.ordinal()]);
+            }
+        }
+
+        for (Card c : remainingCards) {
+            if (c instanceof Character) {
+                Character ch = (Character) c;
+                CHARACTER_IMG[ch.ordinal()] = WindowUtilities.resizeImage(CHARACTER_IMG[ch.ordinal()]);
+                CHARACTER_LABELS[ch.ordinal()].setIcon(CHARACTER_IMG[ch.ordinal()]);
+            } else if (c instanceof Weapon) {
+                Weapon we = (Weapon) c;
+                WEAPON_IMG[we.ordinal()] = WindowUtilities.resizeImage(WEAPON_IMG[we.ordinal()]);
+                WEAPON_LABELS[we.ordinal()].setIcon(WEAPON_IMG[we.ordinal()]);
+            } else {
+                Location lo = (Location) c;
+                LOCATION_IMG[lo.ordinal()] = WindowUtilities.resizeImage(LOCATION_IMG[lo.ordinal()]);
+                LOCATION_LABELS[lo.ordinal()].setIcon(LOCATION_IMG[lo.ordinal()]);
+            }
+        }
+
+        /*Resizing upbutton*/
+        UP_DEFAULT_IMG = WindowUtilities.resizeImage(UP_DEFAULT_IMG);
+        UP_PRESSED_IMG = WindowUtilities.resizeImage(UP_PRESSED_IMG);
+        MOVE_DISABLED_IMG = WindowUtilities.resizeImage(MOVE_DISABLED_IMG);
+        upButton.setPreferredSize(new Dimension(MOVE_DISABLED_IMG.getIconWidth(), MOVE_DISABLED_IMG.getIconWidth()));
+        upButton.setRolloverIcon(UP_DEFAULT_IMG);
+        upButton.setIcon(UP_DEFAULT_IMG);
+        upButton.setPressedIcon(UP_PRESSED_IMG);
+        upButton.setDisabledIcon(MOVE_DISABLED_IMG);
+
+        DOWN_DEFAULT_IMG = WindowUtilities.resizeImage(DOWN_DEFAULT_IMG);
+        DOWN_PRESSED_IMG = WindowUtilities.resizeImage(DOWN_PRESSED_IMG);
+        downButton.setPreferredSize(new Dimension(MOVE_DISABLED_IMG.getIconWidth(), MOVE_DISABLED_IMG.getIconWidth()));
+        downButton.setRolloverIcon(DOWN_DEFAULT_IMG);
+        downButton.setIcon(DOWN_DEFAULT_IMG);
+        downButton.setPressedIcon(DOWN_PRESSED_IMG);
+        downButton.setDisabledIcon(MOVE_DISABLED_IMG);
+
+        LEFT_DEFAULT_IMG = WindowUtilities.resizeImage(LEFT_DEFAULT_IMG);
+        LEFT_PRESSED_IMG = WindowUtilities.resizeImage(LEFT_PRESSED_IMG);
+        leftButton.setPreferredSize(new Dimension(MOVE_DISABLED_IMG.getIconWidth(), MOVE_DISABLED_IMG.getIconWidth()));
+        leftButton.setRolloverIcon(LEFT_DEFAULT_IMG);
+        leftButton.setIcon(LEFT_DEFAULT_IMG);
+        leftButton.setPressedIcon(LEFT_PRESSED_IMG);
+        leftButton.setDisabledIcon(MOVE_DISABLED_IMG);
+
+        RIGHT_DEFAULT_IMG = WindowUtilities.resizeImage(RIGHT_DEFAULT_IMG);
+        RIGHT_PRESSED_IMG = WindowUtilities.resizeImage(RIGHT_PRESSED_IMG);
+        rightButton.setPreferredSize(new Dimension(MOVE_DISABLED_IMG.getIconWidth(), MOVE_DISABLED_IMG.getIconWidth()));
+        rightButton.setRolloverIcon(RIGHT_DEFAULT_IMG);
+        rightButton.setIcon(RIGHT_DEFAULT_IMG);
+        rightButton.setPressedIcon(RIGHT_PRESSED_IMG);
+        rightButton.setDisabledIcon(MOVE_DISABLED_IMG);
+
+        ENTER_DEFAULT_IMG = WindowUtilities.resizeImage(ENTER_DEFAULT_IMG);
+        ENTER_PRESSED_IMG = WindowUtilities.resizeImage(ENTER_PRESSED_IMG);
+        enterExitRoom.setPreferredSize(new Dimension(MOVE_DISABLED_IMG.getIconWidth(), MOVE_DISABLED_IMG.getIconWidth()));
+        enterExitRoom.setRolloverIcon(ENTER_DEFAULT_IMG);
+        enterExitRoom.setIcon(ENTER_DEFAULT_IMG);
+        enterExitRoom.setPressedIcon(ENTER_PRESSED_IMG);
+        enterExitRoom.setDisabledIcon(MOVE_DISABLED_IMG);
+
+        SECPAS_DEFAULT_IMG = WindowUtilities.resizeImage(SECPAS_DEFAULT_IMG);
+        SECPAS_PRESSED_IMG = WindowUtilities.resizeImage(SECPAS_PRESSED_IMG);
+        secPasButton.setPreferredSize(new Dimension(MOVE_DISABLED_IMG.getIconWidth(), MOVE_DISABLED_IMG.getIconWidth()));
+        secPasButton.setRolloverIcon(SECPAS_DEFAULT_IMG);
+        secPasButton.setIcon(SECPAS_DEFAULT_IMG);
+        secPasButton.setPressedIcon(SECPAS_PRESSED_IMG);
+        secPasButton.setDisabledIcon(MOVE_DISABLED_IMG);
+
+        ACTION_DISABLED_IMG = WindowUtilities.resizeImage(ACTION_DISABLED_IMG);
+        ROLLDICE_DEFAULT_IMG = WindowUtilities.resizeImage(ROLLDICE_DEFAULT_IMG);
+        ROLLDICE_PRESSED_IMG = WindowUtilities.resizeImage(ROLLDICE_PRESSED_IMG);
+        rollDiceButton.setPreferredSize(new Dimension(ACTION_DISABLED_IMG.getIconWidth(), ACTION_DISABLED_IMG.getIconWidth()));
+        rollDiceButton.setRolloverIcon(ROLLDICE_DEFAULT_IMG);
+        rollDiceButton.setIcon(ROLLDICE_DEFAULT_IMG);
+        rollDiceButton.setPressedIcon(ROLLDICE_PRESSED_IMG);
+        rollDiceButton.setDisabledIcon(ACTION_DISABLED_IMG);
+
+        ENDTURN_DEFAULT_IMG = WindowUtilities.resizeImage(ENDTURN_DEFAULT_IMG);
+        ENDTURN_PRESSED_IMG = WindowUtilities.resizeImage(ENDTURN_PRESSED_IMG);
+        endTurnButton.setPreferredSize(new Dimension(ACTION_DISABLED_IMG.getIconWidth(), ACTION_DISABLED_IMG.getIconWidth()));
+        endTurnButton.setRolloverIcon(ENDTURN_DEFAULT_IMG);
+        endTurnButton.setIcon(ENDTURN_DEFAULT_IMG);
+        endTurnButton.setPressedIcon(ENDTURN_PRESSED_IMG);
+        endTurnButton.setDisabledIcon(ACTION_DISABLED_IMG);
+
+        SUGGESTION_DEFAULT_IMG = WindowUtilities.resizeImage(SUGGESTION_DEFAULT_IMG);
+        SUGGESTION_PRESSED_IMG = WindowUtilities.resizeImage(SUGGESTION_PRESSED_IMG);
+        suggestionButton.setPreferredSize(new Dimension(ACTION_DISABLED_IMG.getIconWidth(), ACTION_DISABLED_IMG.getIconWidth()));
+        suggestionButton.setRolloverIcon(SUGGESTION_DEFAULT_IMG);
+        suggestionButton.setIcon(SUGGESTION_DEFAULT_IMG);
+        suggestionButton.setPressedIcon(SUGGESTION_PRESSED_IMG);
+        suggestionButton.setDisabledIcon(ACTION_DISABLED_IMG);
+
+        ACCUSATION_DEFAULT_IMG = WindowUtilities.resizeImage(ACCUSATION_DEFAULT_IMG);
+        ACCUSATION_PRESSED_IMG = WindowUtilities.resizeImage(ACCUSATION_PRESSED_IMG);
+        accusationButton.setPreferredSize(new Dimension(ACTION_DISABLED_IMG.getIconWidth(), ACTION_DISABLED_IMG.getIconWidth()));
+        accusationButton.setRolloverIcon(ACCUSATION_DEFAULT_IMG);
+        accusationButton.setIcon(ACCUSATION_DEFAULT_IMG);
+        accusationButton.setPressedIcon(ACCUSATION_PRESSED_IMG);
+        accusationButton.setDisabledIcon(ACTION_DISABLED_IMG);
+
+        if (diceRolled != null) {
+            for (int i = 0; i < diceRolled.length; i++) {
+                DICE_IMG[diceRolled[i]] = WindowUtilities.resizeImage(DICE_IMG[diceRolled[i]]);
+                diceLabels[i].setIcon(DICE_IMG[diceRolled[i]]);
+            }
+        }
+
+        // Reload all canvas components without calling update method
+        this.updateUI();
+        this.repaint();
+    }
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+        refreshScreen();
+        resetImages();
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {
+
+    }
+
+    @Override
+    public void componentShown(ComponentEvent e) {
+
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent e) {
+
+    }
 }
