@@ -39,11 +39,8 @@ import tile.Tile;
 import utilities.WindowUtilities;
 import view.BoardCanvas;
 import view.CustomMenu;
-import view.dialogs.HelpDialog;
-import view.dialogs.NumberSetupDialog;
+import view.dialogs.*;
 import view.PlayerPanelCanvas;
-import view.dialogs.PlayerSetupDialog;
-import view.dialogs.SuggestionDialog;
 import view.token.CharacterToken;
 import view.token.WeaponToken;
 import card.Card;
@@ -160,6 +157,14 @@ public class GUIClient extends JFrame {
                 "Setup Wizard");
     }
 
+    public Suggestion getSolution(){
+        return game.getSolution();
+    }
+
+    public void displaySolution(){
+        new SolutionDialog(this, SwingUtilities.windowForComponent(this), "Game solution");
+    }
+
     /**
      * Pop up a dialog to join players
      */
@@ -271,20 +276,21 @@ public class GUIClient extends JFrame {
             boardPanel.update();
             playerPanel.update();
         } else {
-            // game stopped, we must have a winner
-            int choice = JOptionPane.showConfirmDialog(window,
-                    game.getWinner().toString()
+            String[] options = new String[] {"Okay", "Show solution", "Exit"};
+            int choice = JOptionPane.showOptionDialog(window, game.getWinner().toString()
                             + " are the only player left. Congratulations, "
                             + game.getPlayerByCharacter(game.getWinner()).getName()
-                            + " are the winner!\n" + "Do you want to play again?",
-                    game.getWinner().toString() + " won!", JOptionPane.OK_CANCEL_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE, CORRECT);
+                            + " are the winner!\n" + "Do you want to play again?", "Game ended",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                    null, options, options[0]);
 
-            if (choice == JOptionPane.OK_OPTION) {
+            if (choice == 0) {
                 // start a new game
                 setupNumPlayers();
-            } else {
-                // exit
+            } else if (choice == 1){
+                displaySolution();
+            }
+            else{
                 System.exit(0);
             }
         }
