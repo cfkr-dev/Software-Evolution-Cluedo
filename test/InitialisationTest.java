@@ -80,7 +80,7 @@ public class InitialisationTest {
         int[] diceRoll;
         // let's roll...100 times...
         for (int i = 0; i < 100; i++) {
-            diceRoll = game.rollDice(game.getCurrentPlayer());
+            diceRoll = game.rollDice();
             int total = 0;
             for (int j = 0; j < diceRoll.length; j++) {
                 total += (diceRoll[j] + 1);

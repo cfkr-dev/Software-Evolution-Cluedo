@@ -2,6 +2,7 @@ package configs;
 
 import card.Location;
 import tile.Room;
+
 import java.util.ArrayList;
 
 /**
@@ -26,16 +27,35 @@ public class Configs {
     /**
      * the horizontal boundary coordinate of Cluedo game board.
      */
-    public static final int BOARD_WIDTH = 48;
+    public static int BOARD_WIDTH = 48;
     /**
      * the vertical boundary coordinate of Cluedo game board.
      */
-    public static final int BOARD_HEIGHT = 50;
+    public static int BOARD_HEIGHT = 25;
 
     /**
      * The static object of all locations
      */
     public static ArrayList<Room> ROOMS = new ArrayList<>();
+
+
+    public static void DimensionCounter(){
+
+        int character= 0;
+        int height= 0;
+        int width;
+        for(int i= 0; i< BOARD_STRING_B.length(); i++){
+            character++;
+            if(BOARD_STRING_B.charAt(i) == '\n'){
+                height++;
+            }
+        }
+
+        width= (character/height) - 1 ;
+
+        BOARD_HEIGHT= height;
+        BOARD_WIDTH= width;
+    }
 
 
     public Configs() {
@@ -44,6 +64,7 @@ public class Configs {
             ROOMS.add(room);
         }
         assignShortcuts(ROOMS);
+        DimensionCounter();
     }
 
     /**
@@ -110,28 +131,28 @@ public class Configs {
     public static final String UI_STRING_B =
             "■■■■■■■■■■■■■■■■■■  ■■■■■■■■  ■■■■■■■■■■■■■■■■■■\n" +
             "┌──────────□■■      ┌──────┐      ■■┌──────────┐\n" +
-            "│ KITCHEN  │    ┌───┘      └───┐    │ CONSERVA │\n" +
-            "│          │    │   B A L L    │    │ TORY     │\n" +
-            "│          │    │   R O O M    │    └↑┐      ┌─┘\n" +
+            "│ KITCHEN  │    ┌───┘      └───┐    │          │\n" +
+            "│          │    │    B A L L   │    │  CONSERVA│\n" +
+            "│          │    │    R O O M   │    └↑┐TORY  ┌─┘\n" +
             "└─┐        │    →              ←      └──────□■■\n" +
             "■■└─────↑ ─┘    │              │                \n" +
             "                └─↑ ────────↑ ─┘              ■■\n" +
             "■■                                  ┌──────────┐\n" +
-            "┌────────┐                          → BILLARD  │\n" +
+            "┌────────┐                          →          │\n" +
             "│        └─────┐    ┌────────┐      │          │\n" +
-            "│ D I N I N G  │    │ CRIME  │      │          │\n" +
-            "│ R O O M      ←    │        │      └─────── ↑─┘\n" +
-            "│              │    │ SCENE  │                ■■\n" +
-            "│              │    │        │      ┌───↓ ───┐■■\n" +
-            "└───────────↑ ─┘    │        │    ┌─┘LIBRARY └─┐\n" +
+            "│              │    │        │      │ BILLARD  │\n" +
+            "│ D I N I N G  ←    │        │      └─────── ↑─┘\n" +
+            "│ R O O M      │    │ CRIME  │                ■■\n" +
+            "│              │    │ SCENE  │      ┌───↓ ───┐■■\n" +
+            "└───────────↑ ─┘    │        │    ┌─┘        └─┐\n" +
             "■■                  └────────┘    →            │\n" +
-            "                                  └─┐        ┌─┘\n" +
+            "                                  └─┐ LIBRARY┌─┘\n" +
             "■■                ┌─── ↓↓ ───┐      └────────┘■■\n" +
-            "□───────────↓┐    │ H A L L  │                  \n" +
-            "│ L O U N G E│    │          ←                ■■\n" +
-            "│            │    │          │    ┌↓───────────□\n" +
-            "│            │    │          │    │ S T U D Y  │\n" +
-            "│          ┌─┘    │          │    └─┐          │\n" +
+            "□───────────↓┐    │          │                  \n" +
+            "│            │    │          ←                ■■\n" +
+            "│ L O U N G E│    │          │    ┌↓───────────□\n" +
+            "│            │    │ H A L L  │    │            │\n" +
+            "│          ┌─┘    │          │    └─┐ S T U D Y│\n" +
             "└──────────┘■■  ■■└──────────┘■■  ■■└──────────┘\n";
 
     /**
@@ -140,23 +161,23 @@ public class Configs {
      * '0' : walkable tiles, tiles that are out of all rooms.<br>
      * 'x' : (space) represents walls and unenterable tiles.<br>
      * 1-9 : represents nine rooms on board.<br>
-     * '!' : (shift + 1) represents Scarlet's start position.<br>
-     * '@' : (shift + 2) represents Mustard's start position.<br>
-     * '#' : (shift + 3) represents White's start position.<br>
-     * '$' : (shift + 4) represents Green's start position.<br>
-     * '%' : (shift + 5) represents Peacock's start position.<br>
-     * '^' : (shift + 6) represents Plum's start position.<br>
+     * ';' : represents Scarlet's start position.<br>
+     * '<' : represents Mustard's start position.<br>
+     * '=' : represents White's start position.<br>
+     * '>' : represents Green's start position.<br>
+     * '?' : represents Peacock's start position.<br>
+     * '@' : represents Plum's start position.<br>
      * a-i : represents entrance to each room, 'a' is entrance to room '1',
      * 'b' to room '2', and so on.<br>
      */
     public static final String BOARD_STRING_A =
-            "         #    $         \n" +
+            "         =    >         \n" +
             "       000    000       \n" +
             " 1111 00   22   00 3333 \n" +
             " 1111 00 222222 00 3333 \n" +
             " 1111 00 222222 00 3333 \n" +
             "  111 0b 222222 b0c     \n" +
-            "      00 222222 0000000%\n" +
+            "      00 222222 0000000?\n" +
             "0000a000        0000000 \n" +
             " 00000000b0000b000      \n" +
             "     000000000000d 4444 \n" +
@@ -167,23 +188,23 @@ public class Configs {
             " 999999 00     000      \n" +
             "        00     00  555  \n" +
             " 00000i000     0e 55555 \n" +
-            "@0000000000gg0000 5555  \n" +
+            "0<000000000gg0000 5555  \n" +
             " 00000h00      000      \n" +
-            "       00 7777 00000000^\n" +
+            "       00 7777 00000000@\n" +
             " 88888 00 77777g0f00000 \n" +
             " 88888 00 7777 00       \n" +
             " 88888 00 7777 00 66666 \n" +
             " 8888  00 7777 00  6666 \n" +
-            "       !        0   666 \n";
+            "       ;        0   666 \n";
 
     public static final String BOARD_STRING_B =
-            "                  #          $                  \n" +
+            "                  =          >                  \n" +
             "              000000        000000              \n" +
             "  11111111  0000      2222      0000  33333333  \n" +
             "  11111111  0000  222222222222  0000  33333333  \n" +
             "  11111111  0000  222222222222  0000  33333333  \n" +
             "    111111  0000b 222222222222  b000c 333333    \n" +
-            "            0000  222222222222  000000000000000%\n" +
+            "            0000  222222222222  000000000000000?\n" +
             "000000000a000000                00000000000000  \n" +
             "  0000000000000000b0000000000b000000            \n" +
             "          0000000000000000000000000d  44444444  \n" +
@@ -194,13 +215,16 @@ public class Configs {
             "  999999999999  0000          000000            \n" +
             "                0000          0000    555555    \n" +
             "  00000000000i000000          000e  5555555555  \n" +
-            "@0000000000000000000000gg000000000  55555555    \n" +
-            "  00000000000h0000            000000            \n" +
-            "              0000  77777777  00000000000000000^\n" +
+            "0<000000000000000000000gg000000000  55555555    \n" +
+            "  0000000000h00000            000000            \n" +
+            "              0000  77777777  00000000000000000@\n" +
             "  8888888888  0000  7777777777g0000f0000000000  \n" +
             "  8888888888  0000  77777777  0000              \n" +
             "  8888888888  0000  77777777  0000  6666666666  \n" +
             "  88888888    0000  77777777  0000    66666666  \n" +
-            "              !                  0      666666  \n";
+            "              ;                  0      666666  \n";
+
+
+
 
 }

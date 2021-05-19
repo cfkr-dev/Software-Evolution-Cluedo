@@ -1,56 +1,37 @@
 package ui;
 
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.Set;
-import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.ActionMap;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.InputMap;
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.TitledBorder;
-
-import game.Board;
-import game.Game;
-import game.GameError;
-import game.Player;
-import game.Suggestion;
+import card.Card;
+import card.Character;
+import card.Location;
+import card.Weapon;
+import configs.Configs;
+import game.*;
 import tile.Position;
 import tile.Room;
 import tile.RoomTile;
 import tile.Tile;
 import view.BoardCanvas;
 import view.CustomMenu;
+import view.PlayerPanelCanvas;
 import view.dialogs.HelpDialog;
 import view.dialogs.NumberSetupDialog;
-import view.PlayerPanelCanvas;
 import view.dialogs.PlayerSetupDialog;
 import view.dialogs.SuggestionDialog;
 import view.token.CharacterToken;
 import view.token.WeaponToken;
-import card.Card;
-import card.Character;
-import card.Location;
-import card.Weapon;
-import configs.Configs;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.Set;
 
 /**
  * A GUI client for Cluedo game.
@@ -60,22 +41,6 @@ import configs.Configs;
  */
 @SuppressWarnings("serial")
 public class GUIClient extends JFrame {
-
-    /**
-     * The height of main frame
-     */
-    public static final int HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT
-            + BoardCanvas.PADDING_TOP + BoardCanvas.PADDING_DOWN;
-    /**
-     * The width of game board (left panel)
-     */
-    public static final int LEFT_PANEL_WIDTH = BoardCanvas.BOARD_IMG_WIDTH
-            + BoardCanvas.PADDING_LEFT + BoardCanvas.PADDING_RIGHT;
-    /**
-     * the width of game board (right panel)
-     */
-    public static final int RIGHT_PANEL_WIDTH = PlayerPanelCanvas.WIDTH
-            + PlayerPanelCanvas.PADDING_LEFT + PlayerPanelCanvas.PADDING_RIGHT;
 
     // =========== Views ================
 
@@ -91,6 +56,22 @@ public class GUIClient extends JFrame {
      * player panel on right
      */
     private PlayerPanelCanvas playerPanel;
+
+
+    /**
+     * The height of main frame
+     */
+    public static int HEIGHT;
+    /**
+     * The width of game board (left panel)
+     */
+    public static int LEFT_PANEL_WIDTH;
+    /**
+     * the width of game board (right panel)
+     */
+    public static int RIGHT_PANEL_WIDTH;
+
+
 
     // ============= models ===================
 
@@ -357,7 +338,7 @@ public class GUIClient extends JFrame {
      *         represents 1 - 6 (for simplicity when calling graphical update)
      */
     public int[] rollDice(Character character) {
-        return game.rollDice(character);
+        return game.rollDice();
     }
 
     /**

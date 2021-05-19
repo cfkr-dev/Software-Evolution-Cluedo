@@ -2,7 +2,6 @@ package game;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import card.Card;
 import card.Character;
 import tile.Position;
@@ -12,7 +11,7 @@ import tile.Position;
  * human-controlled player, or a dummy token on board (it's not played by anybody, but it
  * has to be on board to indicate a suspect).
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
 public class Player {
@@ -32,7 +31,7 @@ public class Player {
     /**
      * cards drawn by this player. dummy token won't have any card in it.
      */
-    private List<Card> cards;
+    private final List<Card> cards;
     /**
      * remaining steps to move
      */
@@ -117,8 +116,7 @@ public class Player {
 
     /**
      * This method draws a card for this player.
-     * 
-     * @param card
+     *
      */
     public void drawACard(Card card) {
         cards.add(card);
@@ -154,7 +152,9 @@ public class Player {
         if (remaingingSteps < 0) {
             throw new GameError("Remaining steps should be at least 0.");
         }
-        remainingSteps = remaingingSteps;
+        else {
+            remainingSteps = remaingingSteps;
+        }
     }
 
     /**
@@ -188,14 +188,12 @@ public class Player {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Player other = (Player) obj;
-        return token == other.token;
+        }
+        else {
+            Player other = (Player) obj;
+            return token == other.token;
+        }
     }
-
 }

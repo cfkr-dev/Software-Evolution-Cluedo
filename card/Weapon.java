@@ -64,4 +64,8 @@ public enum Weapon implements Card {
         }
     }
 
+    public static int getNumberOfWeapons() {
+        return WEAPONS.size();
+    }
+
 }

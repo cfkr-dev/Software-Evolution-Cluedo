@@ -74,4 +74,8 @@ public enum Character implements Card {
             throw new GameError("Invalid index.");
         }
     }
+
+    public static int getNumberOfCharacters() {
+        return CHARACTERS.size();
+    }
 }

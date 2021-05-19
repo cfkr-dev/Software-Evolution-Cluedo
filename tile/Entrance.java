@@ -7,7 +7,7 @@ import game.GameError;
  * room. Only from this type of Tile, a player can enter a room. Player cannot enter any
  * room from normal Tiles.
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
 public class Entrance extends Tile {
@@ -15,7 +15,7 @@ public class Entrance extends Tile {
     /**
      * The room that the player can enter from this entrance tile.
      */
-    private Room toRoom;
+    private final Room toRoom;
 
     /**
      * Construct an entrance tile.
@@ -80,19 +80,18 @@ public class Entrance extends Tile {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Entrance other = (Entrance) obj;
-        if (toRoom == null) {
-            return other.toRoom == null;
         }
-        else if (!toRoom.equals(other.toRoom))
-            return false;
-        return  true;
+        else {
+            Entrance other = (Entrance) obj;
+            if (toRoom == null) {
+                return other.toRoom == null;
+            }
+            else {
+                return toRoom.equals(other.toRoom);
+            }
+        }
     }
 
 }
