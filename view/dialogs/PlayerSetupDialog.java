@@ -72,7 +72,7 @@ public class PlayerSetupDialog extends JDialog {
                     if (b.isSelected()) {
                         // paint the profile picture according to radio buttons
                         g.drawImage(
-                                PlayerPanelCanvas.PROFILE_IMG[Integer
+                                PlayerPanelCanvas.PROFILE_DIALOG_IMG[Integer
                                         .parseInt(b.getActionCommand())].getImage(),
                                 0, 0, this);
                         break;

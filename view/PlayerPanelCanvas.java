@@ -1038,6 +1038,14 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
             new ImageIcon(loadImage("Profile_The_Reverend_Green.png"), "Profile_The_Reverend_Green.png"),
             new ImageIcon(loadImage("Profile_Mrs_Peacock.png"), "Profile_Mrs_Peacock.png"),
             new ImageIcon(loadImage("Profile_Professor_Plum.png"), "Profile_Professor_Plum.png")};
+
+    public static final ImageIcon[] PROFILE_DIALOG_IMG = {
+            new ImageIcon(loadImage("Profile_Miss_Scarlet.png"), "Profile_Miss_Scarlet.png"),
+            new ImageIcon(loadImage("Profile_Colonel_Mustard.png"), "Profile_Colonel_Mustard.png"),
+            new ImageIcon(loadImage("Profile_Mrs_White.png"), "Profile_Mrs_White.png"),
+            new ImageIcon(loadImage("Profile_The_Reverend_Green.png"), "Profile_The_Reverend_Green.png"),
+            new ImageIcon(loadImage("Profile_Mrs_Peacock.png"), "Profile_Mrs_Peacock.png"),
+            new ImageIcon(loadImage("Profile_Professor_Plum.png"), "Profile_Professor_Plum.png")};
     /**
      * Images for displaying dices
      */
