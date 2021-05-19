@@ -21,13 +21,15 @@ import java.util.Set;
 
 public class InitialisationTest {
 
+    private Configs configurations = Configs.getConfiguration();
+
     /**
      * Test that the number of players is properly initialised, and players are added
      */
     @Test
     public void numPlayers() {
-        for (int numPlayers = Configs.MIN_PLAYER; numPlayers <= Configs.MAX_PLAYER; numPlayers++) {
-            Game game = new Game(numPlayers, Configs.NUM_DICE);
+        for (int numPlayers = configurations.getMinPlayer(); numPlayers <= configurations.getMaxPlayer(); numPlayers++) {
+            Game game = new Game(numPlayers, configurations.getNumDice());
 
             for (int i = 0; i < numPlayers; i++) {
                 Character c = Character.values()[i];
@@ -51,8 +53,8 @@ public class InitialisationTest {
     @Test
     public void validTile() {
 
-        int[] xCoords = { -1, -5, 5, Configs.BOARD_WIDTH, Configs.BOARD_WIDTH + 1 };
-        int[] yCoords = { 5, -5, -1, Configs.BOARD_WIDTH, Configs.BOARD_WIDTH + 1 };
+        int[] xCoords = { -1, -5, 5, configurations.getBoardWidth(), configurations.getBoardWidth() + 1 };
+        int[] yCoords = { 5, -5, -1, configurations.getBoardWidth(), configurations.getBoardWidth() + 1 };
 
         for (int i = 0; i < xCoords.length; i++) {
             try {
