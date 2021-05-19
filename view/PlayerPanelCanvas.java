@@ -88,6 +88,8 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
      */
     private static final int PADDING_TOP = 0;
 
+    private static int FONT_SIZE;
+
     // ============== swing components ======================
 
     /**
@@ -199,6 +201,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         this.addComponentListener(this);
         // a Label to show some artsy fonts
         remainingCardLabel = new JLabel(REMAINING_CARDS_IMAGE, SwingConstants.CENTER);
+        remainingCardLabel.setFont(new Font("Calibre", 1, FONT_SIZE));
         remainingCardsPanel.add(remainingCardLabel);
 
         // display remaining cards.
@@ -301,7 +304,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         remainingStepLabel = new JLabel();
         remainingStepLabel.setBackground(null);
         remainingStepLabel.setOpaque(false);
-        remainingStepLabel.setFont(new Font("Calibre", 1, 20));
+        remainingStepLabel.setFont(new Font("Calibre", 1, FONT_SIZE));
         remainingStepLabel.setForeground(Color.DARK_GRAY);
         remainingStepLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         remainingStepLabel.setBorder(BorderFactory.createEmptyBorder(PADDING_LEFT,
@@ -437,12 +440,15 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         CENTRE_PANEL_WIDTH = WIDTH - (EAST_PANEL_WIDTH + WEST_PANEL_WIDTH);
         MOVE_BUTTON_SIZE = new Dimension(WIDTH / 18, HEIGHT / 15);
         ACTION_BUTTON_SIZE = new Dimension(WIDTH / 11, HEIGHT / 15);
+        FONT_SIZE = HEIGHT / 41;
 
         remainingCardsPanel.setPreferredSize(new Dimension(WIDTH, NORTH_PANEL_HEIGHT));
         buttonPanel.setPreferredSize(new Dimension(EAST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
         cardsInHandPanel.setPreferredSize(new Dimension(WIDTH, SOUTH_PANEL_HEIGHT));
         profileLabel.setPreferredSize(new Dimension(WEST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
         dicePanel.setPreferredSize(new Dimension(CENTRE_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
+        remainingStepLabel.setFont(new Font("Calibre", 1, FONT_SIZE));
+        remainingCardLabel.setFont(new Font("Calibre", 1, FONT_SIZE));
     }
 
 
@@ -495,6 +501,8 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         this.setVisible(true);
         this.updateUI();
         this.repaint();
+        refreshScreen();
+        resetImages();
     }
 
     /**
@@ -1158,12 +1166,12 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     /**
      * An image for displaying default exit room button
      */
-    private static final ImageIcon EXIT_DEFAULT_IMG = new ImageIcon(
+    private static ImageIcon EXIT_DEFAULT_IMG = new ImageIcon(
             loadImage("Button_ExitRoom_Default.png"), "Button_ExitRoom_Default.png");
     /**
      * An image for displaying pressed exit room button
      */
-    private static final ImageIcon EXIT_PRESSED_IMG = new ImageIcon(
+    private static ImageIcon EXIT_PRESSED_IMG = new ImageIcon(
             loadImage("Button_ExitRoom_Pressed.png"), "Button_ExitRoom_Pressed.png");
     /**
      * An image for displaying default secret passage button
@@ -1188,37 +1196,35 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     /**
      * An image for displaying default end turn button
      */
-    private static final ImageIcon ENDTURN_DEFAULT_IMG = new ImageIcon(
+    private static ImageIcon ENDTURN_DEFAULT_IMG = new ImageIcon(
             loadImage("Button_EndTuen_Default.png"), "Button_EndTuen_Default.png");
     /**
      * An image for displaying pressed end turn button
      */
-    private static final ImageIcon ENDTURN_PRESSED_IMG = new ImageIcon(
+    private static ImageIcon ENDTURN_PRESSED_IMG = new ImageIcon(
             loadImage("Button_EndTuen_Pressed.png"), "Button_EndTuen_Pressed.png");
     /**
      * An image for displaying default suggestion button
      */
-    private static final ImageIcon SUGGESTION_DEFAULT_IMG = new ImageIcon(
+    private static ImageIcon SUGGESTION_DEFAULT_IMG = new ImageIcon(
             loadImage("Button_Suggestion_Default.png"), "Button_Suggestion_Default.png");
     /**
      * An image for displaying pressed suggestion button
      */
-    private static final ImageIcon SUGGESTION_PRESSED_IMG = new ImageIcon(
+    private static ImageIcon SUGGESTION_PRESSED_IMG = new ImageIcon(
             loadImage("Button_Suggestion_Pressed.png"), "Button_Suggestion_Pressed.png");
     /**
      * An image for displaying default accusation button
      */
-    private static final ImageIcon ACCUSATION_DEFAULT_IMG = new ImageIcon(
+    private static ImageIcon ACCUSATION_DEFAULT_IMG = new ImageIcon(
             loadImage("Button_Accusation_Default.png"), "Button_Accusation_Default.png");
     /**
      * An image for displaying pressed accusation button
      */
-    private static final ImageIcon ACCUSATION_PRESSED_IMG = new ImageIcon(
+    private static ImageIcon ACCUSATION_PRESSED_IMG = new ImageIcon(
             loadImage("Button_Accusation_Pressed.png"), "Button_Accusation_Pressed.png");
 
-    @Override
-    public void componentResized(ComponentEvent e) {
-        refreshScreen();
+    public void resetImages(){
         REMAINING_CARDS_IMAGE = WindowUtilities.resizeImage(REMAINING_CARDS_IMAGE); // <--- Finally, the resizer works correctly :D
         PROFILE_IMG[currentPlayer.ordinal()] = WindowUtilities.resizeImage(PROFILE_IMG[currentPlayer.ordinal()]);
 
@@ -1264,6 +1270,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         UP_PRESSED_IMG = WindowUtilities.resizeImage(UP_PRESSED_IMG);
         MOVE_DISABLED_IMG = WindowUtilities.resizeImage(MOVE_DISABLED_IMG);
         upButton.setPreferredSize(new Dimension(MOVE_DISABLED_IMG.getIconWidth(), MOVE_DISABLED_IMG.getIconWidth()));
+        upButton.setRolloverIcon(UP_DEFAULT_IMG);
         upButton.setIcon(UP_DEFAULT_IMG);
         upButton.setPressedIcon(UP_PRESSED_IMG);
         upButton.setDisabledIcon(MOVE_DISABLED_IMG);
@@ -1271,6 +1278,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         DOWN_DEFAULT_IMG = WindowUtilities.resizeImage(DOWN_DEFAULT_IMG);
         DOWN_PRESSED_IMG = WindowUtilities.resizeImage(DOWN_PRESSED_IMG);
         downButton.setPreferredSize(new Dimension(MOVE_DISABLED_IMG.getIconWidth(), MOVE_DISABLED_IMG.getIconWidth()));
+        downButton.setRolloverIcon(DOWN_DEFAULT_IMG);
         downButton.setIcon(DOWN_DEFAULT_IMG);
         downButton.setPressedIcon(DOWN_PRESSED_IMG);
         downButton.setDisabledIcon(MOVE_DISABLED_IMG);
@@ -1278,6 +1286,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         LEFT_DEFAULT_IMG = WindowUtilities.resizeImage(LEFT_DEFAULT_IMG);
         LEFT_PRESSED_IMG = WindowUtilities.resizeImage(LEFT_PRESSED_IMG);
         leftButton.setPreferredSize(new Dimension(MOVE_DISABLED_IMG.getIconWidth(), MOVE_DISABLED_IMG.getIconWidth()));
+        leftButton.setRolloverIcon(LEFT_DEFAULT_IMG);
         leftButton.setIcon(LEFT_DEFAULT_IMG);
         leftButton.setPressedIcon(LEFT_PRESSED_IMG);
         leftButton.setDisabledIcon(MOVE_DISABLED_IMG);
@@ -1285,6 +1294,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         RIGHT_DEFAULT_IMG = WindowUtilities.resizeImage(RIGHT_DEFAULT_IMG);
         RIGHT_PRESSED_IMG = WindowUtilities.resizeImage(RIGHT_PRESSED_IMG);
         rightButton.setPreferredSize(new Dimension(MOVE_DISABLED_IMG.getIconWidth(), MOVE_DISABLED_IMG.getIconWidth()));
+        rightButton.setRolloverIcon(RIGHT_DEFAULT_IMG);
         rightButton.setIcon(RIGHT_DEFAULT_IMG);
         rightButton.setPressedIcon(RIGHT_PRESSED_IMG);
         rightButton.setDisabledIcon(MOVE_DISABLED_IMG);
@@ -1292,6 +1302,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         ENTER_DEFAULT_IMG = WindowUtilities.resizeImage(ENTER_DEFAULT_IMG);
         ENTER_PRESSED_IMG = WindowUtilities.resizeImage(ENTER_PRESSED_IMG);
         enterExitRoom.setPreferredSize(new Dimension(MOVE_DISABLED_IMG.getIconWidth(), MOVE_DISABLED_IMG.getIconWidth()));
+        enterExitRoom.setRolloverIcon(ENTER_DEFAULT_IMG);
         enterExitRoom.setIcon(ENTER_DEFAULT_IMG);
         enterExitRoom.setPressedIcon(ENTER_PRESSED_IMG);
         enterExitRoom.setDisabledIcon(MOVE_DISABLED_IMG);
@@ -1299,22 +1310,60 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         SECPAS_DEFAULT_IMG = WindowUtilities.resizeImage(SECPAS_DEFAULT_IMG);
         SECPAS_PRESSED_IMG = WindowUtilities.resizeImage(SECPAS_PRESSED_IMG);
         secPasButton.setPreferredSize(new Dimension(MOVE_DISABLED_IMG.getIconWidth(), MOVE_DISABLED_IMG.getIconWidth()));
+        secPasButton.setRolloverIcon(SECPAS_DEFAULT_IMG);
         secPasButton.setIcon(SECPAS_DEFAULT_IMG);
         secPasButton.setPressedIcon(SECPAS_PRESSED_IMG);
         secPasButton.setDisabledIcon(MOVE_DISABLED_IMG);
 
+        ACTION_DISABLED_IMG = WindowUtilities.resizeImage(ACTION_DISABLED_IMG);
+        ROLLDICE_DEFAULT_IMG = WindowUtilities.resizeImage(ROLLDICE_DEFAULT_IMG);
+        ROLLDICE_PRESSED_IMG = WindowUtilities.resizeImage(ROLLDICE_PRESSED_IMG);
+        rollDiceButton.setPreferredSize(new Dimension(ACTION_DISABLED_IMG.getIconWidth(), ACTION_DISABLED_IMG.getIconWidth()));
+        rollDiceButton.setRolloverIcon(ROLLDICE_DEFAULT_IMG);
+        rollDiceButton.setIcon(ROLLDICE_DEFAULT_IMG);
+        rollDiceButton.setPressedIcon(ROLLDICE_PRESSED_IMG);
+        rollDiceButton.setDisabledIcon(ACTION_DISABLED_IMG);
+
+        ENDTURN_DEFAULT_IMG = WindowUtilities.resizeImage(ENDTURN_DEFAULT_IMG);
+        ENDTURN_PRESSED_IMG = WindowUtilities.resizeImage(ENDTURN_PRESSED_IMG);
+        endTurnButton.setPreferredSize(new Dimension(ACTION_DISABLED_IMG.getIconWidth(), ACTION_DISABLED_IMG.getIconWidth()));
+        endTurnButton.setRolloverIcon(ENDTURN_DEFAULT_IMG);
+        endTurnButton.setIcon(ENDTURN_DEFAULT_IMG);
+        endTurnButton.setPressedIcon(ENDTURN_PRESSED_IMG);
+        endTurnButton.setDisabledIcon(ACTION_DISABLED_IMG);
+
+        SUGGESTION_DEFAULT_IMG = WindowUtilities.resizeImage(SUGGESTION_DEFAULT_IMG);
+        SUGGESTION_PRESSED_IMG = WindowUtilities.resizeImage(SUGGESTION_PRESSED_IMG);
+        suggestionButton.setPreferredSize(new Dimension(ACTION_DISABLED_IMG.getIconWidth(), ACTION_DISABLED_IMG.getIconWidth()));
+        suggestionButton.setRolloverIcon(SUGGESTION_DEFAULT_IMG);
+        suggestionButton.setIcon(SUGGESTION_DEFAULT_IMG);
+        suggestionButton.setPressedIcon(SUGGESTION_PRESSED_IMG);
+        suggestionButton.setDisabledIcon(ACTION_DISABLED_IMG);
+
+        ACCUSATION_DEFAULT_IMG = WindowUtilities.resizeImage(ACCUSATION_DEFAULT_IMG);
+        ACCUSATION_PRESSED_IMG = WindowUtilities.resizeImage(ACCUSATION_PRESSED_IMG);
+        accusationButton.setPreferredSize(new Dimension(ACTION_DISABLED_IMG.getIconWidth(), ACTION_DISABLED_IMG.getIconWidth()));
+        accusationButton.setRolloverIcon(ACCUSATION_DEFAULT_IMG);
+        accusationButton.setIcon(ACCUSATION_DEFAULT_IMG);
+        accusationButton.setPressedIcon(ACCUSATION_PRESSED_IMG);
+        accusationButton.setDisabledIcon(ACTION_DISABLED_IMG);
 
         if (diceRolled != null) {
-        for (int i = 0; i < diceRolled.length; i++) {
+            for (int i = 0; i < diceRolled.length; i++) {
                 DICE_IMG[diceRolled[i]] = WindowUtilities.resizeImage(DICE_IMG[diceRolled[i]]);
                 diceLabels[i].setIcon(DICE_IMG[diceRolled[i]]);
             }
         }
 
         // Reload all canvas components without calling update method
-        this.setVisible(true);
         this.updateUI();
         this.repaint();
+    }
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+        refreshScreen();
+        resetImages();
     }
 
     @Override
