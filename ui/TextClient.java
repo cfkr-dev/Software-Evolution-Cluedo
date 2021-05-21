@@ -386,7 +386,7 @@ public class TextClient {
         Configs configurations = Configs.getConfiguration();
         Character winner = game.getWinner();
         configurations.getRecords().add(new GameRecord(game.getSolution(), game.getPlayerByCharacter(game.getWinner()).getName(), game.getPlayerByCharacter(game.getCurrentPlayer()).getCards()));
-        System.out.println("Winner is " + winner.toString() + " (" + game.getPlayerByCharacter(game.getCurrentPlayer()) + ") !");
+        System.out.println("Winner is " + winner.toString() + " (" + game.getPlayerByCharacter(game.getCurrentPlayer()).getName() + ") !");
         configurations.Serialize();
     }
 
