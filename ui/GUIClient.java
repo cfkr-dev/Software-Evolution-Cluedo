@@ -294,6 +294,7 @@ public class GUIClient extends JFrame {
             playerPanel.update();
         } else {
             String[] options = new String[] {"Okay", "Show solution", "Exit"};
+
             int choice = JOptionPane.showOptionDialog(window, game.getWinner().toString()
                             + " are the only player left. Congratulations, "
                             + game.getPlayerByCharacter(game.getWinner()).getName()
@@ -305,6 +306,7 @@ public class GUIClient extends JFrame {
                 // start a new game
                 setupNumPlayers();
             } else if (choice == 1){
+
                 displaySolution();
             }
             else{
