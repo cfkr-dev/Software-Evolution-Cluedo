@@ -7,6 +7,7 @@ import card.Location;
 import card.Weapon;
 import configs.Configs;
 import game.Game;
+import game.GameRecord;
 import game.Suggestion;
 import tile.Position;
 import tile.Room;
@@ -24,6 +25,8 @@ public class TextClient {
      * System.in wrapped in scanner to get user input.
      */
     private static final Scanner SCANNER = new Scanner(System.in);
+
+    private Configs configuration;
 
     /**
      * Main function of this programme.
@@ -376,7 +379,9 @@ public class TextClient {
      */
     private static void gameStop(Game game) {
         // TODO set game stop, prompt the winner
+        Configs configuration = Configs.getConfiguration();
         Character winner = game.getWinner();
+        configuration.getRecords().add(new GameRecord(game.getSolution(), "Winner", game.getPlayerByCharacter(game.getCurrentPlayer()).getCards()));
         System.out.println("Winner is " + winner.toString() + "!");
     }
 
