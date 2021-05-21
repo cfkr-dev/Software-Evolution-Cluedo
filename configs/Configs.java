@@ -46,8 +46,8 @@ public class Configs {
     {
         try {
             gameRecords = Deserialize();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (IOException | ClassNotFoundException ignored) {
+
         }
     }
 
