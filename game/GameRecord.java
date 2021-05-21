@@ -57,11 +57,9 @@ public class GameRecord implements Serializable {
 
     @Override
     public String toString() {
-        return "gameRecord{" +
-                "dateGame=" + getDateGame() +
-                ", solution=" + solution +
-                ", gameWinner='" + gameWinner + '\'' +
-                ", cardsPlayer=" + cardsPlayer +
-                '}';
+        return "Date : " + getDateGame() +
+                ", \nSolution : " + solution.toString() +
+                ", \nGameWinner : '" + gameWinner + '\'' +
+                ", \nCardsPlayer : " + cardsPlayer.toString();
     }
 }

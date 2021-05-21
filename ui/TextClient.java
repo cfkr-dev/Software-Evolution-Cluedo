@@ -1,5 +1,6 @@
 package ui;
 
+
 import java.util.List;
 import java.util.Scanner;
 import card.Character;
@@ -84,8 +85,11 @@ public class TextClient {
             // make a choice
             int choice = parseInt(1, size);
 
+            System.out.println("What is your name?");
+            String line = SCANNER.nextLine();
+
             // join this player in
-            game.joinPlayer(playableCharacters.get(choice - 1), "");
+            game.joinPlayer(playableCharacters.get(choice - 1), line);
         }
 
         // set which character is first to move
@@ -379,10 +383,11 @@ public class TextClient {
      */
     private static void gameStop(Game game) {
         // TODO set game stop, prompt the winner
-        Configs configuration = Configs.getConfiguration();
+        Configs configurations = Configs.getConfiguration();
         Character winner = game.getWinner();
-        configuration.getRecords().add(new GameRecord(game.getSolution(), "Winner", game.getPlayerByCharacter(game.getCurrentPlayer()).getCards()));
-        System.out.println("Winner is " + winner.toString() + "!");
+        configurations.getRecords().add(new GameRecord(game.getSolution(), game.getPlayerByCharacter(game.getWinner()).getName(), game.getPlayerByCharacter(game.getCurrentPlayer()).getCards()));
+        System.out.println("Winner is " + winner.toString() + " (" + game.getPlayerByCharacter(game.getCurrentPlayer()) + ") !");
+        configurations.Serialize();
     }
 
     /**
@@ -401,6 +406,10 @@ public class TextClient {
             // if user asked for help, print out help message
             if (line.equals("help")) {
                 helpMessage();
+                System.out.println("Please choose between " + min + " and " + max + ":");
+            }
+            else if (line.equals("record")){
+                showRecord();
                 System.out.println("Please choose between " + min + " and " + max + ":");
             }
             else {
@@ -445,4 +454,16 @@ public class TextClient {
 
         System.out.println(message);
     }
+
+    private static void showRecord(){
+        StringBuilder message = new StringBuilder("[Record]\n");
+        message.append("The record of games ended is the following one:\n");
+        int i = 0;
+        for (GameRecord game : Configs.getConfiguration().getRecords()){
+            message.append("Game ").append(i).append(" :\n").append(game.toString()).append("\n\n");
+            i++;
+        }
+        System.out.println(message);
+    }
+
 }

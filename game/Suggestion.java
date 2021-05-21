@@ -81,4 +81,13 @@ public class Suggestion implements Serializable {
             return character == proposal.character && location == proposal.location && weapon == proposal.weapon;
         }
     }
+
+    @Override
+    public String toString() {
+        return "["+
+                "character : " + character +
+                ", weapon : " + weapon +
+                ", location : " + location +
+                ']';
+    }
 }

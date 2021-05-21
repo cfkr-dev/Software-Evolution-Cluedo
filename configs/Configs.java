@@ -75,6 +75,7 @@ public class Configs {
             return gameRecords;
         }
         catch (IOException e){
+            e.printStackTrace();
             return new ArrayList<>();
         }
     }
