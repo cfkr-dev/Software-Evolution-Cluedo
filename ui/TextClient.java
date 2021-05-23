@@ -198,8 +198,26 @@ public class TextClient {
                 // now compare the suggestion, and other players try to reject it
                 System.out.println(game.refuteSuggestion(suggestion));
 
-                accusationChoice(game);
+                System.out.println("Would you like to make another suggestion? (cost: 2 coins)");
+                System.out.println("1. Yes");
+                System.out.println("2. No");
 
+                int yesNo = parseInt(1, 2);
+                if (yesNo == 1) {
+                    if (game.hasSalaryPlayer(currentPlayer, 2)) {
+                        System.out.println("Realise the new suggestion");
+                        // move into a room, now the player can make suggestion
+                        suggestion = makeSuggestion(game, destination);
+                        // now compare the suggestion, and other players try to reject it
+                        System.out.println(game.refuteSuggestion(suggestion));
+                    }
+                    else {
+                        System.out.println("I'm sorry but you don't have enough salary to do it");
+                        System.out.println("You can make another suggestion on your next turn");
+                    }
+                }
+
+                accusationChoice(game);
                 remainingSteps = 0;
 
             } else {
@@ -488,7 +506,8 @@ public class TextClient {
         StringBuilder message = new StringBuilder("[Legend]\n");
         message.append("You can use the coins for the following actions:\n");
         message.append("Repeat roll dice (before starting to move). [1 coin]\n");
-        message.append("Have the opportunity to continue playing by failing an accusation. [5 coins]");
+        message.append("Make another suggestion in the same turn. [2 coins]\n");
+        message.append("Have the opportunity to continue playing by failing an accusation. [5 coins]\n");
         System.out.println(message);
     }
 }
