@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import card.Card;
 import card.Character;
+import card.Coin;
 import tile.Position;
 
 /**
@@ -32,6 +33,12 @@ public class Player {
      * cards drawn by this player. dummy token won't have any card in it.
      */
     private final List<Card> cards;
+
+    /**
+     * player's salary for cheating on the basic rules of the game
+     */
+    private Coin salary;
+
     /**
      * remaining steps to move
      */
@@ -55,6 +62,7 @@ public class Player {
         this.token = token;
         this.position = pos;
         this.isPlaying = isPlaying;
+        this.salary = new Coin(10);
         cards = new ArrayList<>();
     }
 
@@ -195,5 +203,19 @@ public class Player {
             Player other = (Player) obj;
             return token == other.token;
         }
+    }
+
+    public Coin getSalary() {
+        return salary;
+    }
+
+    public void setSalary(int tax) {
+        int remainingSalary = this.salary.getCoins();
+        remainingSalary = remainingSalary - tax;
+        this.salary.setCoins(remainingSalary);
+    }
+
+    public Boolean feasibleOperation(int tax) {
+        return salary.viableOperation(tax);
     }
 }
