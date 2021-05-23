@@ -692,8 +692,24 @@ public class Game {
             BOARD_STRING.append("\n");
         }
 
+        BOARD_STRING.append("[Salary]: ");
+        BOARD_STRING.append(player.getSalary().getCoins());
+        BOARD_STRING.append("\n");
+
         BOARD_STRING.append("========================\n");
         BOARD_STRING.append("Type \"help\" for help\n");
+        BOARD_STRING.append("Type \"coins help\" for see your salary\n");
         return BOARD_STRING.toString();
+    }
+
+    public boolean hasSalaryPlayer(Character currentPlayer, int tax) {
+        Player player = getPlayerByCharacter(currentPlayer);
+        if (player.feasibleOperation(tax)) {
+           player.setSalary(tax);
+           return true;
+        }
+        else {
+            return false;
+        }
     }
 }

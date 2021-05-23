@@ -125,14 +125,22 @@ public class TextClient {
 
         // if this player hasn't roll a dice, roll dice
         if (remainingSteps == 0) {
-            int[] roll = game.rollDice();
-            int total = 0;
-            for (int j : roll) {
-                total += (j + 1);
+            int movements = NumberOfMovements(game);
+            System.out.println("Do you want to repeat the roll? (cost: 1 coin)");
+            System.out.println("1. Yes");
+            System.out.println("2. No");
+
+            int yesNo = parseInt(1, 2);
+            if (yesNo == 1) {
+                if (game.hasSalaryPlayer(currentPlayer, 1)) {
+                    movements = NumberOfMovements(game);
+                }
+                else {
+                    System.out.println("I'm sorry but you don't have enough salary to do it");
+                }
             }
-            System.out.println("You rolled " + total + ".");
-            game.setRemainingSteps(currentPlayer, total);
-            remainingSteps = total;
+            game.setRemainingSteps(currentPlayer, movements);
+            remainingSteps = movements;
         }
 
         System.out.println("You have " + remainingSteps + " steps left.");
@@ -233,6 +241,16 @@ public class TextClient {
         if (remainingSteps == 0) {
             game.currentPlayerEndTurn();
         }
+    }
+
+    private static int NumberOfMovements(Game game) {
+        int[] roll = game.rollDice();
+        int total = 0;
+        for (int j : roll) {
+            total += (j + 1);
+        }
+        System.out.println("You rolled " + total + ".");
+        return total;
     }
 
 
@@ -398,6 +416,10 @@ public class TextClient {
                 helpMessage();
                 System.out.println("Please choose between " + min + " and " + max + ":");
             }
+            if (line.equals("coins help")) {
+                coinsHelpMessage();
+                System.out.println("Please choose between " + min + " and " + max + ":");
+            }
             else {
                 try {
                     // parse the input
@@ -437,6 +459,14 @@ public class TextClient {
             Weapon weapon = Weapon.get(i);
             message.append(weapon.toString()).append(":\t\t").append(weapon.toStringOnBoard()).append("\n");
         }
+
+        System.out.println(message);
+    }
+
+    private static void coinsHelpMessage() {
+        StringBuilder message = new StringBuilder("[Legend]\n");
+        message.append("You can use the coins for the following actions:\n");
+        message.append("Repeat roll dice (before starting to move) [1 coin]\n");
 
         System.out.println(message);
     }
