@@ -4,7 +4,6 @@ import card.Card;
 import card.Character;
 import card.Location;
 import card.Weapon;
-import configs.Configs;
 import game.GameRecord;
 import game.Suggestion;
 import ui.GUIClient;
@@ -44,14 +43,6 @@ public class GameRecordDialog extends JDialog {
 
         super(windowForComponent, string);
 
-//        ArrayList<String> lista = new ArrayList<>();
-//        for (int i = 0; i < 1000; i++) {
-//            lista.add(String.valueOf(i));
-//        }
-//        for (String s: lista) {
-//            gameRecordList.addElement(s);
-//        }
-
         listToDefaultListModel(configurationsGameRecords);
 
         // add a list of game results
@@ -61,9 +52,13 @@ public class GameRecordDialog extends JDialog {
         list.setVisibleRowCount(gameRecordStringList.size());
         JScrollPane listScroller = new JScrollPane(list);
 
-        JLabel noGameRecordsLabel = new JLabel();
-        noGameRecordsLabel.setFont(new Font("Calibre", 1, 40));
-        noGameRecordsLabel.setText("No game records saved.\nPlease, win a game!");
+        JTextArea noGameRecordsText = new JTextArea();
+        noGameRecordsText.setFont(new Font("Calibre", 1, 40));
+        noGameRecordsText.setText("No game records saved.\nPlease, win a game!");
+        noGameRecordsText.setWrapStyleWord(true);
+        noGameRecordsText.setLineWrap(true);
+        noGameRecordsText.setEditable(false);
+        noGameRecordsText.setOpaque(true);
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
@@ -75,9 +70,11 @@ public class GameRecordDialog extends JDialog {
         firstRow.setLayout(new BoxLayout(firstRow, BoxLayout.Y_AXIS));
         firstRow.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
         firstRow.setPreferredSize(new Dimension(400,600));
+        firstRow.setMaximumSize(new Dimension(400,600));
         firstRow.setAlignmentY(Component.CENTER_ALIGNMENT);
         if (gameRecordStringList.isEmpty()){
-            firstRow.add(noGameRecordsLabel);
+            firstRow.add(noGameRecordsText);
+            firstRow.setPreferredSize(new Dimension(400,200));
             mainPanel.add(firstRow);
             mainPanel.add(Box.createRigidArea(new Dimension(15, 20)));
         } else {
@@ -89,6 +86,7 @@ public class GameRecordDialog extends JDialog {
             secondRow.setLayout(new BoxLayout(secondRow, BoxLayout.Y_AXIS));
             secondRow.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
             secondRow.setPreferredSize(new Dimension(600,600));
+            secondRow.setMaximumSize(new Dimension(600,600));
             secondRow.setAlignmentY(Component.CENTER_ALIGNMENT);
 
             mainPanel.add(firstRow);
@@ -111,7 +109,8 @@ public class GameRecordDialog extends JDialog {
     private void listToDefaultListModel(ArrayList<GameRecord> list) {
         int i = 0;
         for (GameRecord elem: list){
-            String element = "Game " + i++ + " | " + elem.getDateGame() + " | Winner: " + elem.getGameWinner();
+            i++;
+            String element = "Game " + i + " | " + elem.getDateGame() + " | Winner: " + elem.getGameWinner();
             this.gameRecordStringList.addElement(element);
         }
     }
