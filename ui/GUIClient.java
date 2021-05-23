@@ -313,6 +313,10 @@ public class GUIClient extends JFrame {
         }
     }
 
+    public void openGameRecords() {
+        new GameRecordDialog(this, SwingUtilities.windowForComponent(this), "Game Records");
+    }
+
     /**
      * Pop up a help dialog.
      */
@@ -816,4 +820,5 @@ public class GUIClient extends JFrame {
      */
     public static final ImageIcon ACCUSE_ICON = new ImageIcon(
             loadImage("Icon_Accusation.png"));
+
 }
