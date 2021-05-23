@@ -1,6 +1,8 @@
 package card;
 
 import game.GameError;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -13,7 +15,7 @@ import java.util.Arrays;
  * @author G7EAS
  *
  */
-public enum Weapon implements Card {
+public enum Weapon implements Card, Serializable {
 
     Candlestick("Candlestick", 'c'),
     Dagger("Dagger", 'd'),

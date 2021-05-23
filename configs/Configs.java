@@ -1,10 +1,12 @@
 package configs;
 
 import card.Location;
+import game.GameRecord;
 import tile.Room;
 
-import java.io.ObjectInputFilter;
+import java.io.*;
 import java.util.ArrayList;
+
 
 /**
  * This class contains most of configurations to construct a game board.
@@ -38,11 +40,50 @@ public class Configs {
      * The  object of all locations
      */
     private ArrayList<Room> ROOMS = new ArrayList<>();
-    
+
+    private ArrayList<GameRecord> gameRecords;
+
+    {
+        try {
+            gameRecords = Deserialize();
+        } catch (IOException | ClassNotFoundException ignored) {
+
+        }
+    }
+
     private static Configs configurations;
 
+    public void Serialize() {
+        try {
+            FileOutputStream file = new FileOutputStream("record.txt");
+            ObjectOutputStream oos = new ObjectOutputStream(file);
+            oos.writeObject(gameRecords);
+            oos.close();
+            file.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 
-    public  void DimensionCounter(){
+    public ArrayList<GameRecord> Deserialize() throws IOException, ClassNotFoundException {
+        try {
+            FileInputStream file = new FileInputStream("record.txt");
+            ObjectInputStream ois = new ObjectInputStream(file);
+            ArrayList<GameRecord> gameRecords = (ArrayList<GameRecord>) ois.readObject();
+            ois.close();
+            file.close();
+            return gameRecords;
+        }
+        catch (IOException e){
+            return new ArrayList<>();
+        }
+    }
+
+    public ArrayList<GameRecord> getRecords(){
+        return gameRecords;
+    }
+
+    public void DimensionCounter(){
 
         int character= 0;
         int height= 0;
@@ -61,7 +102,7 @@ public class Configs {
     }
 
 
-    private Configs() {
+    private Configs(){
         for (int i = 0; i < Location.getNumberOfLocations(); i++) {
             Room room = new Room(Location.get(i),null);
             ROOMS.add(room);
@@ -274,5 +315,13 @@ public class Configs {
 
     public  String getBoardStringB() {
         return BOARD_STRING_B;
+    }
+
+    public ArrayList<GameRecord> getGameRecords() {
+        return gameRecords;
+    }
+
+    public void setGameRecords(ArrayList<GameRecord> gameRecords) {
+        this.gameRecords = gameRecords;
     }
 }
