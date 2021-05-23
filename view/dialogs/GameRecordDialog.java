@@ -1,5 +1,12 @@
 package view.dialogs;
 
+import card.Card;
+import card.Character;
+import card.Location;
+import card.Weapon;
+import configs.Configs;
+import game.GameRecord;
+import game.Suggestion;
 import ui.GUIClient;
 
 import javax.swing.*;
@@ -9,27 +16,54 @@ import java.util.ArrayList;
 
 public class GameRecordDialog extends JDialog {
 
-    private DefaultListModel<String> GameRecordList = new DefaultListModel</*GameRecord*/ String>();
+    private ArrayList<GameRecord> configurationsGameRecords = /*Configs.getConfiguration().getGameRecords()*/ testDataLoading();
 
-    public GameRecordDialog(GUIClient parent, Window windowForComponent, String string/*, ArrayList<GameRecord> GameRecordList*/) {
+    private ArrayList<GameRecord> testDataLoading() {
+        Character c1 = Character.get(1);
+        Location l1 = Location.get(1);
+        Weapon w1 = Weapon.get(1);
+
+        ArrayList<Card> cl1 = new ArrayList<>();
+        cl1.add(c1);
+        cl1.add(l1);
+        cl1.add(w1);
+
+        Suggestion s1 = new Suggestion(c1, w1, l1);
+
+        GameRecord g1 = new GameRecord(s1, "PepitoPerez", cl1);
+
+        ArrayList<GameRecord> grl = new ArrayList<>();
+        grl.add(g1);
+
+        return grl;
+    }
+
+    private DefaultListModel<String> gameRecordStringList = new DefaultListModel<>();
+
+    public GameRecordDialog(GUIClient parent, Window windowForComponent, String string) {
+
         super(windowForComponent, string);
 
-        ArrayList<String> lista = new ArrayList<>();
-        for (int i = 0; i < 1000; i++) {
-            lista.add(String.valueOf(i));
-        }
-        for (String s: lista) {
-            GameRecordList.addElement(s);
-        }
+//        ArrayList<String> lista = new ArrayList<>();
+//        for (int i = 0; i < 1000; i++) {
+//            lista.add(String.valueOf(i));
+//        }
+//        for (String s: lista) {
+//            gameRecordList.addElement(s);
+//        }
 
-        //listToDefaultListModel(/*GameRecordList*/ list);
+        listToDefaultListModel(configurationsGameRecords);
 
         // add a list of game results
-        JList</*GameRecord*/ String> list = new JList<>(this.GameRecordList); //data has type Object[]
+        JList<String> list = new JList<>(this.gameRecordStringList); //data has type Object[]
         list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        list.setVisibleRowCount(GameRecordList.size());
+        list.setVisibleRowCount(gameRecordStringList.size());
         JScrollPane listScroller = new JScrollPane(list);
+
+        JLabel noGameRecordsLabel = new JLabel();
+        noGameRecordsLabel.setFont(new Font("Calibre", 1, 40));
+        noGameRecordsLabel.setText("No game records saved.\nPlease, win a game!");
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
@@ -42,21 +76,26 @@ public class GameRecordDialog extends JDialog {
         firstRow.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
         firstRow.setPreferredSize(new Dimension(400,600));
         firstRow.setAlignmentY(Component.CENTER_ALIGNMENT);
-        firstRow.add(listScroller);
+        if (gameRecordStringList.isEmpty()){
+            firstRow.add(noGameRecordsLabel);
+            mainPanel.add(firstRow);
+            mainPanel.add(Box.createRigidArea(new Dimension(15, 20)));
+        } else {
+            firstRow.add(listScroller);
 
-        // ===== second column, view more panel =====
+            // ===== second column, view more panel =====
 
-        JPanel secondRow = new JPanel();
-        secondRow.setLayout(new BoxLayout(secondRow, BoxLayout.Y_AXIS));
-        secondRow.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-        secondRow.setPreferredSize(new Dimension(600,600));
-        secondRow.setAlignmentY(Component.CENTER_ALIGNMENT);
+            JPanel secondRow = new JPanel();
+            secondRow.setLayout(new BoxLayout(secondRow, BoxLayout.Y_AXIS));
+            secondRow.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+            secondRow.setPreferredSize(new Dimension(600,600));
+            secondRow.setAlignmentY(Component.CENTER_ALIGNMENT);
 
-
-        mainPanel.add(firstRow);
-        mainPanel.add(Box.createRigidArea(new Dimension(15, 20)));
-        mainPanel.add(secondRow);
-        mainPanel.add(Box.createRigidArea(new Dimension(15, 20)));
+            mainPanel.add(firstRow);
+            mainPanel.add(Box.createRigidArea(new Dimension(15, 20)));
+            mainPanel.add(secondRow);
+            mainPanel.add(Box.createRigidArea(new Dimension(15, 20)));
+        }
 
         // pack and show it
         this.add(mainPanel);
@@ -69,9 +108,11 @@ public class GameRecordDialog extends JDialog {
         
     }
 
-//    private void listToDefaultListModel(ArrayList</*GameRecord*/String> l) {
-//        for (GameRecord elem: l){
-//            this.GameRecordList.addElement(elem);
-//        }
-//    }
+    private void listToDefaultListModel(ArrayList<GameRecord> list) {
+        int i = 0;
+        for (GameRecord elem: list){
+            String element = "Game " + i++ + " | " + elem.getDateGame() + " | Winner: " + elem.getGameWinner();
+            this.gameRecordStringList.addElement(element);
+        }
+    }
 }
