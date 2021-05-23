@@ -345,6 +345,27 @@ public class TextClient {
         } else {
             // the player is out
             System.out.println("You are wrong!");
+
+            System.out.println("Do you want to continue playing? (cost: 5 coins)");
+            System.out.println("1. Yes");
+            System.out.println("2. No");
+
+            Character currentPlayer = game.getCurrentPlayer();
+            int yesNo = parseInt(1, 2);
+            if (yesNo == 1) {
+                if (game.hasSalaryPlayer(currentPlayer, 5)) {
+                    System.out.println("You have finished your turn. You are still playing");
+                }
+                else {
+                    System.out.println("I'm sorry but you don't have enough salary to do it");
+                    System.out.println("You are removed from the game");
+                    game.kickPlayerOut(currentPlayer);
+                }
+            }
+            else {
+                System.out.println("You are removed from the game");
+                game.kickPlayerOut(currentPlayer);
+            }
         }
     }
 
@@ -466,8 +487,8 @@ public class TextClient {
     private static void coinsHelpMessage() {
         StringBuilder message = new StringBuilder("[Legend]\n");
         message.append("You can use the coins for the following actions:\n");
-        message.append("Repeat roll dice (before starting to move) [1 coin]\n");
-
+        message.append("Repeat roll dice (before starting to move). [1 coin]\n");
+        message.append("Have the opportunity to continue playing by failing an accusation. [5 coins]");
         System.out.println(message);
     }
 }

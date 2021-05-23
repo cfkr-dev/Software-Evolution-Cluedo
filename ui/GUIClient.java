@@ -397,6 +397,7 @@ public class GUIClient extends JFrame {
             }
 
         } else {
+            game.kickPlayerOut(getCurrentPlayer());
             JOptionPane.showMessageDialog(window,
                     "Your accusation is WRONG, you are out!", "Incorrect",
                     JOptionPane.ERROR_MESSAGE, INCORRECT);

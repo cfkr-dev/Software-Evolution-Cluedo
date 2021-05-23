@@ -360,8 +360,6 @@ public class Game {
             setWinner(currentPlayer);
             return true;
         } else {
-            // the player is out
-            kickPlayerOut(currentPlayer);
             return false;
         }
     }
