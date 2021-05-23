@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import game.Game;
 import game.Player;
 import tile.Entrance;
 import tile.Room;
@@ -88,7 +89,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
      */
     private static final int PADDING_TOP = 0;
 
-    private static int FONT_SIZE;
+    private static int FONT_SIZE = 20;
 
     // ============== swing components ======================
 
@@ -119,8 +120,14 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     private JLabel remainingStepLabel;
     /**
      * The button for entering / exiting room
+     *
      */
     private JButton enterExitRoom;
+
+    private static JButton rollAgain;
+
+    private JLabel remainingCoins;
+
     /**
      * The button for moving up
      */
@@ -190,6 +197,8 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     private int remainingSteps;
 
 
+
+
     private void createRemainingCards() {
         // =================== North, remaining cards =====================
         remainingCardsPanel = new JPanel();
@@ -233,7 +242,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
      * @param guiClient --- the Main GUI of this game
      */
     public PlayerPanelCanvas(GUIClient guiClient) {
-
+        Game game =  guiClient.getGame();
         this.gui = guiClient;
 
         // ================== BorderLayout =====================
@@ -243,6 +252,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
 
         // ============== west, a player's profile picture ===============
         profileLabel = new JLabel();
+
         profileLabel.setOpaque(false);
         profileLabel
                 .setPreferredSize(new Dimension(WEST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
@@ -259,7 +269,24 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         dicePanel.setPreferredSize(new Dimension(CENTRE_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
 
         // another panel to make the dice centre-aligned
+        rollAgain = new JButton();
+        rollAgain.setText("Roll again");
+        rollAgain.setMargin(new Insets(5,5,10,10));
+        rollAgain.setBackground(Color.magenta);
+        disableRollAgain();
+        rollAgain.addActionListener(e -> {
+            clickOnRollDice();
+            game.hasSalaryPlayer(currentPlayer, 1);
+            setLabelCoins(game.getCurrentPlayer());
+            disableRollAgain();
+        });
+        
         JPanel diceGroup = new JPanel();
+        remainingCoins = new JLabel();
+        remainingCoins.setFont(new Font("Calibre", Font.BOLD, FONT_SIZE));
+
+        diceGroup.add(remainingCoins);
+        diceGroup.add(rollAgain);
         diceGroup.setBackground(null);
         diceGroup.setOpaque(false);
         diceGroup.setLayout(new BoxLayout(diceGroup, BoxLayout.Y_AXIS));
@@ -336,12 +363,30 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
                 MOVE_DISABLED_IMG, MOVE_BUTTON_SIZE);
 
         // add listener on them
-        enterExitRoom.addActionListener(e -> clickOnEnterExitRoom());
-        upButton.addActionListener(e -> clickOnUp());
-        secPasButton.addActionListener(e -> clickOnSecretPass());
-        leftButton.addActionListener(e -> clickOnLeft());
-        downButton.addActionListener(e -> clickOnDown());
-        rightButton.addActionListener(e -> clickOnRight());
+        enterExitRoom.addActionListener(e -> {
+            disableRollAgain();
+            clickOnEnterExitRoom();
+        });
+        upButton.addActionListener(e -> {
+            disableRollAgain();
+            clickOnUp();
+        });
+        secPasButton.addActionListener(e -> {
+            disableRollAgain();
+            clickOnSecretPass();
+        });
+        leftButton.addActionListener(e -> {
+            disableRollAgain();
+            clickOnLeft();
+        });
+        downButton.addActionListener(e -> {
+            disableRollAgain();
+            clickOnDown();
+        });
+        rightButton.addActionListener(e -> {
+            disableRollAgain();
+            clickOnRight();
+        });
 
         // add button into the panel
         movePanel.add(enterExitRoom);
@@ -371,10 +416,21 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
                 ACTION_DISABLED_IMG, ACTION_BUTTON_SIZE);
 
         // add listeners
-        rollDiceButton.addActionListener(e -> clickOnRollDice());
-        endTurnButton.addActionListener(e -> clickOnEndTurn());
-        suggestionButton.addActionListener(e -> clickOnSuggestion());
-        accusationButton.addActionListener(e -> clickOnAccusation());
+        rollDiceButton.addActionListener(e -> {
+            clickOnRollDice();
+        });
+        endTurnButton.addActionListener(e -> {
+            clickOnEndTurn();
+            disableRollAgain();
+        });
+        suggestionButton.addActionListener(e -> {
+            clickOnSuggestion();
+            disableRollAgain();
+        });
+        accusationButton.addActionListener(e -> {
+            clickOnAccusation();
+            disableRollAgain();
+        });
 
         // add button into the panel
         actionPanel.add(rollDiceButton);
@@ -448,7 +504,6 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         profileLabel.setPreferredSize(new Dimension(WEST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
         dicePanel.setPreferredSize(new Dimension(CENTRE_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
         remainingStepLabel.setFont(new Font("Calibre", 1, FONT_SIZE));
-        remainingCardLabel.setFont(new Font("Calibre", 1, FONT_SIZE));
     }
 
 
@@ -837,6 +892,12 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         }
         gui.setRemainingSteps(currentPlayer, remainingSteps);
         rollDiceButton.setEnabled(false);
+        if (gui.getGame().getPlayerByCharacter(currentPlayer).getSalary().getCoins() > 0 && !rollAgain.isEnabled()){
+            activateRollAgain();
+        }
+        else {
+            disableRollAgain();
+        }
         update();
     }
 
@@ -1388,4 +1449,21 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     public void componentHidden(ComponentEvent e) {
 
     }
+
+    public static void activateRollAgain(){
+        rollAgain.setEnabled(true);
+        rollAgain.setVisible(true);
+    }
+
+    public static void disableRollAgain(){
+        rollAgain.setEnabled(false);
+        rollAgain.setVisible(false);
+
+    }
+
+
+    public void setLabelCoins(Character character){
+        remainingCoins.setText("Remaining coins: " + gui.getGame().getPlayerByCharacter(character).getSalary().getCoins());
+    }
+
 }

@@ -262,6 +262,7 @@ public class GUIClient extends JFrame {
         playerPanel = new PlayerPanelCanvas(this);
         playerPanel.setPreferredSize(new Dimension(RIGHT_PANEL_WIDTH, HEIGHT));
         playerPanel.setBorder(creatTitledBorder("Player Panel"));
+        playerPanel.setLabelCoins(getCurrentPlayer());
 
         // now put them together
         window.add(boardPanel);
@@ -420,6 +421,7 @@ public class GUIClient extends JFrame {
      */
     public void currentPlayerEndTurn() {
         game.currentPlayerEndTurn();
+        playerPanel.setLabelCoins(getCurrentPlayer());
     }
 
     /**
@@ -817,4 +819,8 @@ public class GUIClient extends JFrame {
      */
     public static final ImageIcon ACCUSE_ICON = new ImageIcon(
             loadImage("Icon_Accusation.png"));
+
+    public Game getGame() {
+        return game;
+    }
 }
