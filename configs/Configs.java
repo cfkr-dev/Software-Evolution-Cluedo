@@ -2,8 +2,6 @@ package configs;
 
 import card.Location;
 import tile.Room;
-
-
 import java.util.ArrayList;
 
 /**
@@ -17,18 +15,22 @@ public class Configs {
      * The number of dices used in game
      */
     private final int NUM_DICE = 2;
+
     /**
      * Minimum player needed
      */
     private final int MIN_PLAYER = 3;
+
     /**
      * Maximum player to join into game.
      */
     private final int MAX_PLAYER = 6;
+
     /**
      * the horizontal boundary coordinate of Cluedo game board.
      */
     private int BOARD_WIDTH = 48;
+
     /**
      * the vertical boundary coordinate of Cluedo game board.
      */
@@ -41,9 +43,10 @@ public class Configs {
     
     private static Configs configurations;
 
-
+    /**
+     *Dynamically sets the width and height values of the map on which the game is to be played.
+     */
     public  void DimensionCounter(){
-
         int character= 0;
         int height= 0;
         int width;
@@ -70,6 +73,12 @@ public class Configs {
         DimensionCounter();
     }
 
+    /**
+     * Method that sets the Singleton pattern of this java class.
+     * If an instance of the class is already created, it returns the same one, otherwise it is created.
+     *
+     * @return --- instance of the Configs class
+     */
     public static Configs getConfiguration() {
         if (configurations == null) {
             configurations = new Configs();

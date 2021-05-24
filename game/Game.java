@@ -25,50 +25,62 @@ public class Game {
      * the solution created at beginning
      */
     private Suggestion solution;
+
     /**
      * the game board
      */
     private final Board board;
+
     /**
      * number of players
      */
     private int numPlayers;
+
     /**
      * number of dices
      */
     private final int numDices;
+
     /**
      * all six players (including dummy tokens) as a list
      */
     private final List<Player> players;
+
     /**
      * after cards are evenly dealt, all remaining cards are in this list.
      */
     private List<Card> remainingCards;
+
     /**
      * a random number generator
      */
     private static final Random RAN = new Random();
+
     /**
      * all six weapon tokens as a static final array
      */
     private final WeaponToken[] weaponTokens;
+
     /**
      * this map keep a record of who knows what card (that is not involved in crime)
      */
     private final Map<Character, Set<Card>> knownCards;
+
     /**
      * which character is currently acting
      */
     private Character currentPlayer;
+
     /**
      * who is the winner
      */
     private Character winner;
+
     /**
      * a StringBuilder to manipulate strings
      */
     private static final StringBuilder BOARD_STRING = new StringBuilder();
+
     /**
      * a helper boolean for the Easy mode
      */
@@ -700,6 +712,13 @@ public class Game {
         return BOARD_STRING.toString();
     }
 
+    /**
+     *If the player who wants to use coins has sufficient salary to pay for the specific operation, the cost of the operation is subtracted.
+     *
+     * @param currentPlayer --- player who takes the action to spend the money on his turn
+     * @param tax --- coin tax for performing the special action
+     * @return --- if it was possible to carry out the operation and subtract the cost
+     */
     public boolean hasSalaryPlayer(Character currentPlayer, int tax) {
         Player player = getPlayerByCharacter(currentPlayer);
         if (player.feasibleOperation(tax)) {

@@ -21,14 +21,17 @@ public class Player {
      * the character of this player
      */
     private final Character token;
+
     /**
      * player's name
      */
     private String name;
+
     /**
      * it's position on board
      */
     private Position position;
+
     /**
      * cards drawn by this player. dummy token won't have any card in it.
      */
@@ -215,6 +218,12 @@ public class Player {
         this.salary.setCoins(remainingSalary);
     }
 
+    /**
+     * Before any operation you wish to carry out, you should first check whether there is sufficient funds available for this method.
+     *
+     * @param tax --- coin tax for performing the special action
+     * @return --- return if you have sufficient balance to carry out a transaction.
+     */
     public Boolean feasibleOperation(int tax) {
         return salary.viableOperation(tax);
     }
