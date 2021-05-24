@@ -271,8 +271,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         // another panel to make the dice centre-aligned
         rollAgain = new JButton();
         rollAgain.setText("Roll again");
-        rollAgain.setMargin(new Insets(5,5,10,10));
-        rollAgain.setBackground(Color.magenta);
+        rollAgain.setBackground(Color.WHITE);
         disableRollAgain();
         rollAgain.addActionListener(e -> {
             clickOnRollDice();
@@ -1432,7 +1431,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
                 diceLabels[i].setIcon(DICE_IMG[diceRolled[i]]);
             }
         }
-
+        rollAgain.setPreferredSize(new Dimension(ACTION_DISABLED_IMG.getIconWidth(), ACTION_DISABLED_IMG.getIconHeight()));
         // Reload all canvas components without calling update method
         this.updateUI();
         this.repaint();
