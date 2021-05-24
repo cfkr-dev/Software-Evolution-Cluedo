@@ -89,7 +89,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
      */
     private static final int PADDING_TOP = 0;
 
-    private static int FONT_SIZE = 20;
+    private static int FONT_SIZE;
 
     // ============== swing components ======================
 
@@ -276,16 +276,14 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         disableRollAgain();
         rollAgain.addActionListener(e -> {
             clickOnRollDice();
-            game.hasSalaryPlayer(currentPlayer, 1);
+            game.extractSalaryPlayer(currentPlayer, 1);
             setLabelCoins(game.getCurrentPlayer());
             disableRollAgain();
         });
         
         JPanel diceGroup = new JPanel();
-        remainingCoins = new JLabel();
-        remainingCoins.setFont(new Font("Calibre", Font.BOLD, FONT_SIZE));
 
-        diceGroup.add(remainingCoins);
+
         diceGroup.add(rollAgain);
         diceGroup.setBackground(null);
         diceGroup.setOpaque(false);
@@ -328,6 +326,15 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
         // first row, a text
+        remainingCoins = new JLabel();
+        remainingCoins.setBackground(null);
+        remainingCoins.setOpaque(false);
+        remainingCoins.setFont(new Font("Calibre", 1, FONT_SIZE));
+        remainingCoins.setForeground(Color.DARK_GRAY);
+        remainingCoins.setAlignmentX(Component.CENTER_ALIGNMENT);
+        remainingCoins.setBorder(BorderFactory.createEmptyBorder(PADDING_LEFT,
+                PADDING_LEFT, PADDING_LEFT, PADDING_LEFT));
+
         remainingStepLabel = new JLabel();
         remainingStepLabel.setBackground(null);
         remainingStepLabel.setOpaque(false);
@@ -439,6 +446,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         actionPanel.add(accusationButton);
 
         // put them together
+        buttonPanel.add(remainingCoins);
         buttonPanel.add(remainingStepLabel);
         buttonPanel.add(Box.createRigidArea(new Dimension(5, 5)));
         buttonPanel.add(movePanel);
@@ -504,6 +512,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         profileLabel.setPreferredSize(new Dimension(WEST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
         dicePanel.setPreferredSize(new Dimension(CENTRE_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
         remainingStepLabel.setFont(new Font("Calibre", 1, FONT_SIZE));
+        remainingCoins.setFont(new Font("Calibre", 1, FONT_SIZE));
     }
 
 

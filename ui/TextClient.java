@@ -132,7 +132,7 @@ public class TextClient {
 
             int yesNo = parseInt(1, 2);
             if (yesNo == 1) {
-                if (game.hasSalaryPlayer(currentPlayer, 1)) {
+                if (game.extractSalaryPlayer(currentPlayer, 1)) {
                     movements = NumberOfMovements(game);
                 }
                 else {
@@ -204,7 +204,7 @@ public class TextClient {
 
                 int yesNo = parseInt(1, 2);
                 if (yesNo == 1) {
-                    if (game.hasSalaryPlayer(currentPlayer, 2)) {
+                    if (game.extractSalaryPlayer(currentPlayer, 2)) {
                         System.out.println("Realise the new suggestion");
                         // move into a room, now the player can make suggestion
                         suggestion = makeSuggestion(game, destination);
@@ -371,7 +371,7 @@ public class TextClient {
             Character currentPlayer = game.getCurrentPlayer();
             int yesNo = parseInt(1, 2);
             if (yesNo == 1) {
-                if (game.hasSalaryPlayer(currentPlayer, 5)) {
+                if (game.extractSalaryPlayer(currentPlayer, 5)) {
                     System.out.println("You have finished your turn. You are still playing");
                 }
                 else {

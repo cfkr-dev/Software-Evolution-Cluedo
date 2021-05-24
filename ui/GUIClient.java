@@ -53,19 +53,6 @@ import view.PlayerPanelCanvas;
 import view.token.CharacterToken;
 import view.token.WeaponToken;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.TitledBorder;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.Set;
-
 /**
  * A GUI client for Cluedo game.
  *
@@ -328,6 +315,24 @@ public class GUIClient extends JFrame {
         new SuggestionDialog(this, SwingUtilities.windowForComponent(this),
                 "Make a Suggestion", false);
 
+        if (getPlayerByCharacter(getCurrentPlayer()).feasibleOperation(2)) {
+            int choice = JOptionPane.showConfirmDialog(this,
+                    "Your accusation is wrong.\n"
+                            + getCurrentPlayer().toString() + " ("
+                            + game.getPlayerByCharacter(getCurrentPlayer()).getName()
+                            + " ).\n Do you want to spend 2 coins to make another one?",
+                    "You are wrong!", JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.ERROR_MESSAGE);
+
+            // start a new game or quit
+            if (choice == JOptionPane.OK_OPTION) {
+                game.extractSalaryPlayer(getCurrentPlayer(), 2);
+                new SuggestionDialog(this, SwingUtilities.windowForComponent(this),
+                        "Make a Suggestion", false);
+                playerPanel.setLabelCoins(getCurrentPlayer());
+            }
+        }
+
     }
 
     /**
@@ -398,11 +403,33 @@ public class GUIClient extends JFrame {
             }
 
         } else {
-            game.kickPlayerOut(getCurrentPlayer());
-            JOptionPane.showMessageDialog(window,
-                    "Your accusation is WRONG, you are out!", "Incorrect",
-                    JOptionPane.ERROR_MESSAGE, INCORRECT);
+            if (getPlayerByCharacter(getCurrentPlayer()).feasibleOperation(5)){
+                int choice = JOptionPane.showConfirmDialog(window,
+                        "Your accusation is wrong.\n"
+                                + getCurrentPlayer().toString() + " ("
+                                + game.getPlayerByCharacter(getCurrentPlayer()).getName()
+                                + " ).\n Do you want to spend 5 coins to keep on the game?",
+                        "You are wrong!", JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.ERROR_MESSAGE);
+
+                // start a new game or quit
+                if (choice == JOptionPane.OK_OPTION) {
+                    game.extractSalaryPlayer(getCurrentPlayer(), 5);
+                    playerPanel.setLabelCoins(game.getCurrentPlayer());
+                } else {
+                    kickPlayer();
+                }
+            }else{
+                kickPlayer();
+            }
         }
+    }
+
+    private void kickPlayer(){
+        game.kickPlayerOut(getCurrentPlayer());
+        JOptionPane.showMessageDialog(window,
+                "Your accusation is WRONG, you are out!", "Incorrect",
+                JOptionPane.ERROR_MESSAGE, INCORRECT);
     }
 
     /**

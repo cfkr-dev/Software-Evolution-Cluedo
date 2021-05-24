@@ -719,7 +719,7 @@ public class Game {
      * @param tax --- coin tax for performing the special action
      * @return --- if it was possible to carry out the operation and subtract the cost
      */
-    public boolean hasSalaryPlayer(Character currentPlayer, int tax) {
+    public boolean extractSalaryPlayer(Character currentPlayer, int tax) {
         Player player = getPlayerByCharacter(currentPlayer);
         if (player.feasibleOperation(tax)) {
            player.setSalary(tax);
