@@ -16,5 +16,6 @@ public interface Card {
      * @return --- a single char String to print a symbol on text-based graphical board.
      */
      char toStringOnBoard();
+     void resizeImage(Card card);
 
 }

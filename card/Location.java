@@ -1,6 +1,9 @@
 package card;
 
 import game.GameError;
+import utilities.WindowUtilities;
+import view.PlayerPanelCanvas;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -52,6 +55,13 @@ public enum Location implements Card {
         if (ordinal() < LOCATIONS.size())
             s = LOCATIONS.get(ordinal()).symbolOnBoard;
         return s;
+    }
+
+    @Override
+    public void resizeImage(Card card) {
+        Location loc = (Location) card;
+        PlayerPanelCanvas.LOCATION_IMG[loc.ordinal()] = WindowUtilities.resizeImage(PlayerPanelCanvas.LOCATION_IMG[loc.ordinal()]);
+        PlayerPanelCanvas.LOCATION_LABELS[loc.ordinal()].setIcon(PlayerPanelCanvas.LOCATION_IMG[loc.ordinal()]);
     }
 
     /**

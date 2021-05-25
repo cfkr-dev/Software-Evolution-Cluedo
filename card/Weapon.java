@@ -1,6 +1,9 @@
 package card;
 
 import game.GameError;
+import utilities.WindowUtilities;
+import view.PlayerPanelCanvas;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -47,6 +50,13 @@ public enum Weapon implements Card {
         if (ordinal() < WEAPONS.size())
             s = WEAPONS.get(ordinal()).symbolOnBoard;
         return s;
+    }
+
+    @Override
+    public void resizeImage(Card card) {
+        Weapon loc = (Weapon) card;
+        PlayerPanelCanvas.WEAPON_IMG[loc.ordinal()] = WindowUtilities.resizeImage(PlayerPanelCanvas.WEAPON_IMG[loc.ordinal()]);
+        PlayerPanelCanvas.WEAPON_LABELS[loc.ordinal()].setIcon(PlayerPanelCanvas.WEAPON_IMG[loc.ordinal()]);
     }
 
     /**

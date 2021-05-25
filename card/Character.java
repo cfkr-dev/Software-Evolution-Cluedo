@@ -1,6 +1,9 @@
 package card;
 
 import game.GameError;
+import utilities.WindowUtilities;
+import view.PlayerPanelCanvas;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -49,6 +52,13 @@ public enum Character implements Card {
         if (ordinal() < CHARACTERS.size())
             s = CHARACTERS.get(ordinal()).symbolOnBoard;
         return s;
+    }
+
+    @Override
+    public void resizeImage(Card card) {
+        Character ch = (Character) card;
+        PlayerPanelCanvas.CHARACTER_IMG[ch.ordinal()] = WindowUtilities.resizeImage(PlayerPanelCanvas.CHARACTER_IMG[ch.ordinal()]);
+        PlayerPanelCanvas.CHARACTER_LABELS[ch.ordinal()].setIcon(PlayerPanelCanvas.CHARACTER_IMG[ch.ordinal()]);
     }
 
     /**
