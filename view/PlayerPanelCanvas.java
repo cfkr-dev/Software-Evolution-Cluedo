@@ -223,16 +223,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         }
 
         for (Card c : remainingCards) {
-            if (c instanceof Character) {
-                Character ch = (Character) c;
-                remainingCardsPanel.add(CHARACTER_LABELS[ch.ordinal()]);
-            } else if (c instanceof Weapon) {
-                Weapon we = (Weapon) c;
-                remainingCardsPanel.add(WEAPON_LABELS[we.ordinal()]);
-            } else {
-                Location lo = (Location) c;
-                remainingCardsPanel.add(LOCATION_LABELS[lo.ordinal()]);
-            }
+            remainingCardsPanel.add(c.addCard(c));
         }
     }
 
@@ -465,16 +456,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
 
         // add cards one by one in a row
         for (Card c : cardsInHand) {
-            if (c instanceof Character) {
-                Character ch = (Character) c;
-                cardsInHandPanel.add(CHARACTER_LABELS[ch.ordinal()]);
-            } else if (c instanceof Weapon) {
-                Weapon we = (Weapon) c;
-                cardsInHandPanel.add(WEAPON_LABELS[we.ordinal()]);
-            } else {
-                Location lo = (Location) c;
-                cardsInHandPanel.add(LOCATION_LABELS[lo.ordinal()]);
-            }
+            cardsInHandPanel.add(c.addCard(c));
         }
 
         // ========== Adding five components together ==============
@@ -544,16 +526,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         // add new player's components
         cardsInHand = gui.getPlayerByCharacter(currentPlayer).getCards();
         for (Card c : cardsInHand) {
-            if (c instanceof Character) {
-                Character ch = (Character) c;
-                cardsInHandPanel.add(CHARACTER_LABELS[ch.ordinal()]);
-            } else if (c instanceof Weapon) {
-                Weapon we = (Weapon) c;
-                cardsInHandPanel.add(WEAPON_LABELS[we.ordinal()]);
-            } else {
-                Location lo = (Location) c;
-                cardsInHandPanel.add(LOCATION_LABELS[lo.ordinal()]);
-            }
+            cardsInHandPanel.add(c.addCard(c));
         }
 
         cardsInHandPanel.setVisible(true);
@@ -1451,4 +1424,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         remainingCoins.setText("Remaining coins: " + gui.getGame().getPlayerByCharacter(character).getSalary().getCoins());
     }
 
+    public JPanel getRemainingCardsPanel() {
+        return remainingCardsPanel;
+    }
 }

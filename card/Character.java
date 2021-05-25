@@ -4,6 +4,7 @@ import game.GameError;
 import utilities.WindowUtilities;
 import view.PlayerPanelCanvas;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -87,5 +88,11 @@ public enum Character implements Card {
 
     public static int getNumberOfCharacters() {
         return CHARACTERS.size();
+    }
+
+    @Override
+    public JLabel addCard(Card card) {
+        Character ch = (Character) card;
+        return PlayerPanelCanvas.CHARACTER_LABELS[ch.ordinal()];
     }
 }

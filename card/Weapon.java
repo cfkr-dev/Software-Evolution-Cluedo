@@ -4,6 +4,7 @@ import game.GameError;
 import utilities.WindowUtilities;
 import view.PlayerPanelCanvas;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -57,6 +58,12 @@ public enum Weapon implements Card {
         Weapon loc = (Weapon) card;
         PlayerPanelCanvas.WEAPON_IMG[loc.ordinal()] = WindowUtilities.resizeImage(PlayerPanelCanvas.WEAPON_IMG[loc.ordinal()]);
         PlayerPanelCanvas.WEAPON_LABELS[loc.ordinal()].setIcon(PlayerPanelCanvas.WEAPON_IMG[loc.ordinal()]);
+    }
+
+    @Override
+    public JLabel addCard(Card card) {
+        Weapon weapon  = (Weapon) card;
+        return PlayerPanelCanvas.WEAPON_LABELS[weapon.ordinal()];
     }
 
     /**

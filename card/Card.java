@@ -1,5 +1,7 @@
 package card;
 
+import javax.swing.*;
+
 /**
  * This interface represents a card in Cluedo game. It could be a Character card, a Room
  * (Location) card, or a weapon card.
@@ -17,5 +19,6 @@ public interface Card {
      */
      char toStringOnBoard();
      void resizeImage(Card card);
+     JLabel addCard(Card card);
 
 }
