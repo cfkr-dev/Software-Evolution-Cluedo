@@ -22,8 +22,6 @@ public class CustomMenu extends JMenuBar {
     private static final String[] MENU_STRINGS = { "Menu", "New Game","Easy Mode",
             "Help", "Cluedo Manual", "Change Resolution", "Exit" };
 
-    private final String[] RESOLUTIONS = {"640×480", "800×600", "1024×768", "1280×720", "1920×1080"};
-
     /**
      * A URL address to open a Cluedo manual
      */
