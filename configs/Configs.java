@@ -1,7 +1,14 @@
 package configs;
 
 import card.Location;
+import game.GameError;
 import tile.Room;
+import view.BoardCanvas;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -99,6 +106,7 @@ public class Configs {
         rooms.get(2).setSecPasTo(Location.get(7));
         rooms.get(7).setSecPasTo(Location.get(2));
     }
+
 
     /**
      * This method take into the symbolic location (integer), and returns the

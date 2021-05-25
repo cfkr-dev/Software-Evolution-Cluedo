@@ -43,7 +43,6 @@ import game.Suggestion;
 import tile.Position;
 import tile.Room;
 import tile.RoomTile;
-import tile.Tile;
 import utilities.WindowUtilities;
 import view.BoardCanvas;
 import view.CustomMenu;
@@ -281,6 +280,7 @@ public class GUIClient extends JFrame {
             boardPanel.update();
             playerPanel.update();
         } else {
+            // The game in finished, so will display the option panel to start new game, see solution or exit
             String[] options = new String[] {"Okay", "Show solution", "Exit"};
             int choice = JOptionPane.showOptionDialog(window, game.getWinner().toString()
                             + " are the only player left. Congratulations, "
@@ -439,7 +439,7 @@ public class GUIClient extends JFrame {
      * number is the rolled number of individual dice. Here we use 0 to 5 to
      * represents 1 - 6 (for simplicity when calling graphical update)
      */
-    public int[] rollDice(Character character) {
+    public int[] rollDice() {
         return game.rollDice();
     }
 
@@ -462,10 +462,7 @@ public class GUIClient extends JFrame {
         game.movePlayer(character, position);
         // we move the corresponding character token as well
         CharacterToken[] characterTokens = boardPanel.getCharacterTokens();
-        if (position instanceof Tile) {
-             //Tile tile = (Tile) position;
-             //characterTokens[character.ordinal()].moveToTile(tile);
-        } else if (position instanceof Room) {
+        if (position instanceof Room) {
             Room room = (Room) position;
             RoomTile destRoomTile = getAvailableRoomTile(room.getRoom());
             characterTokens[character.ordinal()].setRoomTile(destRoomTile);
@@ -484,6 +481,14 @@ public class GUIClient extends JFrame {
         // move the corresponding weapon token as well
         WeaponToken[] weaponTokens = game.getWeaponTokens();
         weaponTokens[weapon.ordinal()].setRoomTile(roomTile);
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void extractSalaryPlayer(int tax){
+        game.extractSalaryPlayer(game.getCurrentPlayer(), tax);
     }
 
     /**
@@ -604,15 +609,6 @@ public class GUIClient extends JFrame {
         return game.getAvailableRoomTile(location);
     }
 
-    /**
-     * get the start position of given character.
-     *
-     * @param character --- the character
-     * @return --- the start position of this character
-     */
-    public Tile getStartPosition(Character character) {
-        return game.getStartPosition(character);
-    }
 
     /**
      * Get the player's position.
@@ -651,24 +647,6 @@ public class GUIClient extends JFrame {
      */
     public void setRemainingSteps(Character character, int remainingSteps) {
         game.setRemainingSteps(character, remainingSteps);
-    }
-
-    /**
-     * This method checks the given character's position, and returns all possible
-     * positions to move to. The positions in the list returned will be of a certain
-     * order, which is: north tile -> east tile -> south tile -> west tile -> room if
-     * standing at an entrance -> exits (entrances) if in a room -> room if via the secret
-     * passage in current room. Any position that cannot be accessible will not be added
-     * in this list. In particular, a tile on which has another player standing will not
-     * be added in.<br>
-     * <br>
-     * This ensured order is to make the option menu more predictable.
-     *
-     * @param character --- the player
-     * @return --- a list of positions that are all movable.
-     */
-    public List<Position> getMovablePositions(Character character) {
-        return game.getMovablePositions(character);
     }
 
     /**
@@ -817,8 +795,7 @@ public class GUIClient extends JFrame {
     public static Image loadImage(String filename) {
         URL imageURL = BoardCanvas.class.getResource(IMAGE_PATH + filename);
         try {
-            Image img = ImageIO.read(imageURL);
-            return img;
+            return ImageIO.read(imageURL);
         } catch (IOException e) {
             throw new GameError("Unable to load image: " + filename);
         }
@@ -847,7 +824,4 @@ public class GUIClient extends JFrame {
     public static final ImageIcon ACCUSE_ICON = new ImageIcon(
             loadImage("Icon_Accusation.png"));
 
-    public Game getGame() {
-        return game;
-    }
 }

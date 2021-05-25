@@ -256,7 +256,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         profileLabel.setOpaque(false);
         profileLabel
                 .setPreferredSize(new Dimension(WEST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
-        profileLabel.setBorder(BorderFactory.createEmptyBorder(PADDING_LEFT, PADDING_TOP,
+        profileLabel.setBorder(BorderFactory.createEmptyBorder(PADDING_TOP, PADDING_LEFT,
                 PADDING_LEFT, PADDING_LEFT));
 
         // ============== centre, dice or dices ====================
@@ -275,11 +275,11 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         disableRollAgain();
         rollAgain.addActionListener(e -> {
             clickOnRollDice();
-            game.extractSalaryPlayer(currentPlayer, 1);
+            gui.extractSalaryPlayer(1);
             setLabelCoins(game.getCurrentPlayer());
             disableRollAgain();
         });
-        
+
         JPanel diceGroup = new JPanel();
 
 
@@ -888,7 +888,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
      * the dices, get a total number, and update the GUI.
      */
     public void clickOnRollDice() {
-        diceRolled = gui.rollDice(currentPlayer);
+        diceRolled = gui.rollDice();
         for (int i = 0; i < diceLabels.length; i++) {
             if (diceRolled != null) {
                 diceLabels[i].setIcon(DICE_IMG[diceRolled[i]]);
@@ -900,7 +900,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         }
         gui.setRemainingSteps(currentPlayer, remainingSteps);
         rollDiceButton.setEnabled(false);
-        if (gui.getGame().getPlayerByCharacter(currentPlayer).getSalary().getCoins() > 0 && !rollAgain.isEnabled()){
+        if (gui.getPlayerByCharacter(gui.getCurrentPlayer()).feasibleOperation(1) && !rollAgain.isEnabled()){
             activateRollAgain();
         }
         else {
@@ -1118,7 +1118,8 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     /**
      * Images for displaying dices
      */
-    private static final ImageIcon[] DICE_IMG = {new ImageIcon(loadImage("Dice_1.png"), "Dice_1.png"),
+    private static final ImageIcon[] DICE_IMG = {
+            new ImageIcon(loadImage("Dice_1.png"), "Dice_1.png"),
             new ImageIcon(loadImage("Dice_2.png"), "Dice_2.png"),
             new ImageIcon(loadImage("Dice_3.png"), "Dice_3.png"),
             new ImageIcon(loadImage("Dice_4.png"), "Dice_4.png"),
@@ -1160,17 +1161,17 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     /**
      * JLabel objects for displaying Character cards
      */
-    private static final JLabel[] CHARACTER_LABELS = createCardLabel(CHARACTER_IMG,
+    public static final JLabel[] CHARACTER_LABELS = createCardLabel(CHARACTER_IMG,
             Character.get(0));
     /**
      * JLabel objects for displaying Weapon cards
      */
-    private static final JLabel[] WEAPON_LABELS = createCardLabel(WEAPON_IMG,
+    public static final JLabel[] WEAPON_LABELS = createCardLabel(WEAPON_IMG,
             Weapon.get(0));
     /**
      * JLabel objects for displaying Location cards
      */
-    private static final JLabel[] LOCATION_LABELS = createCardLabel(LOCATION_IMG,
+    public static final JLabel[] LOCATION_LABELS = createCardLabel(LOCATION_IMG,
             Location.get(0));
     /**
      * The preferred size of move buttons
@@ -1311,35 +1312,11 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
 
 
         for (Card c : cardsInHand) {
-            if (c instanceof Character) {
-                Character ch = (Character) c;
-                CHARACTER_IMG[ch.ordinal()] = WindowUtilities.resizeImage(CHARACTER_IMG[ch.ordinal()]);
-                CHARACTER_LABELS[ch.ordinal()].setIcon(CHARACTER_IMG[ch.ordinal()]);
-            } else if (c instanceof Weapon) {
-                Weapon we = (Weapon) c;
-                WEAPON_IMG[we.ordinal()] = WindowUtilities.resizeImage(WEAPON_IMG[we.ordinal()]);
-                WEAPON_LABELS[we.ordinal()].setIcon(WEAPON_IMG[we.ordinal()]);
-            } else {
-                Location lo = (Location) c;
-                LOCATION_IMG[lo.ordinal()] = WindowUtilities.resizeImage(LOCATION_IMG[lo.ordinal()]);
-                LOCATION_LABELS[lo.ordinal()].setIcon(LOCATION_IMG[lo.ordinal()]);
-            }
+            c.resizeImage(c);
         }
 
         for (Card c : remainingCards) {
-            if (c instanceof Character) {
-                Character ch = (Character) c;
-                CHARACTER_IMG[ch.ordinal()] = WindowUtilities.resizeImage(CHARACTER_IMG[ch.ordinal()]);
-                CHARACTER_LABELS[ch.ordinal()].setIcon(CHARACTER_IMG[ch.ordinal()]);
-            } else if (c instanceof Weapon) {
-                Weapon we = (Weapon) c;
-                WEAPON_IMG[we.ordinal()] = WindowUtilities.resizeImage(WEAPON_IMG[we.ordinal()]);
-                WEAPON_LABELS[we.ordinal()].setIcon(WEAPON_IMG[we.ordinal()]);
-            } else {
-                Location lo = (Location) c;
-                LOCATION_IMG[lo.ordinal()] = WindowUtilities.resizeImage(LOCATION_IMG[lo.ordinal()]);
-                LOCATION_LABELS[lo.ordinal()].setIcon(LOCATION_IMG[lo.ordinal()]);
-            }
+            c.resizeImage(c);
         }
 
         /*Resizing upbutton*/
