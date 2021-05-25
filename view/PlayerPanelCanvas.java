@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import game.Game;
 import game.Player;
 import tile.Entrance;
 import tile.Room;
@@ -35,7 +34,7 @@ import static ui.GUIClient.loadImage;
  * displaying dices; providing buttons to move, roll dice, make suggestion and make
  * accusation; and displaying a profile picture.
  *
- * @author Hector
+ * @author G7EAS
  */
 
 public class PlayerPanelCanvas extends JPanel implements ComponentListener {
@@ -227,31 +226,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         }
     }
 
-    /**
-     * Construct a custom panel for display player related information
-     *
-     * @param guiClient --- the Main GUI of this game
-     */
-    public PlayerPanelCanvas(GUIClient guiClient) {
-        Game game =  guiClient.getGame();
-        this.gui = guiClient;
-
-        // ================== BorderLayout =====================
-        this.setLayout(new BorderLayout(5, 5));
-
-        createRemainingCards();
-
-        // ============== west, a player's profile picture ===============
-        profileLabel = new JLabel();
-
-        profileLabel.setOpaque(false);
-        profileLabel
-                .setPreferredSize(new Dimension(WEST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
-        profileLabel.setBorder(BorderFactory.createEmptyBorder(PADDING_TOP, PADDING_LEFT,
-                PADDING_LEFT, PADDING_LEFT));
-
-        // ============== centre, dice or dices ====================
-
+    private void createDicePanel(){
         // panel for dices
         dicePanel = new JPanel();
         dicePanel.setBackground(null);
@@ -267,7 +242,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         rollAgain.addActionListener(e -> {
             clickOnRollDice();
             gui.extractSalaryPlayer(1);
-            setLabelCoins(game.getCurrentPlayer());
+            setLabelCoins(gui.getGame().getCurrentPlayer());
             disableRollAgain();
         });
 
@@ -302,8 +277,36 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         diceGroup.setAlignmentY(Component.CENTER_ALIGNMENT);
         diceGroup.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 15));
         dicePanel.add(diceGroup);
-        dicePanel.setBorder(BorderFactory.createEmptyBorder(PADDING_LEFT, PADDING_LEFT,
+        dicePanel.setBorder(BorderFactory.createEmptyBorder(PADDING_TOP, PADDING_LEFT,
+                PADDING_RIGHT, PADDING_RIGHT));
+    }
+
+    /**
+     * Construct a custom panel for display player related information
+     *
+     * @param guiClient --- the Main GUI of this game
+     */
+    public PlayerPanelCanvas(GUIClient guiClient) {
+
+        this.gui = guiClient;
+
+        // ================== BorderLayout =====================
+        this.setLayout(new BorderLayout(5, 5));
+
+        createRemainingCards();
+
+        // ============== west, a player's profile picture ===============
+        profileLabel = new JLabel();
+
+        profileLabel.setOpaque(false);
+        profileLabel
+                .setPreferredSize(new Dimension(WEST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
+        profileLabel.setBorder(BorderFactory.createEmptyBorder(PADDING_TOP, PADDING_LEFT,
                 PADDING_LEFT, PADDING_LEFT));
+
+        // ============== centre, dice or dices ====================
+
+        createDicePanel();
 
         // ============ east, buttons ===================
         buttonPanel = new JPanel();

@@ -1,5 +1,6 @@
 package view.dialogs;
 
+
 import game.Suggestion;
 import ui.GUIClient;
 import view.PlayerPanelCanvas;
@@ -11,12 +12,11 @@ import java.awt.event.WindowListener;
 
 public class SolutionDialog extends JDialog implements WindowListener {
 
-    private Suggestion solution;
 
     public SolutionDialog(GUIClient guiClient, Window windowForComponent, String game_solution) {
         super(windowForComponent, game_solution);
         this.addWindowListener(this);
-        solution = guiClient.getSolution();
+        Suggestion solution = guiClient.getSolution();
         JLabel character = new JLabel();
         character.setIcon(PlayerPanelCanvas.CHARACTER_IMG[solution.character.ordinal()]);
         JLabel weapon = new JLabel();
