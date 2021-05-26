@@ -19,7 +19,7 @@ public class CustomMenu extends JMenuBar {
     /**
      * An array holding all Strings to make the menu
      */
-    private static final String[] MENU_STRINGS = { "Menu", "New Game","Easy Mode",
+    private static final String[] MENU_STRINGS = { "Menu", "New Game", "Game Records","Easy Mode",
             "Help", "Cluedo Manual", "Change Resolution", "Exit" };
 
     /**
