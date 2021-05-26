@@ -343,6 +343,10 @@ public class GUIClient extends JFrame {
 
     }
 
+    public void openChangeResolution() {
+        new ChangeResolutionDialog(this, SwingUtilities.windowForComponent(this), "Change Resolution");
+    }
+
     /**
      * After the player has made his suggestion, this method evaluate the suggestion, and
      * pop up a option panel to show how other players refuted this suggestion.
@@ -807,6 +811,10 @@ public class GUIClient extends JFrame {
         } catch (IOException e) {
             throw new GameError("Unable to load image: " + filename);
         }
+    }
+
+    public void changeResolution(Dimension dimension){
+        this.setSize(dimension);
     }
 
     /**

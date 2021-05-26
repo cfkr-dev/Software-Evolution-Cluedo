@@ -19,10 +19,8 @@ public class CustomMenu extends JMenuBar {
     /**
      * An array holding all Strings to make the menu
      */
-    private static final String[] MENU_STRINGS = { "Menu", "New Game", "Game Records" ,"Easy Mode",
-            "Help", "Cluedo Manual", "Exit" };
-
-    private final String[] RESOLUTIONS = {"640×480", "800×600", "1024×768", "1280×720", "1920×1080"};
+    private static final String[] MENU_STRINGS = { "Menu", "New Game","Easy Mode",
+            "Help", "Cluedo Manual", "Change Resolution", "Exit" };
 
     /**
      * A URL address to open a Cluedo manual
@@ -33,8 +31,6 @@ public class CustomMenu extends JMenuBar {
      * a check box menu to enable/disable easy mode
      */
     private JCheckBoxMenuItem easyMode;
-
-    private JComboBox<String> resolutionsComboBox;
 
     /**
      * Construct a Menu for Cluedo game
@@ -95,13 +91,9 @@ public class CustomMenu extends JMenuBar {
             }
         });
 
-        /*resolutionsComboBox = new JComboBox<>(RESOLUTIONS);
-        resolutionsComboBox.addActionListener(e ->{
-            String currentResolution = RESOLUTIONS[resolutionsComboBox.getSelectedIndex()];
-            int resolutionX = Integer.parseInt(currentResolution.substring(0, currentResolution.indexOf('×')));
-            int resolutionY = Integer.parseInt(currentResolution.substring(currentResolution.indexOf('×')));
-            parent.setPreferredSize(new Dimension(resolutionX, resolutionY));
-        });*/
+        // change resolution
+        JMenuItem changeResolution = new JMenuItem(MENU_STRINGS[i++]);
+        changeResolution.addActionListener(e -> parent.openChangeResolution());
 
         // exit
         JMenuItem exit = new JMenuItem(MENU_STRINGS[i]);
@@ -125,7 +117,7 @@ public class CustomMenu extends JMenuBar {
         jMenu.add(easyMode);
         jMenu.add(help);
         jMenu.add(manual);
-        //JMenu.add(resolutionsComboBox);
+        jMenu.add(changeResolution);
         jMenu.add(exit);
         this.add(jMenu);
     }
