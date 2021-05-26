@@ -693,7 +693,10 @@ public class Game {
         }
 
         BOARD_STRING.append("========================\n");
-        BOARD_STRING.append("Type \"help\" for help\n");
+        BOARD_STRING.append("Type \"help\" for help\n | \"record\" for records");
         return BOARD_STRING.toString();
     }
+
+
+
 }

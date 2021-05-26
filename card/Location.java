@@ -1,6 +1,8 @@
 package card;
 
 import game.GameError;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -14,7 +16,7 @@ import java.util.Arrays;
  * @author G7EAS
  *
  */
-public enum Location implements Card {
+public enum Location implements Card, Serializable {
 
     Kitchen("Kitchen", ' '),
     Ball_Room("Ball Room", ' '),
