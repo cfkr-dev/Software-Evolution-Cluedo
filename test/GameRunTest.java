@@ -423,6 +423,7 @@ public class GameRunTest {
             Suggestion wrongAccusation = getWrongAccusation(game);
 
             game.checkAccusation(wrongAccusation);
+            game.kickPlayerOut(currentPlayer);
 
             assertTrue("The game should be running", game.isGameRunning());
             assertEquals("There should be no winner" + currentPlayer.toString(),
@@ -455,6 +456,7 @@ public class GameRunTest {
                         game.getWinner(), null);
 
                 game.checkAccusation(wrongAccusation);
+                game.kickPlayerOut(currentPlayer);
                 assertFalse("The player should not be playing any more.",
                         game.getPlayerByCharacter(currentPlayer).isPlaying());
 

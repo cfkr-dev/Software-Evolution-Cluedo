@@ -34,7 +34,7 @@ import static ui.GUIClient.loadImage;
  * displaying dices; providing buttons to move, roll dice, make suggestion and make
  * accusation; and displaying a profile picture.
  *
- * @author Hector
+ * @author G7EAS
  */
 
 public class PlayerPanelCanvas extends JPanel implements ComponentListener {
@@ -119,8 +119,14 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     private JLabel remainingStepLabel;
     /**
      * The button for entering / exiting room
+     *
      */
     private JButton enterExitRoom;
+
+    private static JButton rollAgain;
+
+    private JLabel remainingCoins;
+
     /**
      * The button for moving up
      */
@@ -190,6 +196,8 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     private int remainingSteps;
 
 
+
+
     private void createRemainingCards() {
         // =================== North, remaining cards =====================
         remainingCardsPanel = new JPanel();
@@ -214,43 +222,11 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         }
 
         for (Card c : remainingCards) {
-            if (c instanceof Character) {
-                Character ch = (Character) c;
-                remainingCardsPanel.add(CHARACTER_LABELS[ch.ordinal()]);
-            } else if (c instanceof Weapon) {
-                Weapon we = (Weapon) c;
-                remainingCardsPanel.add(WEAPON_LABELS[we.ordinal()]);
-            } else {
-                Location lo = (Location) c;
-                remainingCardsPanel.add(LOCATION_LABELS[lo.ordinal()]);
-            }
+            remainingCardsPanel.add(c.addCard(c));
         }
     }
 
-    /**
-     * Construct a custom panel for display player related information
-     *
-     * @param guiClient --- the Main GUI of this game
-     */
-    public PlayerPanelCanvas(GUIClient guiClient) {
-
-        this.gui = guiClient;
-
-        // ================== BorderLayout =====================
-        this.setLayout(new BorderLayout(5, 5));
-
-        createRemainingCards();
-
-        // ============== west, a player's profile picture ===============
-        profileLabel = new JLabel();
-        profileLabel.setOpaque(false);
-        profileLabel
-                .setPreferredSize(new Dimension(WEST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
-        profileLabel.setBorder(BorderFactory.createEmptyBorder(PADDING_LEFT, PADDING_TOP,
-                PADDING_LEFT, PADDING_LEFT));
-
-        // ============== centre, dice or dices ====================
-
+    private void createDicePanel(){
         // panel for dices
         dicePanel = new JPanel();
         dicePanel.setBackground(null);
@@ -259,7 +235,21 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         dicePanel.setPreferredSize(new Dimension(CENTRE_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
 
         // another panel to make the dice centre-aligned
+        rollAgain = new JButton();
+        rollAgain.setText("Roll again");
+        rollAgain.setBackground(Color.WHITE);
+        disableRollAgain();
+        rollAgain.addActionListener(e -> {
+            clickOnRollDice();
+            gui.extractSalaryPlayer(1);
+            setLabelCoins(gui.getGame().getCurrentPlayer());
+            disableRollAgain();
+        });
+
         JPanel diceGroup = new JPanel();
+
+
+        diceGroup.add(rollAgain);
         diceGroup.setBackground(null);
         diceGroup.setOpaque(false);
         diceGroup.setLayout(new BoxLayout(diceGroup, BoxLayout.Y_AXIS));
@@ -287,8 +277,36 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         diceGroup.setAlignmentY(Component.CENTER_ALIGNMENT);
         diceGroup.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 15));
         dicePanel.add(diceGroup);
-        dicePanel.setBorder(BorderFactory.createEmptyBorder(PADDING_LEFT, PADDING_LEFT,
+        dicePanel.setBorder(BorderFactory.createEmptyBorder(PADDING_TOP, PADDING_LEFT,
+                PADDING_RIGHT, PADDING_RIGHT));
+    }
+
+    /**
+     * Construct a custom panel for display player related information
+     *
+     * @param guiClient --- the Main GUI of this game
+     */
+    public PlayerPanelCanvas(GUIClient guiClient) {
+
+        this.gui = guiClient;
+
+        // ================== BorderLayout =====================
+        this.setLayout(new BorderLayout(5, 5));
+
+        createRemainingCards();
+
+        // ============== west, a player's profile picture ===============
+        profileLabel = new JLabel();
+
+        profileLabel.setOpaque(false);
+        profileLabel
+                .setPreferredSize(new Dimension(WEST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
+        profileLabel.setBorder(BorderFactory.createEmptyBorder(PADDING_TOP, PADDING_LEFT,
                 PADDING_LEFT, PADDING_LEFT));
+
+        // ============== centre, dice or dices ====================
+
+        createDicePanel();
 
         // ============ east, buttons ===================
         buttonPanel = new JPanel();
@@ -301,6 +319,15 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
         // first row, a text
+        remainingCoins = new JLabel();
+        remainingCoins.setBackground(null);
+        remainingCoins.setOpaque(false);
+        remainingCoins.setFont(new Font("Calibre", 1, FONT_SIZE));
+        remainingCoins.setForeground(Color.DARK_GRAY);
+        remainingCoins.setAlignmentX(Component.CENTER_ALIGNMENT);
+        remainingCoins.setBorder(BorderFactory.createEmptyBorder(PADDING_LEFT,
+                PADDING_LEFT, PADDING_LEFT, PADDING_LEFT));
+
         remainingStepLabel = new JLabel();
         remainingStepLabel.setBackground(null);
         remainingStepLabel.setOpaque(false);
@@ -336,12 +363,30 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
                 MOVE_DISABLED_IMG, MOVE_BUTTON_SIZE);
 
         // add listener on them
-        enterExitRoom.addActionListener(e -> clickOnEnterExitRoom());
-        upButton.addActionListener(e -> clickOnUp());
-        secPasButton.addActionListener(e -> clickOnSecretPass());
-        leftButton.addActionListener(e -> clickOnLeft());
-        downButton.addActionListener(e -> clickOnDown());
-        rightButton.addActionListener(e -> clickOnRight());
+        enterExitRoom.addActionListener(e -> {
+            disableRollAgain();
+            clickOnEnterExitRoom();
+        });
+        upButton.addActionListener(e -> {
+            disableRollAgain();
+            clickOnUp();
+        });
+        secPasButton.addActionListener(e -> {
+            disableRollAgain();
+            clickOnSecretPass();
+        });
+        leftButton.addActionListener(e -> {
+            disableRollAgain();
+            clickOnLeft();
+        });
+        downButton.addActionListener(e -> {
+            disableRollAgain();
+            clickOnDown();
+        });
+        rightButton.addActionListener(e -> {
+            disableRollAgain();
+            clickOnRight();
+        });
 
         // add button into the panel
         movePanel.add(enterExitRoom);
@@ -371,10 +416,21 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
                 ACTION_DISABLED_IMG, ACTION_BUTTON_SIZE);
 
         // add listeners
-        rollDiceButton.addActionListener(e -> clickOnRollDice());
-        endTurnButton.addActionListener(e -> clickOnEndTurn());
-        suggestionButton.addActionListener(e -> clickOnSuggestion());
-        accusationButton.addActionListener(e -> clickOnAccusation());
+        rollDiceButton.addActionListener(e -> {
+            clickOnRollDice();
+        });
+        endTurnButton.addActionListener(e -> {
+            clickOnEndTurn();
+            disableRollAgain();
+        });
+        suggestionButton.addActionListener(e -> {
+            clickOnSuggestion();
+            disableRollAgain();
+        });
+        accusationButton.addActionListener(e -> {
+            clickOnAccusation();
+            disableRollAgain();
+        });
 
         // add button into the panel
         actionPanel.add(rollDiceButton);
@@ -383,6 +439,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         actionPanel.add(accusationButton);
 
         // put them together
+        buttonPanel.add(remainingCoins);
         buttonPanel.add(remainingStepLabel);
         buttonPanel.add(Box.createRigidArea(new Dimension(5, 5)));
         buttonPanel.add(movePanel);
@@ -402,16 +459,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
 
         // add cards one by one in a row
         for (Card c : cardsInHand) {
-            if (c instanceof Character) {
-                Character ch = (Character) c;
-                cardsInHandPanel.add(CHARACTER_LABELS[ch.ordinal()]);
-            } else if (c instanceof Weapon) {
-                Weapon we = (Weapon) c;
-                cardsInHandPanel.add(WEAPON_LABELS[we.ordinal()]);
-            } else {
-                Location lo = (Location) c;
-                cardsInHandPanel.add(LOCATION_LABELS[lo.ordinal()]);
-            }
+            cardsInHandPanel.add(c.addCard(c));
         }
 
         // ========== Adding five components together ==============
@@ -448,7 +496,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         profileLabel.setPreferredSize(new Dimension(WEST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
         dicePanel.setPreferredSize(new Dimension(CENTRE_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
         remainingStepLabel.setFont(new Font("Calibre", 1, FONT_SIZE));
-        remainingCardLabel.setFont(new Font("Calibre", 1, FONT_SIZE));
+        remainingCoins.setFont(new Font("Calibre", 1, FONT_SIZE));
     }
 
 
@@ -481,16 +529,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         // add new player's components
         cardsInHand = gui.getPlayerByCharacter(currentPlayer).getCards();
         for (Card c : cardsInHand) {
-            if (c instanceof Character) {
-                Character ch = (Character) c;
-                cardsInHandPanel.add(CHARACTER_LABELS[ch.ordinal()]);
-            } else if (c instanceof Weapon) {
-                Weapon we = (Weapon) c;
-                cardsInHandPanel.add(WEAPON_LABELS[we.ordinal()]);
-            } else {
-                Location lo = (Location) c;
-                cardsInHandPanel.add(LOCATION_LABELS[lo.ordinal()]);
-            }
+            cardsInHandPanel.add(c.addCard(c));
         }
 
         cardsInHandPanel.setVisible(true);
@@ -825,7 +864,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
      * the dices, get a total number, and update the GUI.
      */
     public void clickOnRollDice() {
-        diceRolled = gui.rollDice(currentPlayer);
+        diceRolled = gui.rollDice();
         for (int i = 0; i < diceLabels.length; i++) {
             if (diceRolled != null) {
                 diceLabels[i].setIcon(DICE_IMG[diceRolled[i]]);
@@ -837,6 +876,12 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         }
         gui.setRemainingSteps(currentPlayer, remainingSteps);
         rollDiceButton.setEnabled(false);
+        if (gui.getPlayerByCharacter(gui.getCurrentPlayer()).feasibleOperation(1) && !rollAgain.isEnabled()){
+            activateRollAgain();
+        }
+        else {
+            disableRollAgain();
+        }
         update();
     }
 
@@ -1049,7 +1094,8 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     /**
      * Images for displaying dices
      */
-    private static final ImageIcon[] DICE_IMG = {new ImageIcon(loadImage("Dice_1.png"), "Dice_1.png"),
+    private static final ImageIcon[] DICE_IMG = {
+            new ImageIcon(loadImage("Dice_1.png"), "Dice_1.png"),
             new ImageIcon(loadImage("Dice_2.png"), "Dice_2.png"),
             new ImageIcon(loadImage("Dice_3.png"), "Dice_3.png"),
             new ImageIcon(loadImage("Dice_4.png"), "Dice_4.png"),
@@ -1091,17 +1137,17 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     /**
      * JLabel objects for displaying Character cards
      */
-    private static final JLabel[] CHARACTER_LABELS = createCardLabel(CHARACTER_IMG,
+    public static final JLabel[] CHARACTER_LABELS = createCardLabel(CHARACTER_IMG,
             Character.get(0));
     /**
      * JLabel objects for displaying Weapon cards
      */
-    private static final JLabel[] WEAPON_LABELS = createCardLabel(WEAPON_IMG,
+    public static final JLabel[] WEAPON_LABELS = createCardLabel(WEAPON_IMG,
             Weapon.get(0));
     /**
      * JLabel objects for displaying Location cards
      */
-    private static final JLabel[] LOCATION_LABELS = createCardLabel(LOCATION_IMG,
+    public static final JLabel[] LOCATION_LABELS = createCardLabel(LOCATION_IMG,
             Location.get(0));
     /**
      * The preferred size of move buttons
@@ -1242,35 +1288,11 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
 
 
         for (Card c : cardsInHand) {
-            if (c instanceof Character) {
-                Character ch = (Character) c;
-                CHARACTER_IMG[ch.ordinal()] = WindowUtilities.resizeImage(CHARACTER_IMG[ch.ordinal()]);
-                CHARACTER_LABELS[ch.ordinal()].setIcon(CHARACTER_IMG[ch.ordinal()]);
-            } else if (c instanceof Weapon) {
-                Weapon we = (Weapon) c;
-                WEAPON_IMG[we.ordinal()] = WindowUtilities.resizeImage(WEAPON_IMG[we.ordinal()]);
-                WEAPON_LABELS[we.ordinal()].setIcon(WEAPON_IMG[we.ordinal()]);
-            } else {
-                Location lo = (Location) c;
-                LOCATION_IMG[lo.ordinal()] = WindowUtilities.resizeImage(LOCATION_IMG[lo.ordinal()]);
-                LOCATION_LABELS[lo.ordinal()].setIcon(LOCATION_IMG[lo.ordinal()]);
-            }
+            c.resizeImage(c);
         }
 
         for (Card c : remainingCards) {
-            if (c instanceof Character) {
-                Character ch = (Character) c;
-                CHARACTER_IMG[ch.ordinal()] = WindowUtilities.resizeImage(CHARACTER_IMG[ch.ordinal()]);
-                CHARACTER_LABELS[ch.ordinal()].setIcon(CHARACTER_IMG[ch.ordinal()]);
-            } else if (c instanceof Weapon) {
-                Weapon we = (Weapon) c;
-                WEAPON_IMG[we.ordinal()] = WindowUtilities.resizeImage(WEAPON_IMG[we.ordinal()]);
-                WEAPON_LABELS[we.ordinal()].setIcon(WEAPON_IMG[we.ordinal()]);
-            } else {
-                Location lo = (Location) c;
-                LOCATION_IMG[lo.ordinal()] = WindowUtilities.resizeImage(LOCATION_IMG[lo.ordinal()]);
-                LOCATION_LABELS[lo.ordinal()].setIcon(LOCATION_IMG[lo.ordinal()]);
-            }
+            c.resizeImage(c);
         }
 
         /*Resizing upbutton*/
@@ -1362,7 +1384,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
                 diceLabels[i].setIcon(DICE_IMG[diceRolled[i]]);
             }
         }
-
+        rollAgain.setPreferredSize(new Dimension(ACTION_DISABLED_IMG.getIconWidth(), ACTION_DISABLED_IMG.getIconHeight()));
         // Reload all canvas components without calling update method
         this.updateUI();
         this.repaint();
@@ -1387,5 +1409,25 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     @Override
     public void componentHidden(ComponentEvent e) {
 
+    }
+
+    public static void activateRollAgain(){
+        rollAgain.setEnabled(true);
+        rollAgain.setVisible(true);
+    }
+
+    public static void disableRollAgain(){
+        rollAgain.setEnabled(false);
+        rollAgain.setVisible(false);
+
+    }
+
+
+    public void setLabelCoins(Character character){
+        remainingCoins.setText("Remaining coins: " + gui.getGame().getPlayerByCharacter(character).getSalary().getCoins());
+    }
+
+    public JPanel getRemainingCardsPanel() {
+        return remainingCardsPanel;
     }
 }

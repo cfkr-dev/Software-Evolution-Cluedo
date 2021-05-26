@@ -11,14 +11,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.Utilities;
 
 import configs.Configs;
 
 import card.Card;
 import card.Character;
 import card.Location;
-import configs.Configs;
 import game.Player;
 import tile.Position;
 import tile.Room;
@@ -30,11 +28,6 @@ import view.token.AbstractToken;
 import view.token.CharacterToken;
 import view.token.WeaponToken;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.Set;
 
 import static ui.GUIClient.loadImage;
 

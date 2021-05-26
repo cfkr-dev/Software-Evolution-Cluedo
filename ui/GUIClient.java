@@ -42,7 +42,6 @@ import game.*;
 import tile.Position;
 import tile.Room;
 import tile.RoomTile;
-import tile.Tile;
 import utilities.WindowUtilities;
 import view.BoardCanvas;
 import view.CustomMenu;
@@ -251,6 +250,7 @@ public class GUIClient extends JFrame {
         playerPanel = new PlayerPanelCanvas(this);
         playerPanel.setPreferredSize(new Dimension(RIGHT_PANEL_WIDTH, HEIGHT));
         playerPanel.setBorder(creatTitledBorder("Player Panel"));
+        playerPanel.setLabelCoins(getCurrentPlayer());
 
         // now put them together
         window.add(boardPanel);
@@ -282,7 +282,10 @@ public class GUIClient extends JFrame {
             boardPanel.update();
             playerPanel.update();
         } else {
+
+            // The game in finished, so will display the option panel to start new game, see solution or exit
             configurations.getRecords().add(new GameRecord(game.getSolution(), game.getPlayerByCharacter(game.getWinner()).getName(), game.getPlayerByCharacter(game.getCurrentPlayer()).getCards()));
+          
             String[] options = new String[] {"Okay", "Show solution", "Exit"};
 
             int choice = JOptionPane.showOptionDialog(window, game.getWinner().toString()
@@ -323,6 +326,24 @@ public class GUIClient extends JFrame {
     public void popUpSuggestion() {
         new SuggestionDialog(this, SwingUtilities.windowForComponent(this),
                 "Make a Suggestion", false, game);
+
+        if (getPlayerByCharacter(getCurrentPlayer()).feasibleOperation(2)) {
+            int choice = JOptionPane.showConfirmDialog(this,
+                    "Your accusation is wrong.\n"
+                            + getCurrentPlayer().toString() + " ("
+                            + game.getPlayerByCharacter(getCurrentPlayer()).getName()
+                            + " ).\n Do you want to spend 2 coins to make another one?",
+                    "You are wrong!", JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.ERROR_MESSAGE);
+
+            // start a new game or quit
+            if (choice == JOptionPane.OK_OPTION) {
+                game.extractSalaryPlayer(getCurrentPlayer(), 2);
+                new SuggestionDialog(this, SwingUtilities.windowForComponent(this),
+                        "Make a Suggestion", false);
+                playerPanel.setLabelCoins(getCurrentPlayer());
+            }
+        }
 
     }
 
@@ -394,10 +415,33 @@ public class GUIClient extends JFrame {
             }
 
         } else {
-            JOptionPane.showMessageDialog(window,
-                    "Your accusation is WRONG, you are out!", "Incorrect",
-                    JOptionPane.ERROR_MESSAGE, INCORRECT);
+            if (getPlayerByCharacter(getCurrentPlayer()).feasibleOperation(5)){
+                int choice = JOptionPane.showConfirmDialog(window,
+                        "Your accusation is wrong.\n"
+                                + getCurrentPlayer().toString() + " ("
+                                + game.getPlayerByCharacter(getCurrentPlayer()).getName()
+                                + " ).\n Do you want to spend 5 coins to keep on the game?",
+                        "You are wrong!", JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.ERROR_MESSAGE);
+
+                // start a new game or quit
+                if (choice == JOptionPane.OK_OPTION) {
+                    game.extractSalaryPlayer(getCurrentPlayer(), 5);
+                    playerPanel.setLabelCoins(game.getCurrentPlayer());
+                } else {
+                    kickPlayer();
+                }
+            }else{
+                kickPlayer();
+            }
         }
+    }
+
+    private void kickPlayer(){
+        game.kickPlayerOut(getCurrentPlayer());
+        JOptionPane.showMessageDialog(window,
+                "Your accusation is WRONG, you are out!", "Incorrect",
+                JOptionPane.ERROR_MESSAGE, INCORRECT);
     }
 
     /**
@@ -407,7 +451,7 @@ public class GUIClient extends JFrame {
      * number is the rolled number of individual dice. Here we use 0 to 5 to
      * represents 1 - 6 (for simplicity when calling graphical update)
      */
-    public int[] rollDice(Character character) {
+    public int[] rollDice() {
         return game.rollDice();
     }
 
@@ -416,6 +460,7 @@ public class GUIClient extends JFrame {
      */
     public void currentPlayerEndTurn() {
         game.currentPlayerEndTurn();
+        playerPanel.setLabelCoins(getCurrentPlayer());
     }
 
     /**
@@ -429,10 +474,7 @@ public class GUIClient extends JFrame {
         game.movePlayer(character, position);
         // we move the corresponding character token as well
         CharacterToken[] characterTokens = boardPanel.getCharacterTokens();
-        if (position instanceof Tile) {
-             //Tile tile = (Tile) position;
-             //characterTokens[character.ordinal()].moveToTile(tile);
-        } else if (position instanceof Room) {
+        if (position instanceof Room) {
             Room room = (Room) position;
             RoomTile destRoomTile = getAvailableRoomTile(room.getRoom());
             characterTokens[character.ordinal()].setRoomTile(destRoomTile);
@@ -451,6 +493,14 @@ public class GUIClient extends JFrame {
         // move the corresponding weapon token as well
         WeaponToken[] weaponTokens = game.getWeaponTokens();
         weaponTokens[weapon.ordinal()].setRoomTile(roomTile);
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void extractSalaryPlayer(int tax){
+        game.extractSalaryPlayer(game.getCurrentPlayer(), tax);
     }
 
     /**
@@ -571,15 +621,6 @@ public class GUIClient extends JFrame {
         return game.getAvailableRoomTile(location);
     }
 
-    /**
-     * get the start position of given character.
-     *
-     * @param character --- the character
-     * @return --- the start position of this character
-     */
-    public Tile getStartPosition(Character character) {
-        return game.getStartPosition(character);
-    }
 
     /**
      * Get the player's position.
@@ -618,24 +659,6 @@ public class GUIClient extends JFrame {
      */
     public void setRemainingSteps(Character character, int remainingSteps) {
         game.setRemainingSteps(character, remainingSteps);
-    }
-
-    /**
-     * This method checks the given character's position, and returns all possible
-     * positions to move to. The positions in the list returned will be of a certain
-     * order, which is: north tile -> east tile -> south tile -> west tile -> room if
-     * standing at an entrance -> exits (entrances) if in a room -> room if via the secret
-     * passage in current room. Any position that cannot be accessible will not be added
-     * in this list. In particular, a tile on which has another player standing will not
-     * be added in.<br>
-     * <br>
-     * This ensured order is to make the option menu more predictable.
-     *
-     * @param character --- the player
-     * @return --- a list of positions that are all movable.
-     */
-    public List<Position> getMovablePositions(Character character) {
-        return game.getMovablePositions(character);
     }
 
     /**
@@ -784,8 +807,7 @@ public class GUIClient extends JFrame {
     public static Image loadImage(String filename) {
         URL imageURL = BoardCanvas.class.getResource(IMAGE_PATH + filename);
         try {
-            Image img = ImageIO.read(imageURL);
-            return img;
+            return ImageIO.read(imageURL);
         } catch (IOException e) {
             throw new GameError("Unable to load image: " + filename);
         }

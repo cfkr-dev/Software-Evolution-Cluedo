@@ -135,14 +135,22 @@ public class TextClient {
 
         // if this player hasn't roll a dice, roll dice
         if (remainingSteps == 0) {
-            int[] roll = game.rollDice();
-            int total = 0;
-            for (int j : roll) {
-                total += (j + 1);
+            int movements = NumberOfMovements(game);
+            System.out.println("Do you want to repeat the roll? (cost: 1 coin)");
+            System.out.println("1. Yes");
+            System.out.println("2. No");
+
+            int yesNo = parseInt(1, 2);
+            if (yesNo == 1) {
+                if (game.extractSalaryPlayer(currentPlayer, 1)) {
+                    movements = NumberOfMovements(game);
+                }
+                else {
+                    System.out.println("I'm sorry but you don't have enough salary to do it");
+                }
             }
-            System.out.println("You rolled " + total + ".");
-            game.setRemainingSteps(currentPlayer, total);
-            remainingSteps = total;
+            game.setRemainingSteps(currentPlayer, movements);
+            remainingSteps = movements;
         }
 
         System.out.println("You have " + remainingSteps + " steps left.");
@@ -200,8 +208,26 @@ public class TextClient {
                 // now compare the suggestion, and other players try to reject it
                 System.out.println(game.refuteSuggestion(suggestion));
 
-                accusationChoice(game);
+                System.out.println("Would you like to make another suggestion? (cost: 2 coins)");
+                System.out.println("1. Yes");
+                System.out.println("2. No");
 
+                int yesNo = parseInt(1, 2);
+                if (yesNo == 1) {
+                    if (game.extractSalaryPlayer(currentPlayer, 2)) {
+                        System.out.println("Realise the new suggestion");
+                        // move into a room, now the player can make suggestion
+                        suggestion = makeSuggestion(game, destination);
+                        // now compare the suggestion, and other players try to reject it
+                        System.out.println(game.refuteSuggestion(suggestion));
+                    }
+                    else {
+                        System.out.println("I'm sorry but you don't have enough salary to do it");
+                        System.out.println("You can make another suggestion on your next turn");
+                    }
+                }
+
+                accusationChoice(game);
                 remainingSteps = 0;
 
             } else {
@@ -243,6 +269,16 @@ public class TextClient {
         if (remainingSteps == 0) {
             game.currentPlayerEndTurn();
         }
+    }
+
+    private static int NumberOfMovements(Game game) {
+        int[] roll = game.rollDice();
+        int total = 0;
+        for (int j : roll) {
+            total += (j + 1);
+        }
+        System.out.println("You rolled " + total + ".");
+        return total;
     }
 
 
@@ -337,6 +373,27 @@ public class TextClient {
         } else {
             // the player is out
             System.out.println("You are wrong!");
+
+            System.out.println("Do you want to continue playing? (cost: 5 coins)");
+            System.out.println("1. Yes");
+            System.out.println("2. No");
+
+            Character currentPlayer = game.getCurrentPlayer();
+            int yesNo = parseInt(1, 2);
+            if (yesNo == 1) {
+                if (game.extractSalaryPlayer(currentPlayer, 5)) {
+                    System.out.println("You have finished your turn. You are still playing");
+                }
+                else {
+                    System.out.println("I'm sorry but you don't have enough salary to do it");
+                    System.out.println("You are removed from the game");
+                    game.kickPlayerOut(currentPlayer);
+                }
+            }
+            else {
+                System.out.println("You are removed from the game");
+                game.kickPlayerOut(currentPlayer);
+            }
         }
     }
 
@@ -416,6 +473,11 @@ public class TextClient {
                 helpMessage();
                 System.out.println("Please choose between " + min + " and " + max + ":");
             }
+
+            else if (line.equals("coins help")) {
+                coinsHelpMessage();
+                System.out.println("Please choose between " + min + " and " + max + ":");
+            }
           
             else if(line.equals("suspicious")){
                 suspiciousMessage(game);
@@ -467,6 +529,15 @@ public class TextClient {
             message.append(weapon.toString()).append(":\t\t").append(weapon.toStringOnBoard()).append("\n");
         }
 
+        System.out.println(message);
+    }
+
+    private static void coinsHelpMessage() {
+        StringBuilder message = new StringBuilder("[Legend]\n");
+        message.append("You can use the coins for the following actions:\n");
+        message.append("Repeat roll dice (before starting to move). [1 coin]\n");
+        message.append("Make another suggestion in the same turn. [2 coins]\n");
+        message.append("Have the opportunity to continue playing by failing an accusation. [5 coins]\n");
         System.out.println(message);
     }
 
@@ -532,6 +603,5 @@ public class TextClient {
     public static void displaySolution(Suggestion solution){
         StringBuilder message = new StringBuilder();
         message.append("The solution is: \n").append(solution.toString());
-        System.out.println(message);
     }
 }

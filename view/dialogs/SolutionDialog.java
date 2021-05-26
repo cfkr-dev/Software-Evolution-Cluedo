@@ -1,5 +1,6 @@
 package view.dialogs;
 
+
 import game.Suggestion;
 import ui.GUIClient;
 import utilities.WindowUtilities;

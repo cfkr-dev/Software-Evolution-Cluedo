@@ -1,11 +1,12 @@
 package card;
 
 import game.GameError;
-
+import utilities.WindowUtilities;
+import view.PlayerPanelCanvas;
+import javax.swing.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 
 /**
  * This enum class represents a character card in Cluedo game. There are six characters,
@@ -53,6 +54,13 @@ public enum Character implements Card, Serializable {
         return s;
     }
 
+    @Override
+    public void resizeImage(Card card) {
+        Character ch = (Character) card;
+        PlayerPanelCanvas.CHARACTER_IMG[ch.ordinal()] = WindowUtilities.resizeImage(PlayerPanelCanvas.CHARACTER_IMG[ch.ordinal()]);
+        PlayerPanelCanvas.CHARACTER_LABELS[ch.ordinal()].setIcon(PlayerPanelCanvas.CHARACTER_IMG[ch.ordinal()]);
+    }
+
     /**
      * This method returns the next character in turn. When current character ends turn,
      * It's useful for the game to know who the next acting character is.
@@ -79,5 +87,11 @@ public enum Character implements Card, Serializable {
 
     public static int getNumberOfCharacters() {
         return CHARACTERS.size();
+    }
+
+    @Override
+    public JLabel addCard(Card card) {
+        Character ch = (Character) card;
+        return PlayerPanelCanvas.CHARACTER_LABELS[ch.ordinal()];
     }
 }

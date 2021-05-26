@@ -1,5 +1,6 @@
 package card;
 
+import javax.swing.*;
 import java.io.Serializable;
 
 /**
@@ -18,5 +19,7 @@ public interface Card extends Serializable {
      * @return --- a single char String to print a symbol on text-based graphical board.
      */
      char toStringOnBoard();
+     void resizeImage(Card card);
+     JLabel addCard(Card card);
 
 }

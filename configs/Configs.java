@@ -3,11 +3,16 @@ package configs;
 import java.util.ArrayList;
 
 import card.Location;
+import game.GameError;
+import tile.Room;
+import view.BoardCanvas;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.net.URL;
 import game.GameRecord;
 import tile.Room;
 import java.io.*;
 import java.util.ArrayList;
-
 
 /**
  * This class contains most of configurations to construct a game board.
@@ -20,18 +25,22 @@ public class Configs {
      * The number of dices used in game
      */
     private final int NUM_DICE = 2;
+
     /**
      * Minimum player needed
      */
     private final int MIN_PLAYER = 3;
+
     /**
      * Maximum player to join into game.
      */
     private final int MAX_PLAYER = 6;
+
     /**
      * the horizontal boundary coordinate of Cluedo game board.
      */
     private int BOARD_WIDTH = 48;
+
     /**
      * the vertical boundary coordinate of Cluedo game board.
      */
@@ -84,8 +93,10 @@ public class Configs {
         return gameRecords;
     }
 
+    /**
+     *Dynamically sets the width and height values of the map on which the game is to be played.
+     */
     public void DimensionCounter(){
-
         int character= 0;
         int height= 0;
         int width;
@@ -112,6 +123,12 @@ public class Configs {
         DimensionCounter();
     }
 
+    /**
+     * Method that sets the Singleton pattern of this java class.
+     * If an instance of the class is already created, it returns the same one, otherwise it is created.
+     *
+     * @return --- instance of the Configs class
+     */
     public static Configs getConfiguration() {
         if (configurations == null) {
             configurations = new Configs();
@@ -132,6 +149,7 @@ public class Configs {
         rooms.get(2).setSecPasTo(Location.get(7));
         rooms.get(7).setSecPasTo(Location.get(2));
     }
+
 
     /**
      * This method take into the symbolic location (integer), and returns the

@@ -10,10 +10,10 @@ import ui.GUIClient;
 /**
  * This class is a custom menu for the main Frame in Cluedo GUI.
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
-@SuppressWarnings("serial")
+
 public class CustomMenu extends JMenuBar {
 
     /**
@@ -95,13 +95,13 @@ public class CustomMenu extends JMenuBar {
             }
         });
 
-        resolutionsComboBox = new JComboBox<>(RESOLUTIONS);
+        /*resolutionsComboBox = new JComboBox<>(RESOLUTIONS);
         resolutionsComboBox.addActionListener(e ->{
             String currentResolution = RESOLUTIONS[resolutionsComboBox.getSelectedIndex()];
             int resolutionX = Integer.parseInt(currentResolution.substring(0, currentResolution.indexOf('×')));
             int resolutionY = Integer.parseInt(currentResolution.substring(currentResolution.indexOf('×')));
             parent.setPreferredSize(new Dimension(resolutionX, resolutionY));
-        });
+        });*/
 
         // exit
         JMenuItem exit = new JMenuItem(MENU_STRINGS[i]);

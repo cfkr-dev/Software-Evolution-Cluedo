@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import card.Card;
 import card.Character;
+import card.Coin;
 import tile.Position;
 
 /**
@@ -20,22 +21,32 @@ public class Player {
      * the character of this player
      */
     private final Character token;
+
     /**
      * player's name
      */
     private String name;
+
     /**
      * it's position on board
      */
     private Position position;
+
     /**
      * cards drawn by this player. dummy token won't have any card in it.
      */
     private List<Card> cards;
+
+    /**
+     * player's salary for cheating on the basic rules of the game
+     */
+    private Coin salary;
+
     /**
      * remaining steps to move
      */
     private int remainingSteps;
+  
     /**
      * a flag to indicate whether this player can continue to play.
      */
@@ -55,6 +66,7 @@ public class Player {
         this.token = token;
         this.position = pos;
         this.isPlaying = isPlaying;
+        this.salary = new Coin(10);
         cards = new ArrayList<>();
     }
 
@@ -197,4 +209,23 @@ public class Player {
         }
     }
 
+    public Coin getSalary() {
+        return salary;
+    }
+
+    public void setSalary(int tax) {
+        int remainingSalary = this.salary.getCoins();
+        remainingSalary = remainingSalary - tax;
+        this.salary.setCoins(remainingSalary);
+    }
+
+    /**
+     * Before any operation you wish to carry out, you should first check whether there is sufficient funds available for this method.
+     *
+     * @param tax --- coin tax for performing the special action
+     * @return --- return if you have sufficient balance to carry out a transaction.
+     */
+    public Boolean feasibleOperation(int tax) {
+        return salary.viableOperation(tax);
+    }
 }
