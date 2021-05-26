@@ -80,4 +80,13 @@ public class Suggestion {
             return character == proposal.character && location == proposal.location && weapon == proposal.weapon;
         }
     }
+
+    @Override
+    public String toString() {
+        return "[" +
+                "Character=" + character +
+                ", Weapon=" + weapon +
+                ", Location=" + location +
+                ']';
+    }
 }

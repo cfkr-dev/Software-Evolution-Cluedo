@@ -378,6 +378,11 @@ public class TextClient {
         // TODO set game stop, prompt the winner
         Character winner = game.getWinner();
         System.out.println("Winner is " + winner.toString() + "!");
+        System.out.println("Do you want to see the solution? (1 = Yes, 2 = No)");
+        int yesNo = parseInt(1, 2);
+        if (yesNo == 1){
+            displaySolution(game.getSolution());
+        }
     }
 
     /**
@@ -438,6 +443,12 @@ public class TextClient {
             message.append(weapon.toString()).append(":\t\t").append(weapon.toStringOnBoard()).append("\n");
         }
 
+        System.out.println(message);
+    }
+
+    public static void displaySolution(Suggestion solution){
+        StringBuilder message = new StringBuilder();
+        message.append("The solution is: \n").append(solution.toString());
         System.out.println(message);
     }
 }
