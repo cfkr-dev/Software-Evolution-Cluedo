@@ -77,7 +77,7 @@ public class TextClient {
         while (playerIndex != numPlayers) {
             playerIndex++;
             // list all choosable cards
-            System.out.println("Please choose player " + playerIndex + "character:");
+            System.out.println("Please choose player " + playerIndex + " character:");
 
             List<Character> playableCharacters = game.getPlayableCharacters();
             int size = playableCharacters.size();
@@ -140,7 +140,7 @@ public class TextClient {
             System.out.println("1. Yes");
             System.out.println("2. No");
 
-            int yesNo = parseInt(1, 2);
+            int yesNo = parseInt(1, 2, game);
             if (yesNo == 1) {
                 if (game.extractSalaryPlayer(currentPlayer, 1)) {
                     movements = NumberOfMovements(game);
@@ -212,7 +212,7 @@ public class TextClient {
                 System.out.println("1. Yes");
                 System.out.println("2. No");
 
-                int yesNo = parseInt(1, 2);
+                int yesNo = parseInt(1, 2, game);
                 if (yesNo == 1) {
                     if (game.extractSalaryPlayer(currentPlayer, 2)) {
                         System.out.println("Realise the new suggestion");
@@ -379,7 +379,7 @@ public class TextClient {
             System.out.println("2. No");
 
             Character currentPlayer = game.getCurrentPlayer();
-            int yesNo = parseInt(1, 2);
+            int yesNo = parseInt(1, 2, game);
             if (yesNo == 1) {
                 if (game.extractSalaryPlayer(currentPlayer, 5)) {
                     System.out.println("You have finished your turn. You are still playing");
@@ -449,7 +449,7 @@ public class TextClient {
         System.out.println("Winner is " + winner.toString() + " (" + game.getPlayerByCharacter(game.getCurrentPlayer()).getName() + ") !");
         configurations.Serialize();
         System.out.println("Do you want to see the solution? (1 = Yes, 2 = No)");
-        int yesNo = parseInt(1, 2);
+        int yesNo = parseInt(1, 2, game);
         if (yesNo == 1){
             displaySolution(game.getSolution());
         }

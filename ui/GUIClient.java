@@ -46,11 +46,7 @@ import utilities.WindowUtilities;
 import view.BoardCanvas;
 import view.CustomMenu;
 import view.PlayerPanelCanvas;
-import view.dialogs.HelpDialog;
-import view.dialogs.NumberSetupDialog;
-import view.dialogs.PlayerSetupDialog;
-import view.dialogs.SolutionDialog;
-import view.dialogs.SuggestionDialog;
+import view.dialogs.*;
 import view.token.CharacterToken;
 import view.token.WeaponToken;
 
@@ -340,7 +336,7 @@ public class GUIClient extends JFrame {
             if (choice == JOptionPane.OK_OPTION) {
                 game.extractSalaryPlayer(getCurrentPlayer(), 2);
                 new SuggestionDialog(this, SwingUtilities.windowForComponent(this),
-                        "Make a Suggestion", false);
+                        "Make a Suggestion", false, game);
                 playerPanel.setLabelCoins(getCurrentPlayer());
             }
         }
