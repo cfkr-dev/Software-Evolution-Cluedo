@@ -57,6 +57,15 @@ public class Game {
      * this map keep a record of who knows what card (that is not involved in crime)
      */
     private final Map<Character, Set<Card>> knownCards;
+
+
+    /**
+     * this map keep a record of who knows what card (that is not involved in crime)
+     */
+    private final Map<Character, Set<Card>> cardsWellSuggested;
+
+
+
     /**
      * which character is currently acting
      */
@@ -98,8 +107,10 @@ public class Game {
             // initialise known cards, now they are all empty
             // Add characters on the board
             knownCards = new HashMap<>();
+            cardsWellSuggested = new HashMap<>();
             for (int i = 0; i < Character.getNumberOfCharacters(); i++) {
                 knownCards.put(Character.get(i), new HashSet<>());
+                cardsWellSuggested.put(Character.get(i), new HashSet<>());
                 players.add((new Player(Character.get(i), board.getStartPosition(Character.get(i)), false)));
             }
 
@@ -336,7 +347,9 @@ public class Game {
                         rejectMsg.append(p.getToken().toString()).append(" rejects your suggestion with card: ").append(card.toString()).append("\n");
                         // update current player's known cards
                         knownCardsForCurrentPlayer.add(card);
+                        cardsWellSuggested.put(Character.get(currentPlayer.ordinal()), knownCardsForCurrentPlayer);
                         continue outer; // only refute one card
+
                     }
                 }
                 rejectMsg.append(p.getToken().toString()).append(" cannot reject your suggestion.\n");
@@ -584,6 +597,15 @@ public class Game {
         return knownCards.get(currentPlayer);
     }
 
+    public Set<Card> getCardsWellSuggested() {
+        return cardsWellSuggested.get(currentPlayer);
+    }
+
+
+
+
+
+
     /**
      * Get how many steps left for the player to move.
      * 
@@ -694,6 +716,7 @@ public class Game {
 
         BOARD_STRING.append("========================\n");
         BOARD_STRING.append("Type \"help\" for help\n");
+        BOARD_STRING.append("Type \"suspicious\" to see all suspicious cards\n");
         return BOARD_STRING.toString();
     }
 }

@@ -1,7 +1,11 @@
 package ui;
 
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -10,6 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Set;
+
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -32,14 +37,12 @@ import card.Card;
 import card.Character;
 import card.Location;
 import card.Weapon;
-
 import configs.Configs;
 import game.Board;
 import game.Game;
 import game.GameError;
 import game.Player;
 import game.Suggestion;
-
 import tile.Position;
 import tile.Room;
 import tile.RoomTile;
@@ -47,24 +50,14 @@ import tile.Tile;
 import utilities.WindowUtilities;
 import view.BoardCanvas;
 import view.CustomMenu;
-import view.dialogs.*;
 import view.PlayerPanelCanvas;
-
+import view.dialogs.HelpDialog;
+import view.dialogs.NumberSetupDialog;
+import view.dialogs.PlayerSetupDialog;
+import view.dialogs.SolutionDialog;
+import view.dialogs.SuggestionDialog;
 import view.token.CharacterToken;
 import view.token.WeaponToken;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.TitledBorder;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.Set;
 
 /**
  * A GUI client for Cluedo game.
@@ -325,7 +318,7 @@ public class GUIClient extends JFrame {
      */
     public void popUpSuggestion() {
         new SuggestionDialog(this, SwingUtilities.windowForComponent(this),
-                "Make a Suggestion", false);
+                "Make a Suggestion", false, game);
 
     }
 
@@ -364,7 +357,7 @@ public class GUIClient extends JFrame {
      */
     public void popUpAccusation() {
         new SuggestionDialog(this, SwingUtilities.windowForComponent(this),
-                "Make an Accusation", true);
+                "Make an Accusation", true, game);
     }
 
     /**

@@ -1,10 +1,11 @@
 package configs;
 
+import java.util.ArrayList;
+
 import card.Location;
 import tile.Room;
 
-import java.io.ObjectInputFilter;
-import java.util.ArrayList;
+//import java.io.ObjectInputFilter;
 
 /**
  * This class contains most of configurations to construct a game board.
