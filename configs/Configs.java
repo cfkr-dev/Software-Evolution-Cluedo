@@ -1,9 +1,10 @@
 package configs;
 
+import java.util.ArrayList;
+
 import card.Location;
 import game.GameRecord;
 import tile.Room;
-
 import java.io.*;
 import java.util.ArrayList;
 

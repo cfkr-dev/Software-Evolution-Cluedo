@@ -3,6 +3,9 @@ package ui;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
+
+import card.Card;
 import card.Character;
 import card.Location;
 import card.Weapon;
@@ -66,7 +69,7 @@ public class TextClient {
         Configs configurations = Configs.getConfiguration();
         // set how many players
         System.out.println("How many players?");
-        int numPlayers = parseInt(configurations.getMinPlayer(), configurations.getMaxPlayer());
+        int numPlayers = parseInt(configurations.getMinPlayer(), configurations.getMaxPlayer(), null);
         Game game = new Game(numPlayers, configurations.getNumDice());
 
         // let players choose which character to play with
@@ -83,7 +86,7 @@ public class TextClient {
             }
 
             // make a choice
-            int choice = parseInt(1, size);
+            int choice = parseInt(1, size, game);
 
             System.out.println("What is your name?");
             String line = SCANNER.nextLine();
@@ -179,7 +182,7 @@ public class TextClient {
 
         // get player's choice
         menuNo--;
-        int choice = parseInt(1, menuNo);
+        int choice = parseInt(1, menuNo, game);
 
         if (choice <= movablePos.size()) {
             // player chose to move to one of movable positions
@@ -255,7 +258,7 @@ public class TextClient {
         System.out.println("1. Yes");
         System.out.println("2. No");
 
-        int yesNo = parseInt(1, 2);
+        int yesNo = parseInt(1, 2, game);
         if (yesNo == 1) {
             // made an accusation
             makeAccusation(game);
@@ -317,7 +320,7 @@ public class TextClient {
             System.out.println("" + (i + 1) + ". " + Location.get(i).toString());
         }
 
-        int choiceRoom = parseInt(1, Location.getNumberOfLocations());
+        int choiceRoom = parseInt(1, Location.getNumberOfLocations(), game);
 
         // get player's choice
         Location location = Location.get(choiceRoom - 1);
@@ -348,7 +351,7 @@ public class TextClient {
             System.out.println("" + (i + 1) + ". " + Character.get(i).toString());
         }
 
-        int choiceCharacter = parseInt(1, Character.getNumberOfCharacters());
+        int choiceCharacter = parseInt(1, Character.getNumberOfCharacters(), null);
 
         // get player's choice
         Character suspect = Character.get(choiceCharacter - 1);
@@ -368,7 +371,7 @@ public class TextClient {
             System.out.println("" + (i + 1) + ". " + Weapon.get(i).toString());
         }
 
-        int choiceWeapon = parseInt(1,  Weapon.getNumberOfWeapons());
+        int choiceWeapon = parseInt(1,  Weapon.getNumberOfWeapons(), null);
 
         // get player's choice
         return Weapon.get(choiceWeapon - 1);
@@ -405,7 +408,7 @@ public class TextClient {
      *            --- the maximum boundary of input as an integer
      * @return --- the parsed integer
      */
-    private static int parseInt(int min, int max) {
+    private static int parseInt(int min, int max, Game game) {
         while (true) {
             String line = SCANNER.nextLine();
             // if user asked for help, print out help message
@@ -413,10 +416,17 @@ public class TextClient {
                 helpMessage();
                 System.out.println("Please choose between " + min + " and " + max + ":");
             }
+          
+            else if(line.equals("suspicious")){
+                suspiciousMessage(game);
+                System.out.println("Please choose between " + min + " and " + max + ":");
+            }
+          
             else if (line.equals("record")){
                 showRecord();
                 System.out.println("Please choose between " + min + " and " + max + ":");
             }
+          
             else {
                 try {
                     // parse the input
@@ -455,6 +465,54 @@ public class TextClient {
         for (int i = 0; i < Weapon.getNumberOfWeapons(); i++) {
             Weapon weapon = Weapon.get(i);
             message.append(weapon.toString()).append(":\t\t").append(weapon.toStringOnBoard()).append("\n");
+        }
+
+        System.out.println(message);
+    }
+
+    /**
+     * This method print out suspicious message, which every card is a possible solution
+     */
+    private static void suspiciousMessage(Game game) {
+        StringBuilder message = new StringBuilder("[Suspicious cards]\n");
+
+        message.append("Characters who are still suspicious:\n");
+
+        Set<Card> getSuspiciousCards = game.getKnownCards();
+
+        Set<Card> cardsWellSuggested = game.getCardsWellSuggested();
+        //Suggestion suggestion=
+        getSuspiciousCards.addAll(cardsWellSuggested);
+
+        for (int i = 0; i < Character.getNumberOfCharacters(); i++) {
+            Character character = Character.get(i);
+            if(!getSuspiciousCards.contains(character)){
+                message.append(character.toString()).append("\n");
+            }
+            if(i== Character.getNumberOfCharacters()-1)
+                message.append("\n");
+        }
+
+        message.append("Weapons which are still suspicious:\n");
+
+        for (int i = 0; i < Weapon.getNumberOfWeapons(); i++) {
+            Weapon weapon = Weapon.get(i);
+            if(!getSuspiciousCards.contains(weapon)) {
+                message.append(weapon.toString()).append("\n");
+            }
+            if(i== Weapon.getNumberOfWeapons()-1)
+                message.append("\n");
+        }
+
+        message.append("Rooms where are still suspicious:\n");
+
+        for (int i = 0; i < Location.getNumberOfLocations(); i++) {
+            Location location = Location.get(i);
+            if(!getSuspiciousCards.contains(location)) {
+                message.append(location.toString()).append("\n");
+            }
+            if(i== Location.getNumberOfLocations()-1)
+                message.append("\n");
         }
 
         System.out.println(message);
