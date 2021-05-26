@@ -1,12 +1,17 @@
 package ui;
 
+
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
+
+import card.Card;
 import card.Character;
 import card.Location;
 import card.Weapon;
 import configs.Configs;
 import game.Game;
+import game.GameRecord;
 import game.Suggestion;
 import tile.Position;
 import tile.Room;
@@ -24,6 +29,8 @@ public class TextClient {
      * System.in wrapped in scanner to get user input.
      */
     private static final Scanner SCANNER = new Scanner(System.in);
+
+    private Configs configuration;
 
     /**
      * Main function of this programme.
@@ -62,7 +69,7 @@ public class TextClient {
         Configs configurations = Configs.getConfiguration();
         // set how many players
         System.out.println("How many players?");
-        int numPlayers = parseInt(configurations.getMinPlayer(), configurations.getMaxPlayer());
+        int numPlayers = parseInt(configurations.getMinPlayer(), configurations.getMaxPlayer(), null);
         Game game = new Game(numPlayers, configurations.getNumDice());
 
         // let players choose which character to play with
@@ -70,7 +77,7 @@ public class TextClient {
         while (playerIndex != numPlayers) {
             playerIndex++;
             // list all choosable cards
-            System.out.println("Please choose player " + playerIndex + "character:");
+            System.out.println("Please choose player " + playerIndex + " character:");
 
             List<Character> playableCharacters = game.getPlayableCharacters();
             int size = playableCharacters.size();
@@ -79,10 +86,13 @@ public class TextClient {
             }
 
             // make a choice
-            int choice = parseInt(1, size);
+            int choice = parseInt(1, size, game);
+
+            System.out.println("What is your name?");
+            String line = SCANNER.nextLine();
 
             // join this player in
-            game.joinPlayer(playableCharacters.get(choice - 1), "");
+            game.joinPlayer(playableCharacters.get(choice - 1), line);
         }
 
         // set which character is first to move
@@ -125,14 +135,22 @@ public class TextClient {
 
         // if this player hasn't roll a dice, roll dice
         if (remainingSteps == 0) {
-            int[] roll = game.rollDice();
-            int total = 0;
-            for (int j : roll) {
-                total += (j + 1);
+            int movements = NumberOfMovements(game);
+            System.out.println("Do you want to repeat the roll? (cost: 1 coin)");
+            System.out.println("1. Yes");
+            System.out.println("2. No");
+
+            int yesNo = parseInt(1, 2, game);
+            if (yesNo == 1) {
+                if (game.extractSalaryPlayer(currentPlayer, 1)) {
+                    movements = NumberOfMovements(game);
+                }
+                else {
+                    System.out.println("I'm sorry but you don't have enough salary to do it");
+                }
             }
-            System.out.println("You rolled " + total + ".");
-            game.setRemainingSteps(currentPlayer, total);
-            remainingSteps = total;
+            game.setRemainingSteps(currentPlayer, movements);
+            remainingSteps = movements;
         }
 
         System.out.println("You have " + remainingSteps + " steps left.");
@@ -172,7 +190,7 @@ public class TextClient {
 
         // get player's choice
         menuNo--;
-        int choice = parseInt(1, menuNo);
+        int choice = parseInt(1, menuNo, game);
 
         if (choice <= movablePos.size()) {
             // player chose to move to one of movable positions
@@ -190,8 +208,26 @@ public class TextClient {
                 // now compare the suggestion, and other players try to reject it
                 System.out.println(game.refuteSuggestion(suggestion));
 
-                accusationChoice(game);
+                System.out.println("Would you like to make another suggestion? (cost: 2 coins)");
+                System.out.println("1. Yes");
+                System.out.println("2. No");
 
+                int yesNo = parseInt(1, 2, game);
+                if (yesNo == 1) {
+                    if (game.extractSalaryPlayer(currentPlayer, 2)) {
+                        System.out.println("Realise the new suggestion");
+                        // move into a room, now the player can make suggestion
+                        suggestion = makeSuggestion(game, destination);
+                        // now compare the suggestion, and other players try to reject it
+                        System.out.println(game.refuteSuggestion(suggestion));
+                    }
+                    else {
+                        System.out.println("I'm sorry but you don't have enough salary to do it");
+                        System.out.println("You can make another suggestion on your next turn");
+                    }
+                }
+
+                accusationChoice(game);
                 remainingSteps = 0;
 
             } else {
@@ -235,6 +271,16 @@ public class TextClient {
         }
     }
 
+    private static int NumberOfMovements(Game game) {
+        int[] roll = game.rollDice();
+        int total = 0;
+        for (int j : roll) {
+            total += (j + 1);
+        }
+        System.out.println("You rolled " + total + ".");
+        return total;
+    }
+
 
     /**
      * This procedure picks up if the player wants to make a accusation
@@ -248,7 +294,7 @@ public class TextClient {
         System.out.println("1. Yes");
         System.out.println("2. No");
 
-        int yesNo = parseInt(1, 2);
+        int yesNo = parseInt(1, 2, game);
         if (yesNo == 1) {
             // made an accusation
             makeAccusation(game);
@@ -310,7 +356,7 @@ public class TextClient {
             System.out.println("" + (i + 1) + ". " + Location.get(i).toString());
         }
 
-        int choiceRoom = parseInt(1, Location.getNumberOfLocations());
+        int choiceRoom = parseInt(1, Location.getNumberOfLocations(), game);
 
         // get player's choice
         Location location = Location.get(choiceRoom - 1);
@@ -327,6 +373,27 @@ public class TextClient {
         } else {
             // the player is out
             System.out.println("You are wrong!");
+
+            System.out.println("Do you want to continue playing? (cost: 5 coins)");
+            System.out.println("1. Yes");
+            System.out.println("2. No");
+
+            Character currentPlayer = game.getCurrentPlayer();
+            int yesNo = parseInt(1, 2, game);
+            if (yesNo == 1) {
+                if (game.extractSalaryPlayer(currentPlayer, 5)) {
+                    System.out.println("You have finished your turn. You are still playing");
+                }
+                else {
+                    System.out.println("I'm sorry but you don't have enough salary to do it");
+                    System.out.println("You are removed from the game");
+                    game.kickPlayerOut(currentPlayer);
+                }
+            }
+            else {
+                System.out.println("You are removed from the game");
+                game.kickPlayerOut(currentPlayer);
+            }
         }
     }
 
@@ -341,7 +408,7 @@ public class TextClient {
             System.out.println("" + (i + 1) + ". " + Character.get(i).toString());
         }
 
-        int choiceCharacter = parseInt(1, Character.getNumberOfCharacters());
+        int choiceCharacter = parseInt(1, Character.getNumberOfCharacters(), null);
 
         // get player's choice
         Character suspect = Character.get(choiceCharacter - 1);
@@ -361,7 +428,7 @@ public class TextClient {
             System.out.println("" + (i + 1) + ". " + Weapon.get(i).toString());
         }
 
-        int choiceWeapon = parseInt(1,  Weapon.getNumberOfWeapons());
+        int choiceWeapon = parseInt(1,  Weapon.getNumberOfWeapons(), null);
 
         // get player's choice
         return Weapon.get(choiceWeapon - 1);
@@ -376,8 +443,16 @@ public class TextClient {
      */
     private static void gameStop(Game game) {
         // TODO set game stop, prompt the winner
+        Configs configurations = Configs.getConfiguration();
         Character winner = game.getWinner();
-        System.out.println("Winner is " + winner.toString() + "!");
+        configurations.getRecords().add(new GameRecord(game.getSolution(), game.getPlayerByCharacter(game.getWinner()).getName(), game.getPlayerByCharacter(game.getCurrentPlayer()).getCards()));
+        System.out.println("Winner is " + winner.toString() + " (" + game.getPlayerByCharacter(game.getCurrentPlayer()).getName() + ") !");
+        configurations.Serialize();
+        System.out.println("Do you want to see the solution? (1 = Yes, 2 = No)");
+        int yesNo = parseInt(1, 2, game);
+        if (yesNo == 1){
+            displaySolution(game.getSolution());
+        }
     }
 
     /**
@@ -390,7 +465,7 @@ public class TextClient {
      *            --- the maximum boundary of input as an integer
      * @return --- the parsed integer
      */
-    private static int parseInt(int min, int max) {
+    private static int parseInt(int min, int max, Game game) {
         while (true) {
             String line = SCANNER.nextLine();
             // if user asked for help, print out help message
@@ -398,6 +473,22 @@ public class TextClient {
                 helpMessage();
                 System.out.println("Please choose between " + min + " and " + max + ":");
             }
+
+            else if (line.equals("coins help")) {
+                coinsHelpMessage();
+                System.out.println("Please choose between " + min + " and " + max + ":");
+            }
+          
+            else if(line.equals("suspicious")){
+                suspiciousMessage(game);
+                System.out.println("Please choose between " + min + " and " + max + ":");
+            }
+          
+            else if (line.equals("record")){
+                showRecord();
+                System.out.println("Please choose between " + min + " and " + max + ":");
+            }
+          
             else {
                 try {
                     // parse the input
@@ -439,5 +530,78 @@ public class TextClient {
         }
 
         System.out.println(message);
+    }
+
+    private static void coinsHelpMessage() {
+        StringBuilder message = new StringBuilder("[Legend]\n");
+        message.append("You can use the coins for the following actions:\n");
+        message.append("Repeat roll dice (before starting to move). [1 coin]\n");
+        message.append("Make another suggestion in the same turn. [2 coins]\n");
+        message.append("Have the opportunity to continue playing by failing an accusation. [5 coins]\n");
+        System.out.println(message);
+    }
+
+    /**
+     * This method print out suspicious message, which every card is a possible solution
+     */
+    private static void suspiciousMessage(Game game) {
+        StringBuilder message = new StringBuilder("[Suspicious cards]\n");
+
+        message.append("Characters who are still suspicious:\n");
+
+        Set<Card> getSuspiciousCards = game.getKnownCards();
+
+        Set<Card> cardsWellSuggested = game.getCardsWellSuggested();
+        //Suggestion suggestion=
+        getSuspiciousCards.addAll(cardsWellSuggested);
+
+        for (int i = 0; i < Character.getNumberOfCharacters(); i++) {
+            Character character = Character.get(i);
+            if(!getSuspiciousCards.contains(character)){
+                message.append(character.toString()).append("\n");
+            }
+            if(i== Character.getNumberOfCharacters()-1)
+                message.append("\n");
+        }
+
+        message.append("Weapons which are still suspicious:\n");
+
+        for (int i = 0; i < Weapon.getNumberOfWeapons(); i++) {
+            Weapon weapon = Weapon.get(i);
+            if(!getSuspiciousCards.contains(weapon)) {
+                message.append(weapon.toString()).append("\n");
+            }
+            if(i== Weapon.getNumberOfWeapons()-1)
+                message.append("\n");
+        }
+
+        message.append("Rooms where are still suspicious:\n");
+
+        for (int i = 0; i < Location.getNumberOfLocations(); i++) {
+            Location location = Location.get(i);
+            if(!getSuspiciousCards.contains(location)) {
+                message.append(location.toString()).append("\n");
+            }
+            if(i== Location.getNumberOfLocations()-1)
+                message.append("\n");
+        }
+
+        System.out.println(message);
+    }
+
+    private static void showRecord(){
+        StringBuilder message = new StringBuilder("[Record]\n");
+        message.append("The record of games ended is the following one:\n");
+        int i = 0;
+        for (GameRecord game : Configs.getConfiguration().getRecords()){
+            message.append("Game ").append(i).append(" :\n").append(game.toString()).append("\n\n");
+            i++;
+        }
+        System.out.println(message);
+    }
+  
+    public static void displaySolution(Suggestion solution){
+        StringBuilder message = new StringBuilder();
+        message.append("The solution is: \n").append(solution.toString());
     }
 }

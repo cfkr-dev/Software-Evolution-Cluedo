@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Window;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -33,7 +32,7 @@ import ui.GUIClient;
  * @author Hector
  *
  */
-@SuppressWarnings("serial")
+
 public class ExitRoomDialog extends JDialog {
 
     /**
@@ -116,12 +115,10 @@ public class ExitRoomDialog extends JDialog {
         radioButtonsPanel.setLayout(new BoxLayout(radioButtonsPanel, BoxLayout.Y_AXIS));
 
         // a listener for radio buttons
-        ActionListener al = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                exitDisplay.repaint();
-                if (!confirm.isEnabled()) {
-                    confirm.setEnabled(true);
-                }
+        ActionListener al = e -> {
+            exitDisplay.repaint();
+            if (!confirm.isEnabled()) {
+                confirm.setEnabled(true);
             }
         };
 

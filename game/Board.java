@@ -5,7 +5,6 @@ import card.Location;
 import configs.Configs;
 import tile.*;
 import view.token.WeaponToken;
-
 import java.util.List;
 
 /**
@@ -147,6 +146,12 @@ public class Board {
         return null;
     }
 
+    /**
+     *
+     * @param playerPos --- current position of a player character
+     * @param index --- index of the address to be checked ( [0] North, [1] South, [2] East, [3] West).
+     * @return --- if there is any kind of restriction, it is indicated that it cannot be moved to the position that has been checked.
+     */
     public Boolean ThereIsNoConstraints(Position playerPos, int index) {
         // Player can only look north out of rooms
         if (playerPos instanceof Room) {
@@ -157,8 +162,6 @@ public class Board {
         Boolean[] Constraints= new Boolean[4];
 
         // boundary check
-
-
         Constraints[0]= playerTile.y - 1 < 0; //NorthBoundaryCheck
         Constraints[1]= playerTile.y + 1 > configurations.getBoardHeight() - 1; //SouthBoundaryCheck
         Constraints[2]= playerTile.x + 1 > configurations.getBoardWidth() - 1; //EastBoundaryCheck
@@ -169,7 +172,6 @@ public class Board {
         }
 
         // this method should not return a Room
-
         switch (index) {
             case 0:
                 Constraints[0] = board[playerTile.y - 1][playerTile.x] instanceof Room; //NorthInRoom
@@ -352,8 +354,8 @@ public class Board {
     /**
      * This method set player's position to another given position, which could be any
      * position on board. In other worlds, this method is not always a reasonable move in
-     * normal Cluedo game.<br>
-     * <br>
+     * normal Cluedo game.
+     *
      * Note that this method does no sanity checks, so it should be always guarded by
      * calling lookNorth / lookSouth / lookWest / lookEast / atEntrance / lookForExit in
      * advance.

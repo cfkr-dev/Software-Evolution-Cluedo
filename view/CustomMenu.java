@@ -10,10 +10,10 @@ import ui.GUIClient;
 /**
  * This class is a custom menu for the main Frame in Cluedo GUI.
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
-@SuppressWarnings("serial")
+
 public class CustomMenu extends JMenuBar {
 
     /**
@@ -58,6 +58,10 @@ public class CustomMenu extends JMenuBar {
                 parent.setupNumPlayers();
             }
         });
+
+        // game records
+        JMenuItem gameRecord = new JMenuItem(MENU_STRINGS[i++]);
+        gameRecord.addActionListener(e -> parent.openGameRecords());
 
         // a checkbox menu to enable easy mode
         easyMode = new JCheckBoxMenuItem(MENU_STRINGS[i++]);
@@ -109,6 +113,7 @@ public class CustomMenu extends JMenuBar {
         });
 
         jMenu.add(newGame);
+        jMenu.add(gameRecord);
         jMenu.add(easyMode);
         jMenu.add(help);
         jMenu.add(manual);

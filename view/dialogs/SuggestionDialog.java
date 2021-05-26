@@ -1,33 +1,28 @@
 package view.dialogs;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import card.Card;
 import card.Character;
+import card.Location;
 import card.Weapon;
+import game.Game;
 import game.Suggestion;
 import tile.Position;
 import tile.Room;
-import card.Location;
 import ui.GUIClient;
 import view.PlayerPanelCanvas;
 
@@ -69,6 +64,9 @@ public class SuggestionDialog extends JDialog {
      */
     private Location location;
 
+
+    private Game game;
+
     /**
      * Construct a dialog, let players choose character, weapon, location respectively,
      * and make the suggestion/accusation.
@@ -83,10 +81,11 @@ public class SuggestionDialog extends JDialog {
      *            --- A flag indicates whether this is a suggestion or a accusation
      */
     public SuggestionDialog(GUIClient parent, Window windowForComponent, String title,
-            boolean isAccusation) {
+            boolean isAccusation, Game game) {
         super(windowForComponent, title);
         this.gui = parent;
         this.isAccusation = isAccusation;
+        this.game = game;
 
         JPanel mainPanel = new JPanel();
 
@@ -180,6 +179,9 @@ public class SuggestionDialog extends JDialog {
             radioButtonsPanel.add(Box.createRigidArea(new Dimension(5, 5)));
         }
 
+        legendHighlights(radioButtonsPanel);
+
+
         // the middle panel to hold radio buttons and card display
         JPanel midPanel = new JPanel();
         midPanel.setLayout(new BoxLayout(midPanel, BoxLayout.X_AXIS));
@@ -194,6 +196,13 @@ public class SuggestionDialog extends JDialog {
         textPane.setLayout(new BoxLayout(textPane, BoxLayout.X_AXIS));
         textPane.setAlignmentX(Component.CENTER_ALIGNMENT);
         textPane.add(text);
+
+        // an info text about the meaning of highlighted lines
+
+
+
+        String name= "character";
+        suspiciousHighlighted(rButtonList, name);
 
         // confirm button's listener
         confirm.addActionListener(e -> {
@@ -222,8 +231,11 @@ public class SuggestionDialog extends JDialog {
         characterPanel.add(textPane);
         characterPanel.add(Box.createRigidArea(new Dimension(15, 15)));
         characterPanel.add(midPanel);
+        //characterPanel.add(Box.createRigidArea(new Dimension(10, 10)));
+        //characterPanel.add(infoText);
         characterPanel.add(Box.createRigidArea(new Dimension(15, 15)));
         characterPanel.add(buttonPane);
+
 
         // finally, add this panel into CardLayout
         mainPanel.add(characterPanel);
@@ -303,6 +315,8 @@ public class SuggestionDialog extends JDialog {
             radioButtonsPanel.add(Box.createRigidArea(new Dimension(5, 5)));
         }
 
+        legendHighlights(radioButtonsPanel);
+
         // the middle panel to hold radio buttons and card display
         JPanel midPanel = new JPanel();
         midPanel.setLayout(new BoxLayout(midPanel, BoxLayout.X_AXIS));
@@ -317,6 +331,12 @@ public class SuggestionDialog extends JDialog {
         textPane.setLayout(new BoxLayout(textPane, BoxLayout.X_AXIS));
         textPane.setAlignmentX(Component.CENTER_ALIGNMENT);
         textPane.add(text);
+
+
+        String name= "weapon";
+
+        suspiciousHighlighted(rButtonList, name);
+
 
         // confirm button's listener
         confirm.addActionListener(e -> {
@@ -350,6 +370,16 @@ public class SuggestionDialog extends JDialog {
 
         // finally, add this panel into CardLayout
         mainPanel.add(weaponPanel);
+    }
+
+    private void legendHighlights(JPanel radioButtonsPanel) {
+        JLabel infoHighlights = new JLabel("*Highlighted options are the known cards by user ");
+        JPanel infoText = new JPanel();
+        infoText.setAlignmentX(LEFT_ALIGNMENT);
+        infoText.add(infoHighlights);
+
+        radioButtonsPanel.add(Box.createRigidArea(new Dimension(5, 5)));
+        radioButtonsPanel.add(infoText);
     }
 
     /**
@@ -425,6 +455,8 @@ public class SuggestionDialog extends JDialog {
             radioButtonsPanel.add(Box.createRigidArea(new Dimension(5, 5)));
         }
 
+        legendHighlights(radioButtonsPanel);
+
         // if this is making suggestion, disable other rooms, only enable the current room
         if (!isAccusation) {
             Character currentPlayer = gui.getCurrentPlayer();
@@ -461,6 +493,11 @@ public class SuggestionDialog extends JDialog {
         textPane.setAlignmentX(Component.CENTER_ALIGNMENT);
         textPane.add(text);
 
+
+        String name= "location";
+
+        suspiciousHighlighted(rButtonList, name);
+
         // confirm button's listener
         confirm.addActionListener(e -> {
             for (JRadioButton b : rButtonList) {
@@ -480,6 +517,7 @@ public class SuggestionDialog extends JDialog {
             } else {
                 // now make a suggestion
                 gui.makeSuggestion(sug);
+
             }
         });
 
@@ -505,4 +543,40 @@ public class SuggestionDialog extends JDialog {
         // finally, add this panel into CardLayout
         mainPanel.add(locationPanel);
     }
+
+    private void suspiciousHighlighted(List<JRadioButton> buttonList, String name){
+
+        Set<Card> getSuspiciousCards = game.getKnownCards();
+        Set<Card> cardsWellSuggested = game.getCardsWellSuggested();
+
+        getSuspiciousCards.addAll(cardsWellSuggested);
+
+
+        if(name.equals("character")) {
+            for (JRadioButton b : buttonList) {
+                Character characterSelected = Character.get(Integer.parseInt(b.getActionCommand()));
+                if(getSuspiciousCards.contains(characterSelected)) {
+                    b.setBackground(Color.cyan);
+                }
+            }
+        }
+        else if(name.equals("weapon")){
+            for (JRadioButton b : buttonList) {
+                Weapon weaponSelected = Weapon.get(Integer.parseInt(b.getActionCommand()));
+                if(getSuspiciousCards.contains(weaponSelected)) {
+                    b.setBackground(Color.cyan);
+                }
+            }
+        }
+        else{
+            for (JRadioButton b : buttonList) {
+                Location locationSelected = Location.get(Integer.parseInt(b.getActionCommand()));
+                if(getSuspiciousCards.contains(locationSelected)) {
+                    b.setBackground(Color.cyan);
+                }
+            }
+        }
+
+    }
+
 }
