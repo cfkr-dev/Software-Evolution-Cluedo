@@ -1,14 +1,17 @@
 package configs;
 
+import java.util.ArrayList;
+
 import card.Location;
 import game.GameError;
 import tile.Room;
 import view.BoardCanvas;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.IOException;
 import java.net.URL;
+import game.GameRecord;
+import tile.Room;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -47,13 +50,53 @@ public class Configs {
      * The  object of all locations
      */
     private ArrayList<Room> ROOMS = new ArrayList<>();
-    
+
+    private ArrayList<GameRecord> gameRecords;
+
+    {
+        try {
+            gameRecords = Deserialize();
+        } catch (IOException | ClassNotFoundException ignored) {
+
+        }
+    }
+
     private static Configs configurations;
+
+    public void Serialize() {
+        try {
+            FileOutputStream file = new FileOutputStream("record.txt");
+            ObjectOutputStream oos = new ObjectOutputStream(file);
+            oos.writeObject(gameRecords);
+            oos.close();
+            file.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<GameRecord> Deserialize() throws IOException, ClassNotFoundException {
+        try {
+            FileInputStream file = new FileInputStream("record.txt");
+            ObjectInputStream ois = new ObjectInputStream(file);
+            ArrayList<GameRecord> gameRecords = (ArrayList<GameRecord>) ois.readObject();
+            ois.close();
+            file.close();
+            return gameRecords;
+        }
+        catch (IOException e){
+            return new ArrayList<>();
+        }
+    }
+
+    public ArrayList<GameRecord> getRecords(){
+        return gameRecords;
+    }
 
     /**
      *Dynamically sets the width and height values of the map on which the game is to be played.
      */
-    public  void DimensionCounter(){
+    public void DimensionCounter(){
         int character= 0;
         int height= 0;
         int width;
@@ -71,7 +114,7 @@ public class Configs {
     }
 
 
-    private Configs() {
+    private Configs(){
         for (int i = 0; i < Location.getNumberOfLocations(); i++) {
             Room room = new Room(Location.get(i),null);
             ROOMS.add(room);
@@ -291,5 +334,13 @@ public class Configs {
 
     public  String getBoardStringB() {
         return BOARD_STRING_B;
+    }
+
+    public ArrayList<GameRecord> getGameRecords() {
+        return gameRecords;
+    }
+
+    public void setGameRecords(ArrayList<GameRecord> gameRecords) {
+        this.gameRecords = gameRecords;
     }
 }

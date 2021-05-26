@@ -3,11 +3,10 @@ package card;
 import game.GameError;
 import utilities.WindowUtilities;
 import view.PlayerPanelCanvas;
-
 import javax.swing.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 
 /**
  * This enum class represents a Room card in Cluedo game. There are nine rooms,
@@ -18,7 +17,7 @@ import java.util.Arrays;
  * @author G7EAS
  *
  */
-public enum Location implements Card {
+public enum Location implements Card, Serializable {
 
     Kitchen("Kitchen", ' '),
     Ball_Room("Ball Room", ' '),

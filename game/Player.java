@@ -35,7 +35,7 @@ public class Player {
     /**
      * cards drawn by this player. dummy token won't have any card in it.
      */
-    private final List<Card> cards;
+    private List<Card> cards;
 
     /**
      * player's salary for cheating on the basic rules of the game
@@ -46,6 +46,7 @@ public class Player {
      * remaining steps to move
      */
     private int remainingSteps;
+  
     /**
      * a flag to indicate whether this player can continue to play.
      */

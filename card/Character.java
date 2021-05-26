@@ -3,11 +3,10 @@ package card;
 import game.GameError;
 import utilities.WindowUtilities;
 import view.PlayerPanelCanvas;
-
 import javax.swing.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 
 /**
  * This enum class represents a character card in Cluedo game. There are six characters,
@@ -18,7 +17,7 @@ import java.util.Arrays;
  *
  * @author G7EAS
  */
-public enum Character implements Card {
+public enum Character implements Card, Serializable {
 
     Miss_Scarlet("Miss Scarlet", 'S'),
     Colonel_Mustard("Colonel Mustard", 'M'),

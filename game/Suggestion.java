@@ -1,5 +1,6 @@
 package game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import card.Card;
@@ -15,7 +16,7 @@ import card.Weapon;
  * @author G7EAS
  * 
  */
-public class Suggestion {
+public class Suggestion implements Serializable {
 
     /**
      * The character involved in this suggestion / accusation
@@ -79,5 +80,14 @@ public class Suggestion {
             Suggestion proposal = (Suggestion) obj;
             return character == proposal.character && location == proposal.location && weapon == proposal.weapon;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "["+
+                "character : " + character +
+                ", weapon : " + weapon +
+                ", location : " + location +
+                ']';
     }
 }
