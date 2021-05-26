@@ -31,7 +31,7 @@ public class Player {
     /**
      * cards drawn by this player. dummy token won't have any card in it.
      */
-    private final List<Card> cards;
+    private List<Card> cards;
     /**
      * remaining steps to move
      */
@@ -196,4 +196,5 @@ public class Player {
             return token == other.token;
         }
     }
+
 }

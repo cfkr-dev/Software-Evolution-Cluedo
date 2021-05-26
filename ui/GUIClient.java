@@ -38,11 +38,7 @@ import card.Character;
 import card.Location;
 import card.Weapon;
 import configs.Configs;
-import game.Board;
-import game.Game;
-import game.GameError;
-import game.Player;
-import game.Suggestion;
+import game.*;
 import tile.Position;
 import tile.Room;
 import tile.RoomTile;
@@ -281,12 +277,14 @@ public class GUIClient extends JFrame {
      * This method updates game board and player panel display according to the model
      * (game).
      */
-    public void update() {
+    public void update(){
         if (game.isGameRunning()) {
             boardPanel.update();
             playerPanel.update();
         } else {
+            configurations.getRecords().add(new GameRecord(game.getSolution(), game.getPlayerByCharacter(game.getWinner()).getName(), game.getPlayerByCharacter(game.getCurrentPlayer()).getCards()));
             String[] options = new String[] {"Okay", "Show solution", "Exit"};
+
             int choice = JOptionPane.showOptionDialog(window, game.getWinner().toString()
                             + " are the only player left. Congratulations, "
                             + game.getPlayerByCharacter(game.getWinner()).getName()
@@ -298,12 +296,18 @@ public class GUIClient extends JFrame {
                 // start a new game
                 setupNumPlayers();
             } else if (choice == 1){
+
                 displaySolution();
             }
             else{
+                configurations.Serialize();
                 System.exit(0);
             }
         }
+    }
+
+    public void openGameRecords() {
+        new GameRecordDialog(this, SwingUtilities.windowForComponent(this), "Game Records");
     }
 
     /**
@@ -809,4 +813,5 @@ public class GUIClient extends JFrame {
      */
     public static final ImageIcon ACCUSE_ICON = new ImageIcon(
             loadImage("Icon_Accusation.png"));
+
 }

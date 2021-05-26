@@ -717,6 +717,12 @@ public class Game {
         BOARD_STRING.append("========================\n");
         BOARD_STRING.append("Type \"help\" for help\n");
         BOARD_STRING.append("Type \"suspicious\" to see all suspicious cards\n");
+        BOARD_STRING.append("Type \"record\" for records");
+        BOARD_STRING.append("========================\n");
+      
         return BOARD_STRING.toString();
     }
+
+
+
 }

@@ -1,5 +1,7 @@
 package card;
 
+import java.io.Serializable;
+
 /**
  * This interface represents a card in Cluedo game. It could be a Character card, a Room
  * (Location) card, or a weapon card.
@@ -7,7 +9,7 @@ package card;
  * @author G7EAS
  *
  */
-public interface Card {
+public interface Card extends Serializable {
 
     /**
      * This is an alternative version of toString() method which returns a single char
