@@ -560,12 +560,13 @@ public class SuggestionDialog extends JDialog {
      */
     private void suspiciousHighlighted(List<JRadioButton> buttonList, String name){
 
-        // it's got the cards
+        // it's got the cards which are not suspicious
         Set<Card> getSuspiciousCards = game.getKnownCards();
         Set<Card> cardsWellSuggested = game.getCardsWellSuggested();
-
         getSuspiciousCards.addAll(cardsWellSuggested);
 
+
+        //When a card is not suspicious, its respective button will be highlighted
 
         if(name.equals("character")) {
             for (JRadioButton b : buttonList) {
