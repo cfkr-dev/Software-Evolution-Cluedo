@@ -233,28 +233,35 @@ public class BoardCanvas extends JPanel implements ComponentListener {
         return tokens;
     }
 
+    /**
+     * This method updates the position of question mark in board in easy mode (in pixels)
+     */
     private void updateQuestions() {
-        JLabel[] questionIcons = new JLabel[Location.values().length];
         double tile_height = (WindowUtilities.getHeight() * 1.0) / (Configs.getConfiguration().getBoardHeight());
         double tile_width = (WindowUtilities.getWidth() * 1.0) / (2 * Configs.getConfiguration().getBoardWidth());
 
         int width = TILE_WIDTH;
-        int Height = TILE_HEIGHT;
-        for (int i = 0; i < QUESTION_ON_ROOM.length; i++) {
+        int height = TILE_HEIGHT;
 
+        for (int i = 0; i < QUESTION_ON_ROOM.length; i++) {
             QUESTION_ON_ROOM[i].setBounds((int) (tile_width * EASYMODE_POS[i][0]),
-                    (int) (tile_height * EASYMODE_POS[i][1]), width, Height);
+                    (int) (tile_height * EASYMODE_POS[i][1]), width, height);
         }
     }
 
+    /**
+     * This method updates the position of cross mark in board in easy mode (in pixels)
+     */
     private void updateCross() {
         double tile_height = (WindowUtilities.getHeight() * 1.0) / (Configs.getConfiguration().getBoardHeight());
         double tile_width = (WindowUtilities.getWidth() * 1.0) / (2 * Configs.getConfiguration().getBoardWidth());
+
+        int width = TILE_WIDTH;
+        int height = TILE_HEIGHT;
+
         for (int i = 0; i < CROSS_ON_ROOM.length; i++) {
-            int width = TILE_WIDTH;
-            int Height = TILE_HEIGHT;
             CROSS_ON_ROOM[i].setBounds((int) (tile_width * EASYMODE_POS[i][0]),
-                    (int) (tile_height * EASYMODE_POS[i][1]), width, Height);
+                    (int) (tile_height * EASYMODE_POS[i][1]), width, height);
         }
     }
 
