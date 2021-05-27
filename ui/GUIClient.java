@@ -43,6 +43,11 @@ public class GUIClient extends JFrame {
     private Timer resizingTimer = new Timer(500, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (WindowUtilities.getWidth() < 1008 || WindowUtilities.getHeight() < 706 ){
+                resetDimension(new Dimension(1024,768));
+                window.setSize(new Dimension(1024,768));
+                allowResizing();
+            }
             BoardCanvas.refreshScreen();
             playerPanel.refreshScreen();
             playerPanel.resetImages();
@@ -205,6 +210,18 @@ public class GUIClient extends JFrame {
         game.joinPlayer(playerChoice, name);
     }
 
+    public void resetDimension(Dimension dimension){
+        this.setSize(dimension);
+        super.setSize(dimension);
+    }
+
+    public void stopResizing(){
+        this.setResizable(false);
+    }
+    public void allowResizing(){
+        this.setResizable(true);
+    }
+
     /**
      * This method construct the in-game GUI, and let the game begin.
      */
@@ -220,10 +237,18 @@ public class GUIClient extends JFrame {
                     resizingTimer.restart();
                     resizingTimer.setRepeats(false);
                 }
-
                 super.componentResized(e);
                 WindowUtilities.setWidth(e.getComponent().getWidth());
                 WindowUtilities.setHeight(e.getComponent().getHeight());
+                if (e.getComponent().getWidth() < 1008 || e.getComponent().getHeight() < 706 ){
+                    stopResizing();
+                }
+                if (WindowUtilities.getWidth() <= 0){
+                    WindowUtilities.setWidth(1);
+                }
+                if (WindowUtilities.getHeight() <= 0){
+                    WindowUtilities.setHeight(1);
+                }
             }
         });
 
