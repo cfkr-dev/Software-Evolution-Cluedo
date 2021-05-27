@@ -121,14 +121,16 @@ public class BoardCanvas extends JPanel implements ComponentListener {
      * This method ask gui for game's status, and update the display of player panel.
      */
     public void update() {
-
         WeaponToken[] weaponTokens = gui.getWeaponTokens();
         Set<Card> knownCards = gui.getKnownCards();
         boolean isEasyMode = gui.isEasyMode();
         BoardCanvas.refreshScreen();
         setPreferredSize(new Dimension(BOARD_IMG_WIDTH,BOARD_IMG_HEIGHT));
+
         // if it is easy mode, draw some cross or question marks on rooms
         if (isEasyMode) {
+            updateCross();
+            updateQuestions();
             for (Location l : Location.values()) {
                 if (knownCards.contains(l)) {
                     CROSS_ON_ROOM[l.ordinal()].setVisible(true);
@@ -189,10 +191,10 @@ public class BoardCanvas extends JPanel implements ComponentListener {
      *            --- the vertical coordinate
      */
     private void setCharacterTokenOnTile(CharacterToken characterToken, int x, int y) {
-        int height = TILE_HEIGHT;
-        int width = TILE_WIDTH;
-        characterToken.setBounds(TILE_WIDTH * x,
-                TILE_HEIGHT * y, width, height);
+        double height = (WindowUtilities.getHeight() * 1.0) / (Configs.getConfiguration().getBoardHeight());
+        double width = (WindowUtilities.getWidth() * 1.0) / (2 * Configs.getConfiguration().getBoardWidth());
+        characterToken.setBounds( (int) (width * x),
+                TILE_HEIGHT * y, (int) width, (int) height);
     }
 
     /**
@@ -207,7 +209,7 @@ public class BoardCanvas extends JPanel implements ComponentListener {
         int height = token.getIcon().getIconHeight();
         int width = token.getIcon().getIconWidth();
         token.setBounds( TILE_WIDTH * roomTile.getX(),
-                TILE_HEIGHT * roomTile.getY() - (height - TILE_HEIGHT + 2),
+                TILE_HEIGHT * roomTile.getY(),
                 width, height);
     }
 
@@ -231,6 +233,32 @@ public class BoardCanvas extends JPanel implements ComponentListener {
         return tokens;
     }
 
+    private void updateQuestions() {
+        JLabel[] questionIcons = new JLabel[Location.values().length];
+        double tile_height = (WindowUtilities.getHeight() * 1.0) / (Configs.getConfiguration().getBoardHeight());
+        double tile_width = (WindowUtilities.getWidth() * 1.0) / (2 * Configs.getConfiguration().getBoardWidth());
+
+        int width = TILE_WIDTH;
+        int Height = TILE_HEIGHT;
+        for (int i = 0; i < QUESTION_ON_ROOM.length; i++) {
+
+            QUESTION_ON_ROOM[i].setBounds((int) (tile_width * EASYMODE_POS[i][0]),
+                    (int) (tile_height * EASYMODE_POS[i][1]), width, Height);
+        }
+    }
+
+    private void updateCross() {
+        double tile_height = (WindowUtilities.getHeight() * 1.0) / (Configs.getConfiguration().getBoardHeight());
+        double tile_width = (WindowUtilities.getWidth() * 1.0) / (2 * Configs.getConfiguration().getBoardWidth());
+        for (int i = 0; i < CROSS_ON_ROOM.length; i++) {
+            int width = TILE_WIDTH;
+            int Height = TILE_HEIGHT;
+            CROSS_ON_ROOM[i].setBounds((int) (tile_width * EASYMODE_POS[i][0]),
+                    (int) (tile_height * EASYMODE_POS[i][1]), width, Height);
+        }
+    }
+
+
     /**
      * This method creates a serious of question mark icons for each room. These icons are
      * used to give the player a help in easy mode
@@ -239,17 +267,22 @@ public class BoardCanvas extends JPanel implements ComponentListener {
      */
     private static JLabel[] creatQuestionOnRoom() {
         JLabel[] questionIcons = new JLabel[Location.values().length];
+        double tile_height = (WindowUtilities.getHeight() * 1.0) / (Configs.getConfiguration().getBoardHeight());
+        double tile_width = (WindowUtilities.getWidth() * 1.0) / (2 * Configs.getConfiguration().getBoardWidth());
+
         for (int i = 0; i < Location.values().length; i++) {
             questionIcons[i] = new JLabel(AbstractToken.QUESTION_ICON);
             int width = AbstractToken.QUESTION_ICON.getIconWidth();
             int Height = AbstractToken.QUESTION_ICON.getIconHeight();
 
-            questionIcons[i].setBounds( TILE_WIDTH * EASYMODE_POS[i][0],
-                    TILE_HEIGHT * EASYMODE_POS[i][1], width, Height);
+            questionIcons[i].setBounds( (int) (tile_width * EASYMODE_POS[i][0]),
+                    (int) (tile_height * EASYMODE_POS[i][1]), width, Height);
             questionIcons[i].setVisible(false);
         }
         return questionIcons;
     }
+
+
 
     /**
      * This method creates a serious of cross icons for each room. These icons are used to
@@ -258,14 +291,16 @@ public class BoardCanvas extends JPanel implements ComponentListener {
      * @return --- am array of cross icons
      */
     private static JLabel[] createCrossOnRoom() {
+        double tile_height = (WindowUtilities.getHeight() * 1.0) / (Configs.getConfiguration().getBoardHeight());
+        double tile_width = (WindowUtilities.getWidth() * 1.0) / (2 * Configs.getConfiguration().getBoardWidth());
         JLabel[] crossIcons = new JLabel[Location.values().length];
         for (int i = 0; i < Location.values().length; i++) {
             crossIcons[i] = new JLabel(AbstractToken.CROSS_ICON);
             int width = AbstractToken.CROSS_ICON.getIconWidth();
             int Height = AbstractToken.CROSS_ICON.getIconHeight();
 
-            crossIcons[i].setBounds(TILE_WIDTH * EASYMODE_POS[i][0],
-                    TILE_HEIGHT * EASYMODE_POS[i][1], width, Height);
+            crossIcons[i].setBounds((int) (tile_width * EASYMODE_POS[i][0]),
+                    (int) (tile_height * EASYMODE_POS[i][1]), width, Height);
             crossIcons[i].setVisible(false);
         }
         return crossIcons;
@@ -382,8 +417,8 @@ public class BoardCanvas extends JPanel implements ComponentListener {
      * This array records the coordinates to display a question mark icon or a cross icon
      * in room in easy mode
      */
-    private static final int[][] EASYMODE_POS = { { 5, 6 }, { 15, 7 }, { 23, 4 },
-            { 23, 12 }, { 22, 18 }, { 23, 24 }, { 14, 24 }, { 5, 24 }, { 7, 15 } };
+    private static final int[][] EASYMODE_POS = { { 10, 6 }, { 30 , 7 }, { 46, 4 },
+            { 46, 12 }, { 44, 18 }, { 46, 24 }, { 28, 24 }, { 10, 24 }, { 14, 15 } };
 
     /**
      * A serious of cross icons for each room. These icons are used to give the player a
