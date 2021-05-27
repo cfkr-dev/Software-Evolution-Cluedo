@@ -1,7 +1,6 @@
 package view.dialogs;
 
 import static ui.GUIClient.loadImage;
-
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
@@ -11,16 +10,15 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import ui.GUIClient;
 
 /**
  * This class is a custom dialog for displaying a help.
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
-@SuppressWarnings("serial")
+
 public class HelpDialog extends JDialog {
     /**
      * Help images
@@ -28,15 +26,17 @@ public class HelpDialog extends JDialog {
     private static final ImageIcon[] HELP_IMAGES = {
             new ImageIcon(loadImage("Help_1.png")),
             new ImageIcon(loadImage("Help_2.png")) };
+
     /**
      * The preferred dimension for help image
      */
     private static final Dimension IMAGE_DIMENSION = new Dimension(
             HELP_IMAGES[0].getIconWidth(), HELP_IMAGES[0].getIconHeight());
+
     /**
      * A CardLayout to manage the panel switch
      */
-    private CardLayout cardLayout = new CardLayout();
+    private final CardLayout cardLayout = new CardLayout();
 
     /**
      * Construct a dialog, let players choose character, weapon, location respectively,

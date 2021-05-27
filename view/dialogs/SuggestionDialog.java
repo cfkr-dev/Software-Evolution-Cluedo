@@ -29,7 +29,7 @@ import view.PlayerPanelCanvas;
 /**
  * This class is a custom dialog for players to make a suggestion or accusation.
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
 public class SuggestionDialog extends JDialog {
@@ -39,33 +39,38 @@ public class SuggestionDialog extends JDialog {
     private static final Dimension CARD_DIMENSION = new Dimension(
             PlayerPanelCanvas.CHARACTER_IMG[0].getIconWidth(),
             PlayerPanelCanvas.CHARACTER_IMG[0].getIconHeight());
+
     /**
      * A CardLayout to manage the panel switch
      */
-    private CardLayout cardLayout = new CardLayout();
+    private final CardLayout cardLayout = new CardLayout();
+
     /**
      * The GUI of the game
      */
-    private GUIClient gui;
+    private final GUIClient gui;
+
     /**
      * This flag indicates whether this is a suggestion or a accusation
      */
-    private boolean isAccusation;
+    private final boolean isAccusation;
+
     /**
      * Which character is in this suggestion/accusation?
      */
     private Character character;
+
     /**
      * Which weapon is in this suggestion/accusation?
      */
     private Weapon weapon;
+
     /**
      * Which location is in this suggestion/accusation?
      */
     private Location location;
 
-
-    private Game game;
+    private final Game game;
 
     /**
      * Construct a dialog, let players choose character, weapon, location respectively,

@@ -17,7 +17,7 @@ public class Tile extends Position {
      */
     public final int x, y;
 
-    private Configs configurations = Configs.getConfiguration();
+    private final Configs configurations = Configs.getConfiguration();
 
     /**
      * Takes the coordinates and construct a Tile. Coordinate are checked against board's

@@ -35,12 +35,12 @@ public class Player {
     /**
      * cards drawn by this player. dummy token won't have any card in it.
      */
-    private List<Card> cards;
+    private final List<Card> cards;
 
     /**
      * player's salary for cheating on the basic rules of the game
      */
-    private Coin salary;
+    private final Coin salary;
 
     /**
      * remaining steps to move
@@ -132,17 +132,6 @@ public class Player {
      */
     public void drawACard(Card card) {
         cards.add(card);
-    }
-
-    /**
-     * Examine whether this player has given card.
-     * 
-     * @param card
-     *            --- the card to be examined
-     * @return --- true if this player has it; false if not.
-     */
-    public boolean hasCard(Card card) {
-        return cards.contains(card);
     }
 
     /**

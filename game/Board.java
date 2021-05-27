@@ -25,7 +25,7 @@ public class Board {
      */
     private final Tile[] startPositions;
 
-    private Configs configurations = Configs.getConfiguration();
+    private final Configs configurations = Configs.getConfiguration();
 
     /**
      * Construct a board.
@@ -47,7 +47,6 @@ public class Board {
         while (index < boardString.length()) {
             x = index % (width + 1);
             y = index / (width + 1);
-
 
             // skip the '\n' character
             if (x == width) {
@@ -80,8 +79,7 @@ public class Board {
                 if (logicSymbolBoard >= ';' && logicSymbolBoard <= '@') {
                     Tile starPositionCharacter = new Tile(x, y);
                     board[y][x] = starPositionCharacter;
-                    int auxiliar = logicSymbolBoard;
-                    startPositions[auxiliar - 59] = starPositionCharacter;
+                    startPositions[(int) logicSymbolBoard - 59] = starPositionCharacter;
                 }
 
                 /*
@@ -89,27 +87,13 @@ public class Board {
                  * 'b' to room '2', and so on.
                  */
                 if (logicSymbolBoard >= 'a' && logicSymbolBoard <= 'i') {
-                    int auxiliar = logicSymbolBoard;
-                    Entrance entrance = new Entrance(x, y, configurations.getRoom(auxiliar - 97));
+                    Entrance entrance = new Entrance(x, y, configurations.getRoom((int) logicSymbolBoard - 97));
                     board[y][x] = entrance;
-                    configurations.getRoom(auxiliar - 97).addEntrances(entrance);
+                    configurations.getRoom((int) logicSymbolBoard - 97).addEntrances(entrance);
                 }
             }
             index++;
         }
-    }
-
-    /**
-     * Get the Position at given coordinate
-     *
-     * @param x
-     *            --- the horizontal coordinate
-     * @param y
-     *            --- the vertical coordinate
-     * @return --- the Position at given coordinate
-     */
-    public Position getPosition(int x, int y) {
-        return board[y][x];
     }
 
     /**

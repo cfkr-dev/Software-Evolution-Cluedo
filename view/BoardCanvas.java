@@ -1,6 +1,5 @@
 package view;
 
-
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -11,9 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import configs.Configs;
-
 import card.Card;
 import card.Character;
 import card.Location;
@@ -27,14 +24,10 @@ import utilities.WindowUtilities;
 import view.token.AbstractToken;
 import view.token.CharacterToken;
 import view.token.WeaponToken;
-
-
 import static ui.GUIClient.loadImage;
 
 
 public class BoardCanvas extends JPanel implements ComponentListener {
-
-    private Configs configurations = Configs.getConfiguration();
 
     /**
      * The width and Height of each Tile. Note this constant is important as most of board
@@ -47,18 +40,18 @@ public class BoardCanvas extends JPanel implements ComponentListener {
     /**
      * The width of board
      */
-
     public static int BOARD_IMG_WIDTH;
+
     /**
      * The height of board
      */
     public static int BOARD_IMG_HEIGHT;
 
-
     /**
      * Game's main GUI
      */
-    private GUIClient gui;
+    private final GUIClient gui;
+
     /**
      * An array of character tokens
      */
@@ -77,6 +70,7 @@ public class BoardCanvas extends JPanel implements ComponentListener {
         this.setBorder(new EmptyBorder(10,10,10,10));
         int width = WindowUtilities.getWidth();
         int height = WindowUtilities.getHeight();
+        Configs configurations = Configs.getConfiguration();
         TILE_WIDTH =  width / (2 * configurations.getBoardWidth());
         TILE_HEIGHT = height / (configurations.getBoardHeight());
         BOARD_IMG_WIDTH = WindowUtilities.getWidth() / 2;
@@ -89,23 +83,23 @@ public class BoardCanvas extends JPanel implements ComponentListener {
         characterTokens = createCharacterToken(CHARACTER_TOKEN_IMG);
 
         // add character and weapon tokens on board
-        for (int i = 0; i < characterTokens.length; i++) {
-            this.add(characterTokens[i]);
+        for (CharacterToken characterToken : characterTokens) {
+            this.add(characterToken);
         }
         WeaponToken[] weaponTokens = gui.getWeaponTokens();
-        for (int i = 0; i < weaponTokens.length; i++) {
-            this.add(weaponTokens[i]);
+        for (WeaponToken weaponToken : weaponTokens) {
+            this.add(weaponToken);
         }
 
         CROSS_ON_ROOM = createCrossOnRoom();
         QUESTION_ON_ROOM = creatQuestionOnRoom();
 
         // add question marks and cross for easy mode
-        for (int i = 0; i < QUESTION_ON_ROOM.length; i++) {
-            this.add(QUESTION_ON_ROOM[i]);
+        for (JLabel jLabel : QUESTION_ON_ROOM) {
+            this.add(jLabel);
         }
-        for (int i = 0; i < CROSS_ON_ROOM.length; i++) {
-            this.add(CROSS_ON_ROOM[i]);
+        for (JLabel jLabel : CROSS_ON_ROOM) {
+            this.add(jLabel);
         }
 
         BOARD_IMG_WIDTH = TILE_WIDTH * configurations.getBoardWidth();
@@ -158,11 +152,7 @@ public class BoardCanvas extends JPanel implements ComponentListener {
 
             // if it is easy mode, reset the tooltip for tokens.
             characterTokens[i].setEasyMode(isEasyMode);
-            if (knownCards.contains(characterTokens[i].getCharacter())) {
-                characterTokens[i].setIsKnown(true);
-            } else {
-                characterTokens[i].setIsKnown(false);
-            }
+            characterTokens[i].setIsKnown(knownCards.contains(characterTokens[i].getCharacter()));
 
             Player player = gui.getPlayerByCharacter(Character.get(i));
             Position pos = player.getPosition();
@@ -175,17 +165,13 @@ public class BoardCanvas extends JPanel implements ComponentListener {
         }
 
         // update weapon tokens' position
-        for (int i = 0; i < weaponTokens.length; i++) {
+        for (WeaponToken weaponToken : weaponTokens) {
 
             // if it is easy mode, reset the tooltip for tokens.
-            weaponTokens[i].setEasyMode(isEasyMode);
-            if (knownCards.contains(weaponTokens[i].getWeapon())) {
-                weaponTokens[i].setIsKnown(true);
-            } else {
-                weaponTokens[i].setIsKnown(false);
-            }
+            weaponToken.setEasyMode(isEasyMode);
+            weaponToken.setIsKnown(knownCards.contains(weaponToken.getWeapon()));
 
-            setTokenInRoom(weaponTokens[i], weaponTokens[i].getRoomTile());
+            setTokenInRoom(weaponToken, weaponToken.getRoomTile());
         }
 
         // repaint
@@ -398,11 +384,13 @@ public class BoardCanvas extends JPanel implements ComponentListener {
      */
     private static final int[][] EASYMODE_POS = { { 5, 6 }, { 15, 7 }, { 23, 4 },
             { 23, 12 }, { 22, 18 }, { 23, 24 }, { 14, 24 }, { 5, 24 }, { 7, 15 } };
+
     /**
      * A serious of cross icons for each room. These icons are used to give the player a
      * help in easy mode
      */
     private static JLabel[] CROSS_ON_ROOM;
+
     /**
      * a serious of question mark icons for each room. These icons are used to give the
      * player a help in easy mode
@@ -416,16 +404,13 @@ public class BoardCanvas extends JPanel implements ComponentListener {
 
     @Override
     public void componentMoved(ComponentEvent e) {
-
     }
 
     @Override
     public void componentShown(ComponentEvent e) {
-
     }
 
     @Override
     public void componentHidden(ComponentEvent e) {
-
     }
 }

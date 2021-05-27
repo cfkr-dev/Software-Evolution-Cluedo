@@ -1,10 +1,8 @@
 package ui;
 
-
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
-
 import card.Card;
 import card.Character;
 import card.Location;
@@ -30,8 +28,6 @@ public class TextClient {
      */
     private static final Scanner SCANNER = new Scanner(System.in);
 
-    private Configs configuration;
-
     /**
      * Main function of this programme.
      *
@@ -54,9 +50,7 @@ public class TextClient {
      */
     private static void welcomeMsg() {
         System.out.println("==============Cluedo text-based client v0.1==============");
-
         System.out.println("Some welcome message");
-
     }
 
     /**
@@ -271,6 +265,13 @@ public class TextClient {
         }
     }
 
+    /**
+     * Reviews the data structure where the results of the different dice are stored
+     * and calculates the total.
+     *
+     * @param game --- the running game
+     * @return --- the number of moves a player can make in a turn
+     */
     private static int NumberOfMovements(Game game) {
         int[] roll = game.rollDice();
         int total = 0;
@@ -329,7 +330,7 @@ public class TextClient {
 
         // now the player has made a suggestion
         System.out.println(
-                "Your suggestion is:\nSuspect: " + suspect.toString() + "\nWeapon: " + weapon.toString() + "\nLocation: " + location.toString());
+                "Your suggestion is:\nSuspect: " + suspect + "\nWeapon: " + weapon + "\nLocation: " + location);
 
         return suggestion;
     }
@@ -362,7 +363,7 @@ public class TextClient {
         Location location = Location.get(choiceRoom - 1);
 
         // the player has made an accusation
-        System.out.println("Your accusation is:\nSuspect: " + suspect.toString() + "\nWeapon: " + weapon.toString() + "\nLocation: " + location.toString());
+        System.out.println("Your accusation is:\nSuspect: " + suspect + "\nWeapon: " + weapon.toString() + "\nLocation: " + location.toString());
 
         Suggestion accusation = new Suggestion(suspect, weapon, location);
 
@@ -463,6 +464,8 @@ public class TextClient {
      *            --- the minimum boundary of input as an integer
      * @param max
      *            --- the maximum boundary of input as an integer
+     * @param game
+     *            --- the running game
      * @return --- the parsed integer
      */
     private static int parseInt(int min, int max, Game game) {
@@ -474,21 +477,21 @@ public class TextClient {
                 System.out.println("Please choose between " + min + " and " + max + ":");
             }
 
-            else if (line.equals("coins help")) {
+            if (line.equals("coins help")) {
                 coinsHelpMessage();
                 System.out.println("Please choose between " + min + " and " + max + ":");
             }
-          
-            else if(line.equals("suspicious")){
+
+            if(line.equals("suspicious")){
                 suspiciousMessage(game);
                 System.out.println("Please choose between " + min + " and " + max + ":");
             }
-          
-            else if (line.equals("record")){
+
+            if (line.equals("record")){
                 showRecord();
                 System.out.println("Please choose between " + min + " and " + max + ":");
             }
-          
+
             else {
                 try {
                     // parse the input
@@ -532,6 +535,9 @@ public class TextClient {
         System.out.println(message);
     }
 
+    /**
+     * This method print out coins help message, which all possible options for spending coins
+     */
     private static void coinsHelpMessage() {
         StringBuilder message = new StringBuilder("[Legend]\n");
         message.append("You can use the coins for the following actions:\n");
@@ -589,6 +595,9 @@ public class TextClient {
         System.out.println(message);
     }
 
+    /**
+     * This method print out the results of the available item history.
+     */
     private static void showRecord(){
         StringBuilder message = new StringBuilder("[Record]\n");
         message.append("The record of games ended is the following one:\n");
@@ -599,7 +608,10 @@ public class TextClient {
         }
         System.out.println(message);
     }
-  
+
+    /**
+     * This method print out the solution of the current game.
+     */
     public static void displaySolution(Suggestion solution){
         StringBuilder message = new StringBuilder();
         message.append("The solution is: \n").append(solution.toString());

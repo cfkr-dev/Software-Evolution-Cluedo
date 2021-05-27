@@ -3,7 +3,6 @@ package utilities;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-
 import static ui.GUIClient.loadImage;
 
 public class WindowUtilities {

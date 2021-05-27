@@ -1,11 +1,9 @@
 package view.dialogs;
 
-
 import game.Suggestion;
 import ui.GUIClient;
 import utilities.WindowUtilities;
 import view.PlayerPanelCanvas;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
@@ -15,10 +13,10 @@ import java.awt.event.WindowListener;
 
 public class SolutionDialog extends JDialog implements WindowListener, ComponentListener {
 
-    private JLabel character;
-    private JLabel weapon;
-    private JLabel location;
-    private Suggestion solution;
+    private final JLabel character;
+    private final JLabel weapon;
+    private final JLabel location;
+    private final Suggestion solution;
 
     public SolutionDialog(GUIClient guiClient, Window windowForComponent, String game_solution) {
         super(windowForComponent, game_solution);
@@ -69,12 +67,10 @@ public class SolutionDialog extends JDialog implements WindowListener, Component
 
     @Override
     public void windowOpened(WindowEvent e) {
-
     }
 
     @Override
     public void windowClosing(WindowEvent e) {
-
     }
 
     @Override
@@ -84,22 +80,18 @@ public class SolutionDialog extends JDialog implements WindowListener, Component
 
     @Override
     public void windowIconified(WindowEvent e) {
-
     }
 
     @Override
     public void windowDeiconified(WindowEvent e) {
-
     }
 
     @Override
     public void windowActivated(WindowEvent e) {
-
     }
 
     @Override
     public void windowDeactivated(WindowEvent e) {
-
     }
 
     @Override
@@ -123,16 +115,13 @@ public class SolutionDialog extends JDialog implements WindowListener, Component
 
     @Override
     public void componentMoved(ComponentEvent e) {
-
     }
 
     @Override
     public void componentShown(ComponentEvent e) {
-
     }
 
     @Override
     public void componentHidden(ComponentEvent e) {
-
     }
 }

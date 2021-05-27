@@ -3,7 +3,6 @@ package view.dialogs;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Window;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -12,17 +11,16 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import ui.GUIClient;
 
 /**
  * This class is a custom dialog for players to choose how many players and how many dices
  * are used in game.
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
-@SuppressWarnings("serial")
+
 public class NumberSetupDialog extends JDialog {
 
     /**

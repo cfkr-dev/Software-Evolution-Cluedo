@@ -1,6 +1,5 @@
 package ui;
 
-
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
@@ -11,13 +10,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Set;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
-
 import card.Card;
 import card.Character;
 import card.Location;
@@ -43,45 +40,39 @@ import view.token.WeaponToken;
 
 public class GUIClient extends JFrame {
 
-
-//    private Timer resizingTimer = new Timer(2000, new ActionListener() {
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//
-//        }
-//    });
-
     private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     /**
      * the main window
      */
     private JPanel window;
+
     /**
      * game board on left
      */
     private BoardCanvas boardPanel;
+
     /**
      * player panel on right
      */
     private PlayerPanelCanvas playerPanel;
 
-
     /**
      * The height of main frame
      */
     public static int HEIGHT;
+
     /**
      * The width of game board (left panel)
      */
     public static int LEFT_PANEL_WIDTH;
+
     /**
      * the width of game board (right panel)
      */
     public static int RIGHT_PANEL_WIDTH;
 
-
-    private Configs configurations = Configs.getConfiguration();
+    private final Configs configurations = Configs.getConfiguration();
 
     // ============= models ===================
 
@@ -94,6 +85,7 @@ public class GUIClient extends JFrame {
      * the number of players
      */
     private int numPlayers;
+
     /**
      * the number of dices
      */
@@ -271,7 +263,6 @@ public class GUIClient extends JFrame {
         LEFT_PANEL_WIDTH = WindowUtilities.getWidth() / 2;
         RIGHT_PANEL_WIDTH = WindowUtilities.getWidth() / 2;
 
-
         // now make the left panel, which is game board
         boardPanel = new BoardCanvas(this);
         boardPanel.setPreferredSize(new Dimension(LEFT_PANEL_WIDTH, HEIGHT));
@@ -286,7 +277,6 @@ public class GUIClient extends JFrame {
         // now put them together
         window.add(boardPanel);
         window.add(playerPanel);
-
 
         // add key bindings
         addKeyBindings(window);
@@ -857,7 +847,7 @@ public class GUIClient extends JFrame {
     }
 
     public void setScreenSize(Dimension dimension) {
-        this.screenSize = dimension;
+        screenSize = dimension;
     }
 
     /**

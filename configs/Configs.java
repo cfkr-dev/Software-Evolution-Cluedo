@@ -3,16 +3,9 @@ package configs;
 import java.util.ArrayList;
 
 import card.Location;
-import game.GameError;
 import tile.Room;
-import view.BoardCanvas;
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.net.URL;
 import game.GameRecord;
-import tile.Room;
 import java.io.*;
-import java.util.ArrayList;
 
 /**
  * This class contains most of configurations to construct a game board.
@@ -315,21 +308,9 @@ public class Configs {
     public  int getBoardHeight() {
         return BOARD_HEIGHT;
     }
-    
-    public  ArrayList<Room> getROOMS() {
-        return ROOMS;
-    }
-    
-    public  String getUiStringA() {
-        return UI_STRING_A;
-    }
 
     public  String getUiStringB() {
         return UI_STRING_B;
-    }
-
-    public  String getBoardStringA() {
-        return BOARD_STRING_A;
     }
 
     public  String getBoardStringB() {
@@ -340,7 +321,4 @@ public class Configs {
         return gameRecords;
     }
 
-    public void setGameRecords(ArrayList<GameRecord> gameRecords) {
-        this.gameRecords = gameRecords;
-    }
 }

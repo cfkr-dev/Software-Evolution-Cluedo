@@ -1,7 +1,6 @@
 package view.dialogs;
 
 import static ui.GUIClient.loadImage;
-
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -19,7 +18,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-
 import card.Location;
 import game.Player;
 import tile.Entrance;
@@ -29,7 +27,7 @@ import ui.GUIClient;
  * This class is a custom dialog for player to choose which door he / she can take to exit
  * current room.
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
 

@@ -6,7 +6,6 @@ import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.net.URI;
 import javax.swing.*;
-
 import ui.GUIClient;
 
 /**
@@ -31,7 +30,7 @@ public class CustomMenu extends JMenuBar {
     /**
      * a check box menu to enable/disable easy mode
      */
-    private JCheckBoxMenuItem easyMode;
+    private final JCheckBoxMenuItem easyMode;
 
     /**
      * Construct a Menu for Cluedo game

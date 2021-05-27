@@ -6,10 +6,8 @@ import card.Location;
 import card.Weapon;
 import configs.Configs;
 import game.GameRecord;
-import game.Suggestion;
 import ui.GUIClient;
 import view.PlayerPanelCanvas;
-
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;

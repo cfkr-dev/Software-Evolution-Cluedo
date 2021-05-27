@@ -1,7 +1,6 @@
 package view.token;
 
 import javax.swing.ImageIcon;
-
 import card.Weapon;
 import tile.RoomTile;
 
@@ -11,7 +10,7 @@ import tile.RoomTile;
  * draw tokens. Also, for GUI mode, each weeapon token has a custom tooltip to show a
  * better-looking tooltip in no-brainer mode.
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
 

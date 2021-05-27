@@ -1,7 +1,6 @@
 package view.token;
 
 import javax.swing.ImageIcon;
-
 import card.Character;
 
 /**
@@ -10,7 +9,7 @@ import card.Character;
  * character token has a custom tooltip to show a better-looking tooltip in no-brainer
  * mode.
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
 
@@ -19,7 +18,7 @@ public class CharacterToken extends AbstractToken {
     /**
      * the character
      */
-    private Character character;
+    private final Character character;
 
     /**
      * Construct a character token on board.

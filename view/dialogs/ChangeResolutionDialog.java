@@ -1,9 +1,7 @@
 package view.dialogs;
 
 import ui.GUIClient;
-
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicComboBoxEditor;
 import java.awt.*;
 import java.util.ArrayList;
 

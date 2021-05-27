@@ -8,7 +8,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolTip;
-
 import tile.RoomTile;
 
 /**
@@ -16,20 +15,21 @@ import tile.RoomTile;
  * room (outside-room positions are not remembered here). Also, for GUI mode, each token
  * has a custom tooltip to show a better-looking tooltip in no-brainer mode.
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
 
 public abstract class AbstractToken extends JLabel {
-
     /**
      * in which room
      */
     private RoomTile roomTile;
+
     /**
      * a boolean to decide which kind of tooltip to show
      */
     private boolean isEasyMode;
+
     /**
      * a boolean to decide which icon (known or unknown) to show in custom tooltip
      */
@@ -120,11 +120,7 @@ public abstract class AbstractToken extends JLabel {
         // generated serial UID
         private static final long serialVersionUID = 6868701625611852907L;
         // text display
-        private JLabel textLabel;
-        // an icon to show whether this token is known to current player
-        private JLabel iconLabel;
-        // panel to hold things up
-        private JPanel panel;
+        private final JLabel textLabel;
 
         /**
          * Construct a custom tooltip
@@ -139,9 +135,11 @@ public abstract class AbstractToken extends JLabel {
             } else {
                 icon = QUESTION_ICON;
             }
-            iconLabel = new JLabel(icon);
+            // an icon to show whether this token is known to current player
+            JLabel iconLabel = new JLabel(icon);
             iconLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            panel = new JPanel(new BorderLayout(10, 10));
+            // panel to hold things up
+            JPanel panel = new JPanel(new BorderLayout(10, 10));
             panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             panel.add(BorderLayout.CENTER, textLabel);
             panel.add(BorderLayout.SOUTH, iconLabel);
@@ -170,6 +168,7 @@ public abstract class AbstractToken extends JLabel {
      */
     public static final ImageIcon CROSS_ICON = new ImageIcon(
             loadImage("EasyMode_Cross.png"));
+
     /**
      * a question mark icon to represents this token is unknown
      */

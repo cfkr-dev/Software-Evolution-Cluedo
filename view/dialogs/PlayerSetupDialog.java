@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.*;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -20,7 +19,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-
 import card.Character;
 import ui.GUIClient;
 import view.PlayerPanelCanvas;
@@ -29,13 +27,12 @@ import view.PlayerPanelCanvas;
  * This class is a custom dialog for players to choose which character he / she want to
  * play as one by one.
  * 
- * @author Hector
+ * @author G7EAS
  *
  */
 public class PlayerSetupDialog extends JDialog {
 
-    private ArrayList<Character> freeCharacters = new ArrayList<>();
-    /*
+    /**
      * A dimension used to set the size of player profile picture
      */
     private static final Dimension PROFILE_DIMENSION = new Dimension(

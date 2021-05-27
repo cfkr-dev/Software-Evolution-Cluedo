@@ -67,7 +67,7 @@ public class Game {
     private final Map<Character, Set<Card>> knownCards;
 
     /**
-     * this map keep a record of cards which are reffuted (that is not involved in crime)
+     * this map keep a record of cards which are refuted (that is not involved in crime)
      */
     private final Map<Character, Set<Card>> cardsWellSuggested;
 
@@ -91,7 +91,7 @@ public class Game {
      */
     private boolean isEasyMode = false;
 
-    private Configs configurations = Configs.getConfiguration();
+    private final Configs configurations = Configs.getConfiguration();
 
     /**
      * Construct the game.
@@ -303,19 +303,6 @@ public class Game {
     }
 
     /**
-     * Check whether the given character has the given card in hand.
-     * 
-     * @param character
-     *            --- the character
-     * @param card
-     *            --- the card
-     * @return --- true if he has; false is he has not
-     */
-    public boolean playerHasCard(Character character, Card card) {
-        return getPlayerByCharacter(character).hasCard(card);
-    }
-
-    /**
      * This method moves the suspect and weapon in the given suggestion into the mentioned
      * location.
      * 
@@ -422,7 +409,6 @@ public class Game {
         Player player = getPlayerByCharacter(character);
 
         List<Position> movablePos = new ArrayList<>();
-
 
         // if there are tiles in four directions
         movablePos.add(board.lookNorth(player));
@@ -574,17 +560,6 @@ public class Game {
     }
 
     /**
-     * get the start position of given character.
-     * 
-     * @param character
-     *            --- the character
-     * @return --- the start position of this character
-     */
-    public Tile getStartPosition(Character character) {
-        return board.getStartPosition(character);
-    }
-
-    /**
      * Get the remaining cards as a list. Note that the returned list could be empty if
      * all cards are dealt.
      * 
@@ -603,14 +578,14 @@ public class Game {
         return knownCards.get(currentPlayer);
     }
 
+    /**
+     * This method obtains the letters that have been refuted in a suggestion
+     *
+     * @return --- cards which are refuted (that is not involved in crime)
+     */
     public Set<Card> getCardsWellSuggested() {
         return cardsWellSuggested.get(currentPlayer);
     }
-
-
-
-
-
 
     /**
      * Get how many steps left for the player to move.
