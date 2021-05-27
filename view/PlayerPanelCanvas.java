@@ -513,7 +513,6 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         FONT_SIZE = HEIGHT / 41;
 
         remainingCardsPanel.setPreferredSize(new Dimension(WIDTH, NORTH_PANEL_HEIGHT));
-        System.out.println(remainingCardsPanel.getWidth() + ", "+ remainingCardsPanel.getHeight());
         buttonPanel.setPreferredSize(new Dimension(EAST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
         cardsInHandPanel.setPreferredSize(new Dimension(WIDTH, SOUTH_PANEL_HEIGHT));
         profileLabel.setPreferredSize(new Dimension(WEST_PANEL_WIDTH, CENTRE_PANEL_HEIGHT));
@@ -521,7 +520,6 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         remainingStepLabel.setFont(new Font("Calibre", 1, FONT_SIZE));
         remainingCoins.setFont(new Font("Calibre", 1, FONT_SIZE));
     }
-
 
     /**
      * This method ask gui for game's status, and update the display of player panel.
@@ -1449,9 +1447,6 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
 
     @Override
     public void componentResized(ComponentEvent e) {
-        System.out.println("a");
-        refreshScreen();
-        resetImages();
     }
 
     @Override

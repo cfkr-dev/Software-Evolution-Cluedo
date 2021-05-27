@@ -40,6 +40,22 @@ import view.token.WeaponToken;
 
 public class GUIClient extends JFrame {
 
+    private Timer resizingTimer = new Timer(500, new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("end resizing........");
+            BoardCanvas.refreshScreen();
+            playerPanel.refreshScreen();
+            playerPanel.resetImages();
+            LEFT_PANEL_WIDTH = WindowUtilities.getWidth() / 2;
+            RIGHT_PANEL_WIDTH = WindowUtilities.getWidth() / 2;
+            HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
+            boardPanel.setPreferredSize(new Dimension(LEFT_PANEL_WIDTH, HEIGHT));
+            playerPanel.setPreferredSize(new Dimension(RIGHT_PANEL_WIDTH, HEIGHT));
+            repaint();
+        }
+    });
+
     private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     /**
@@ -189,58 +205,16 @@ public class GUIClient extends JFrame {
         getContentPane().addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-//                if (resizingTimer.isRunning()){
-//                    if (WindowUtilities.getWidth() >= 1008 && WindowUtilities.getHeight() >= 706) {
-//                        super.componentResized(e);
-//                        WindowUtilities.setWidth(e.getComponent().getWidth());
-//                        WindowUtilities.setHeight(e.getComponent().getHeight());
-//                    } else {
-//                        resizingTimer.stop();
-//                        super.componentResized(e);
-//                        stopResizing(false);
-//                        WindowUtilities.setWidth(e.getComponent().getWidth());
-//                        WindowUtilities.setHeight(e.getComponent().getHeight());
-//                        BoardCanvas.refreshScreen();
-//                        LEFT_PANEL_WIDTH = e.getComponent().getWidth() / 2;
-//                        RIGHT_PANEL_WIDTH = e.getComponent().getWidth() / 2;
-//                        HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
-//                        boardPanel.setPreferredSize(new Dimension(LEFT_PANEL_WIDTH, HEIGHT));
-//                        playerPanel.setPreferredSize(new Dimension(RIGHT_PANEL_WIDTH, HEIGHT));
-//                        repaint();
-//                    }
-//                } else {
-//                    if (WindowUtilities.getWidth() >= 1008 && WindowUtilities.getHeight() >= 706) {
-//                        resizingTimer.restart();
-//                    }
-//                }
-//                if (!resizingTimer.isRunning()){
-//                    super.componentResized(e);
-//                    WindowUtilities.setWidth(e.getComponent().getWidth());
-//                    WindowUtilities.setHeight(e.getComponent().getHeight());
-//                    WindowUtilities.setWidth(e.getComponent().getWidth());
-//                    WindowUtilities.setHeight(e.getComponent().getHeight());
-//                    BoardCanvas.refreshScreen();
-//                    LEFT_PANEL_WIDTH = e.getComponent().getWidth() / 2;
-//                    RIGHT_PANEL_WIDTH = e.getComponent().getWidth() / 2;
-//                    HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
-//                    boardPanel.setPreferredSize(new Dimension(LEFT_PANEL_WIDTH, HEIGHT));
-//                    playerPanel.setPreferredSize(new Dimension(RIGHT_PANEL_WIDTH, HEIGHT));
-//                    repaint();
-//                }
+
+                if (!resizingTimer.isRunning()){
+                    System.out.println("resizing...........");
+                    resizingTimer.restart();
+                    resizingTimer.setRepeats(false);
+                }
 
                 super.componentResized(e);
                 WindowUtilities.setWidth(e.getComponent().getWidth());
                 WindowUtilities.setHeight(e.getComponent().getHeight());
-                WindowUtilities.setWidth(e.getComponent().getWidth());
-                WindowUtilities.setHeight(e.getComponent().getHeight());
-                BoardCanvas.refreshScreen();
-                LEFT_PANEL_WIDTH = e.getComponent().getWidth() / 2;
-                RIGHT_PANEL_WIDTH = e.getComponent().getWidth() / 2;
-                HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
-                boardPanel.setPreferredSize(new Dimension(LEFT_PANEL_WIDTH, HEIGHT));
-                playerPanel.setPreferredSize(new Dimension(RIGHT_PANEL_WIDTH, HEIGHT));
-                repaint();
-
             }
         });
 
