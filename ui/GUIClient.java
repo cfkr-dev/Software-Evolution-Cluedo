@@ -68,10 +68,13 @@ public class GUIClient extends JFrame {
     public static int LEFT_PANEL_WIDTH;
 
     /**
-     * the width of game board (right panel)
+     *Tthe width of game board (right panel)
      */
     public static int RIGHT_PANEL_WIDTH;
 
+    /**
+     * The main features of the game
+     */
     private final Configs configurations = Configs.getConfiguration();
 
     // ============= models ===================
@@ -143,10 +146,16 @@ public class GUIClient extends JFrame {
                 "Setup Wizard");
     }
 
+    /**
+     * Get the game's solution cards
+     */
     public Suggestion getSolution() {
         return game.getSolution();
     }
 
+    /**
+     * Displays the game solution on screen
+     */
     public void displaySolution() {
         new SolutionDialog(this, SwingUtilities.windowForComponent(this), "Game solution");
     }
@@ -187,47 +196,10 @@ public class GUIClient extends JFrame {
     public void startGame() {
 
         getContentPane().addComponentListener(new ComponentAdapter() {
+
+            // the game's pannel elements is resized
             @Override
             public void componentResized(ComponentEvent e) {
-//                if (resizingTimer.isRunning()){
-//                    if (WindowUtilities.getWidth() >= 1008 && WindowUtilities.getHeight() >= 706) {
-//                        super.componentResized(e);
-//                        WindowUtilities.setWidth(e.getComponent().getWidth());
-//                        WindowUtilities.setHeight(e.getComponent().getHeight());
-//                    } else {
-//                        resizingTimer.stop();
-//                        super.componentResized(e);
-//                        stopResizing(false);
-//                        WindowUtilities.setWidth(e.getComponent().getWidth());
-//                        WindowUtilities.setHeight(e.getComponent().getHeight());
-//                        BoardCanvas.refreshScreen();
-//                        LEFT_PANEL_WIDTH = e.getComponent().getWidth() / 2;
-//                        RIGHT_PANEL_WIDTH = e.getComponent().getWidth() / 2;
-//                        HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
-//                        boardPanel.setPreferredSize(new Dimension(LEFT_PANEL_WIDTH, HEIGHT));
-//                        playerPanel.setPreferredSize(new Dimension(RIGHT_PANEL_WIDTH, HEIGHT));
-//                        repaint();
-//                    }
-//                } else {
-//                    if (WindowUtilities.getWidth() >= 1008 && WindowUtilities.getHeight() >= 706) {
-//                        resizingTimer.restart();
-//                    }
-//                }
-//                if (!resizingTimer.isRunning()){
-//                    super.componentResized(e);
-//                    WindowUtilities.setWidth(e.getComponent().getWidth());
-//                    WindowUtilities.setHeight(e.getComponent().getHeight());
-//                    WindowUtilities.setWidth(e.getComponent().getWidth());
-//                    WindowUtilities.setHeight(e.getComponent().getHeight());
-//                    BoardCanvas.refreshScreen();
-//                    LEFT_PANEL_WIDTH = e.getComponent().getWidth() / 2;
-//                    RIGHT_PANEL_WIDTH = e.getComponent().getWidth() / 2;
-//                    HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
-//                    boardPanel.setPreferredSize(new Dimension(LEFT_PANEL_WIDTH, HEIGHT));
-//                    playerPanel.setPreferredSize(new Dimension(RIGHT_PANEL_WIDTH, HEIGHT));
-//                    repaint();
-//                }
-
                 super.componentResized(e);
                 WindowUtilities.setWidth(e.getComponent().getWidth());
                 WindowUtilities.setHeight(e.getComponent().getHeight());
@@ -294,10 +266,6 @@ public class GUIClient extends JFrame {
 
     }
 
-    private void stopResizing(boolean b) {
-        this.setResizable(b);
-    }
-
     /**
      * This method updates game board and player panel display according to the model
      * (game).
@@ -333,6 +301,10 @@ public class GUIClient extends JFrame {
         }
     }
 
+
+    /**
+     * Pop up a Game Records dialog.
+     */
     public void openGameRecords() {
         new GameRecordDialog(this, SwingUtilities.windowForComponent(this), "Game Records");
     }
@@ -371,6 +343,9 @@ public class GUIClient extends JFrame {
 
     }
 
+    /**
+     * Pop up a player to change pannel resolution.
+     */
     public void openChangeResolution() {
         new ChangeResolutionDialog(this, SwingUtilities.windowForComponent(this), "Change Resolution");
     }
@@ -465,6 +440,9 @@ public class GUIClient extends JFrame {
         }
     }
 
+    /**
+     * Pop up a dialog for player to notify that it's out of the game.
+     */
     private void kickPlayer() {
         game.kickPlayerOut(getCurrentPlayer());
         JOptionPane.showMessageDialog(window,
@@ -523,10 +501,16 @@ public class GUIClient extends JFrame {
         weaponTokens[weapon.ordinal()].setRoomTile(roomTile);
     }
 
+    /**
+     * Get the current game
+     */
     public Game getGame() {
         return game;
     }
 
+    /**
+     * Get the player's salary
+     */
     public void extractSalaryPlayer(int tax) {
         game.extractSalaryPlayer(game.getCurrentPlayer(), tax);
     }
@@ -842,12 +826,11 @@ public class GUIClient extends JFrame {
         }
     }
 
+    /**
+     * The new pannel resolution is resized
+     */
     public void changeResolution(Dimension dimension) {
         this.setSize(dimension);
-    }
-
-    public void setScreenSize(Dimension dimension) {
-        screenSize = dimension;
     }
 
     /**
