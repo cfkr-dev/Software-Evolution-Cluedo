@@ -558,7 +558,7 @@ public class TextClient {
         Set<Card> getSuspiciousCards = game.getKnownCards();
 
         Set<Card> cardsWellSuggested = game.getCardsWellSuggested();
-        //Suggestion suggestion=
+
         getSuspiciousCards.addAll(cardsWellSuggested);
 
         for (int i = 0; i < Character.getNumberOfCharacters(); i++) {

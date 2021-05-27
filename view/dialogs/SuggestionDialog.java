@@ -8,19 +8,29 @@ import java.awt.Graphics;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.TitledBorder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
+
+import game.Game;
+import game.Suggestion;
 import item.card.Card;
 import item.card.Character;
 import item.card.Location;
 import item.card.Weapon;
-import game.Game;
-import game.Suggestion;
 import tile.Position;
 import tile.Room;
 import ui.GUIClient;
@@ -28,7 +38,7 @@ import view.PlayerPanelCanvas;
 
 /**
  * This class is a custom dialog for players to make a suggestion or accusation.
- * 
+ *
  * @author G7EAS
  *
  */
@@ -70,12 +80,20 @@ public class SuggestionDialog extends JDialog {
      */
     private Location location;
 
+    /**
+     * You can get the cards which are not involved in the murder with this variable
+     */
     private final Game game;
+
+    /**
+     * Card name used for specify what kind of card can be highlighted if it's a suspicious one
+     */
+    private String name;
 
     /**
      * Construct a dialog, let players choose character, weapon, location respectively,
      * and make the suggestion/accusation.
-     * 
+     *
      * @param parent
      *            --- the Main GUI of this game
      * @param windowForComponent
@@ -112,7 +130,7 @@ public class SuggestionDialog extends JDialog {
 
     /**
      * This method build the first panel of the CardLayout, for choosing a character.
-     * 
+     *
      * @param mainPanel
      *            --- the parent Panel with CardLayout
      */
@@ -206,7 +224,7 @@ public class SuggestionDialog extends JDialog {
 
 
 
-        String name= "character";
+        name= "character";
         suspiciousHighlighted(rButtonList, name);
 
         // confirm button's listener
@@ -248,7 +266,7 @@ public class SuggestionDialog extends JDialog {
 
     /**
      * This method build the second panel of the CardLayout, for choosing a weapon.
-     * 
+     *
      * @param mainPanel
      *            --- the parent Panel with CardLayout
      */
@@ -338,8 +356,7 @@ public class SuggestionDialog extends JDialog {
         textPane.add(text);
 
 
-        String name= "weapon";
-
+        name= "weapon";
         suspiciousHighlighted(rButtonList, name);
 
 
@@ -377,19 +394,9 @@ public class SuggestionDialog extends JDialog {
         mainPanel.add(weaponPanel);
     }
 
-    private void legendHighlights(JPanel radioButtonsPanel) {
-        JLabel infoHighlights = new JLabel("*Highlighted options are the known cards by user ");
-        JPanel infoText = new JPanel();
-        infoText.setAlignmentX(LEFT_ALIGNMENT);
-        infoText.add(infoHighlights);
-
-        radioButtonsPanel.add(Box.createRigidArea(new Dimension(5, 5)));
-        radioButtonsPanel.add(infoText);
-    }
-
     /**
      * This method build the third panel of the CardLayout, for choosing a location.
-     * 
+     *
      * @param mainPanel
      *            --- the parent Panel with CardLayout
      */
@@ -499,8 +506,7 @@ public class SuggestionDialog extends JDialog {
         textPane.add(text);
 
 
-        String name= "location";
-
+        name= "location";
         suspiciousHighlighted(rButtonList, name);
 
         // confirm button's listener
@@ -549,8 +555,12 @@ public class SuggestionDialog extends JDialog {
         mainPanel.add(locationPanel);
     }
 
+    /**
+     * This method highlights the card's button when it is still suspicious
+     */
     private void suspiciousHighlighted(List<JRadioButton> buttonList, String name){
 
+        // it's got the cards
         Set<Card> getSuspiciousCards = game.getKnownCards();
         Set<Card> cardsWellSuggested = game.getCardsWellSuggested();
 
@@ -582,6 +592,20 @@ public class SuggestionDialog extends JDialog {
             }
         }
 
+    }
+
+
+    /**
+     * This method build the gap where highlights info are described
+     */
+    private void legendHighlights(JPanel radioButtonsPanel) {
+        JLabel infoHighlights = new JLabel("*Highlighted options are the known cards by user ");
+        JPanel infoText = new JPanel();
+        infoText.setAlignmentX(LEFT_ALIGNMENT);
+        infoText.add(infoHighlights);
+
+        radioButtonsPanel.add(Box.createRigidArea(new Dimension(5, 5)));
+        radioButtonsPanel.add(infoText);
     }
 
 }
