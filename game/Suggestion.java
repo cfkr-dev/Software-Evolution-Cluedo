@@ -21,15 +21,17 @@ public class Suggestion implements Serializable {
     /**
      * The character involved in this suggestion / accusation
      */
-    public final Character character;
+    private final Character character;
+
     /**
      * The weapon involved in this suggestion / accusation
      */
-    public final Weapon weapon;
+    private final Weapon weapon;
+
     /**
      * The location involved in this suggestion / accusation
      */
-    public final Location location;
+    private final Location location;
 
     /**
      * Construct a suggestion with one Character, one Location, and one Weapon.
@@ -89,5 +91,17 @@ public class Suggestion implements Serializable {
                 ", weapon : " + weapon +
                 ", location : " + location +
                 ']';
+    }
+
+    public Character getCharacter() {
+        return character;
+    }
+
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+    public Location getLocation() {
+        return location;
     }
 }

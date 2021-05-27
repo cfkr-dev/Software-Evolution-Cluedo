@@ -310,8 +310,8 @@ public class Game {
      *            --- the suggestion
      */
     public void moveTokensInvolvedInSuggestion(Suggestion suggestion) {
-        moveWeapon(suggestion.weapon, board.getAvailableRoomTile(suggestion.location));
-        movePlayer(suggestion.character, configurations.getRoom(suggestion.location.ordinal()));
+        moveWeapon(suggestion.getWeapon(), board.getAvailableRoomTile(suggestion.getLocation()));
+        movePlayer(suggestion.getCharacter(), configurations.getRoom(suggestion.getLocation().ordinal()));
     }
 
     /**

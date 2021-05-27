@@ -191,11 +191,11 @@ public class GameRecordDialog extends JDialog {
 
                     solutionCardsLabel.setText("Solution cards");
 
-                    characterImgLabel.setIcon(PlayerPanelCanvas.CHARACTER_IMG[selectedValue.getSolution().character.ordinal()]);
+                    characterImgLabel.setIcon(PlayerPanelCanvas.CHARACTER_IMG[selectedValue.getSolution().getCharacter().ordinal()]);
                     characterImgLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-                    weaponImgLabel.setIcon(PlayerPanelCanvas.WEAPON_IMG[selectedValue.getSolution().weapon.ordinal()]);
+                    weaponImgLabel.setIcon(PlayerPanelCanvas.WEAPON_IMG[selectedValue.getSolution().getWeapon().ordinal()]);
                     weaponImgLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-                    locationImgLabel.setIcon(PlayerPanelCanvas.LOCATION_IMG[selectedValue.getSolution().location.ordinal()]);
+                    locationImgLabel.setIcon(PlayerPanelCanvas.LOCATION_IMG[selectedValue.getSolution().getLocation().ordinal()]);
                     locationImgLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
                     playerCardsLabel.setText("Player cards");

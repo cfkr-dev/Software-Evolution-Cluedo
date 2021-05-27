@@ -383,8 +383,8 @@ public class GUIClient extends JFrame {
      */
     public void makeSuggestion(Suggestion sug) {
         // move the involved character and weapon into the involved location
-        movePlayer(sug.character, configurations.getRoom(sug.location.ordinal()));
-        moveWeapon(sug.weapon, getAvailableRoomTile(sug.location));
+        movePlayer(sug.getCharacter(), configurations.getRoom(sug.getLocation().ordinal()));
+        moveWeapon(sug.getWeapon(), getAvailableRoomTile(sug.getLocation()));
 
         // let's see how others refute it
         String s = game.refuteSuggestion(sug);
@@ -421,8 +421,8 @@ public class GUIClient extends JFrame {
      */
     public void makeAccusation(Suggestion accusation) {
         // move the involved character and weapon into the involved location
-        movePlayer(accusation.character, configurations.getRoom(accusation.location.ordinal()));
-        moveWeapon(accusation.weapon, getAvailableRoomTile(accusation.location));
+        movePlayer(accusation.getCharacter(), configurations.getRoom(accusation.getLocation().ordinal()));
+        moveWeapon(accusation.getWeapon(), getAvailableRoomTile(accusation.getLocation()));
 
         // let's see if the accusation is right or wrong
         boolean isCorrect = game.checkAccusation(accusation);

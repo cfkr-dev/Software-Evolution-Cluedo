@@ -24,11 +24,11 @@ public class SolutionDialog extends JDialog implements WindowListener, Component
         this.addWindowListener(this);
         solution = guiClient.getSolution();
         character = new JLabel();
-        character.setIcon(PlayerPanelCanvas.CHARACTER_IMG[solution.character.ordinal()]);
+        character.setIcon(PlayerPanelCanvas.CHARACTER_IMG[solution.getCharacter().ordinal()]);
         weapon = new JLabel();
-        weapon.setIcon(PlayerPanelCanvas.WEAPON_IMG[solution.weapon.ordinal()]);
+        weapon.setIcon(PlayerPanelCanvas.WEAPON_IMG[solution.getWeapon().ordinal()]);
         location = new JLabel();
-        location.setIcon(PlayerPanelCanvas.LOCATION_IMG[solution.location.ordinal()]);
+        location.setIcon(PlayerPanelCanvas.LOCATION_IMG[solution.getLocation().ordinal()]);
         JPanel mainPanel = new JPanel();
         JPanel buttonPanel = new JPanel(new FlowLayout());
         JButton playAgain = new JButton("Return");
@@ -100,14 +100,14 @@ public class SolutionDialog extends JDialog implements WindowListener, Component
         WindowUtilities.setWidth(this.getWidth());
         WindowUtilities.setHeight(this.getHeight());
 
-        PlayerPanelCanvas.CHARACTER_IMG[solution.character.ordinal()] = WindowUtilities.resizeImage(PlayerPanelCanvas.CHARACTER_IMG[solution.character.ordinal()]);
-        character.setIcon(PlayerPanelCanvas.CHARACTER_IMG[solution.character.ordinal()]);
+        PlayerPanelCanvas.CHARACTER_IMG[solution.getCharacter().ordinal()] = WindowUtilities.resizeImage(PlayerPanelCanvas.CHARACTER_IMG[solution.getCharacter().ordinal()]);
+        character.setIcon(PlayerPanelCanvas.CHARACTER_IMG[solution.getCharacter().ordinal()]);
 
-        PlayerPanelCanvas.WEAPON_IMG[solution.weapon.ordinal()] = WindowUtilities.resizeImage(PlayerPanelCanvas.WEAPON_IMG[solution.weapon.ordinal()]);
-        weapon.setIcon(PlayerPanelCanvas.WEAPON_IMG[solution.weapon.ordinal()]);
+        PlayerPanelCanvas.WEAPON_IMG[solution.getWeapon().ordinal()] = WindowUtilities.resizeImage(PlayerPanelCanvas.WEAPON_IMG[solution.getWeapon().ordinal()]);
+        weapon.setIcon(PlayerPanelCanvas.WEAPON_IMG[solution.getWeapon().ordinal()]);
 
-        PlayerPanelCanvas.LOCATION_IMG[solution.location.ordinal()] = WindowUtilities.resizeImage(PlayerPanelCanvas.LOCATION_IMG[solution.location.ordinal()]);
-        location.setIcon(PlayerPanelCanvas.LOCATION_IMG[solution.location.ordinal()]);
+        PlayerPanelCanvas.LOCATION_IMG[solution.getLocation().ordinal()] = WindowUtilities.resizeImage(PlayerPanelCanvas.LOCATION_IMG[solution.getLocation().ordinal()]);
+        location.setIcon(PlayerPanelCanvas.LOCATION_IMG[solution.getLocation().ordinal()]);
 
         repaint();
 
