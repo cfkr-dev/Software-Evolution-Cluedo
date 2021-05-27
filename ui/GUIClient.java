@@ -145,6 +145,8 @@ public class GUIClient extends JFrame {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
+                WindowUtilities.setFullWidth(GUIClient.super.getWidth());
+                WindowUtilities.setFullHeight(GUIClient.super.getHeight());
                 WindowUtilities.setWidth(e.getComponent().getWidth());
                 WindowUtilities.setHeight(e.getComponent().getHeight());
             }
@@ -240,6 +242,8 @@ public class GUIClient extends JFrame {
                 super.componentResized(e);
                 WindowUtilities.setWidth(e.getComponent().getWidth());
                 WindowUtilities.setHeight(e.getComponent().getHeight());
+                WindowUtilities.setFullWidth(GUIClient.super.getWidth());
+                WindowUtilities.setFullHeight(GUIClient.super.getHeight());
                 if (WindowUtilities.getWidth() <= 0){
                     WindowUtilities.setWidth(1);
                 }

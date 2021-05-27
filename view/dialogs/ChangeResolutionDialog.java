@@ -1,5 +1,6 @@
 package view.dialogs;
 
+import configs.WindowUtilities;
 import ui.GUIClient;
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +17,12 @@ public class ChangeResolutionDialog extends JDialog {
         @Override
         public Component getListCellRendererComponent(JList<? extends Dimension> list, Dimension dimension, int index, boolean isSelected, boolean cellHasFocus) {
 
-            String element = dimension.width + "×" + dimension.height;
+            String element;
+            if (dimension.width == WindowUtilities.getFullWidth() && dimension.height == WindowUtilities.getFullHeight()){
+                element = dimension.width + "×" + dimension.height + " (Current)";
+            } else {
+                element = dimension.width + "×" + dimension.height;
+            }
             setText(element);
 
             if (isSelected) {
@@ -50,14 +56,13 @@ public class ChangeResolutionDialog extends JDialog {
         resolutionsComboBox = new JComboBox<>();
         initializeResolutions();
         resolutionsComboBox.setModel(dimenstionListModel);
-        resolutionsComboBox.setSelectedItem(screenSize);
+        resolutionsComboBox.setSelectedItem(new Dimension(WindowUtilities.getFullWidth(), WindowUtilities.getFullHeight()));
         resolutionsComboBox.setRenderer(new CustomComboBoxRenderer());
 
         applyButton = new JButton();
         applyButton.setText("Apply");
         applyButton.addActionListener(e -> {
             parent.changeResolution((Dimension) resolutionsComboBox.getSelectedItem());
-            //parent.setScreenSize((Dimension) resolutionsComboBox.getSelectedItem());
         });
 
         okButton = new JButton();
@@ -83,6 +88,10 @@ public class ChangeResolutionDialog extends JDialog {
         ArrayList<Dimension> sortingList = new ArrayList<>();
 
         sortingList.add(screenSize);
+        Dimension currectSize = new Dimension(WindowUtilities.getFullWidth(), WindowUtilities.getFullHeight());
+        if (!sortingList.contains(currectSize)) {
+            sortingList.add(currectSize);
+        }
 
         for (String resolution : RESOLUTIONS) {
             int resolutionX = Integer.parseInt(resolution.substring(0, resolution.indexOf('×')));
