@@ -43,10 +43,10 @@ public class GUIClient extends JFrame {
     private Timer resizingTimer = new Timer(500, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (WindowUtilities.getWidth() < 1008 || WindowUtilities.getHeight() < 640 ){
-                resetDimension(new Dimension(1024,640));
-                window.setSize(new Dimension(1024,640));
-                allowResizing();
+            if (WindowUtilities.getWidth() < 1008 || WindowUtilities.getHeight() < 658 ){
+                resetDimension(new Dimension(1024,720));
+                window.setSize(new Dimension(1024,720));
+                JOptionPane.showMessageDialog(window,"You can't resize under 1024×720");
             }
             BoardCanvas.refreshScreen();
             playerPanel.refreshScreen();
@@ -240,9 +240,6 @@ public class GUIClient extends JFrame {
                 super.componentResized(e);
                 WindowUtilities.setWidth(e.getComponent().getWidth());
                 WindowUtilities.setHeight(e.getComponent().getHeight());
-                if (e.getComponent().getWidth() < 1008 || e.getComponent().getHeight() < 640 ){
-//                    stopResizing();
-                }
                 if (WindowUtilities.getWidth() <= 0){
                     WindowUtilities.setWidth(1);
                 }

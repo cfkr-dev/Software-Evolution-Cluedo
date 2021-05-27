@@ -31,7 +31,7 @@ public class ChangeResolutionDialog extends JDialog {
         }
     }
 
-    private final String[] RESOLUTIONS = {"1024×768", "1280×720", "1920×1080", "1366×768"};
+    private final String[] RESOLUTIONS = {"1024×768", "1024×720", "1280×720", "1920×1080", "1366×768"};
     private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private DefaultComboBoxModel<Dimension> dimenstionListModel = new DefaultComboBoxModel<>();
     private JComboBox<Dimension> resolutionsComboBox;
