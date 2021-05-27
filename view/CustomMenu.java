@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.net.URI;
 import javax.swing.*;
@@ -9,9 +11,8 @@ import ui.GUIClient;
 
 /**
  * This class is a custom menu for the main Frame in Cluedo GUI.
- * 
- * @author G7EAS
  *
+ * @author G7EAS
  */
 
 public class CustomMenu extends JMenuBar {
@@ -19,8 +20,8 @@ public class CustomMenu extends JMenuBar {
     /**
      * An array holding all Strings to make the menu
      */
-    private static final String[] MENU_STRINGS = { "Menu", "New Game", "Game Records","Easy Mode",
-            "Help", "Cluedo Manual", "Change Resolution", "Exit" };
+    private static final String[] MENU_STRINGS = {"Menu", "New Game", "Game Records", "Easy Mode",
+            "Help", "Cluedo Manual", "Change Resolution", "Exit"};
 
     /**
      * A URL address to open a Cluedo manual
@@ -34,9 +35,8 @@ public class CustomMenu extends JMenuBar {
 
     /**
      * Construct a Menu for Cluedo game
-     * 
-     * @param parent
-     *            --- the Main GUI of this game
+     *
+     * @param parent --- the Main GUI of this game
      */
     public CustomMenu(GUIClient parent) {
 
@@ -66,9 +66,11 @@ public class CustomMenu extends JMenuBar {
         // a checkbox menu to enable easy mode
         easyMode = new JCheckBoxMenuItem(MENU_STRINGS[i++]);
         easyMode.setEnabled(false);
-        easyMode.addChangeListener(e -> {
-            parent.setEasyMode(((JCheckBoxMenuItem) e.getSource()).isSelected());
-            parent.update();
+        easyMode.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                parent.setEasyMode(((JCheckBoxMenuItem) e.getSource()).isSelected());
+            }
         });
 
         // a Pop up help dialog

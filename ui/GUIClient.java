@@ -6,29 +6,14 @@ import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.ActionMap;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.InputMap;
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -58,7 +43,15 @@ import view.token.WeaponToken;
 
 public class GUIClient extends JFrame {
 
-    public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+//    private Timer resizingTimer = new Timer(2000, new ActionListener() {
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
+//
+//        }
+//    });
+
+    private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     /**
      * the main window
@@ -158,11 +151,11 @@ public class GUIClient extends JFrame {
                 "Setup Wizard");
     }
 
-    public Suggestion getSolution(){
+    public Suggestion getSolution() {
         return game.getSolution();
     }
 
-    public void displaySolution(){
+    public void displaySolution() {
         new SolutionDialog(this, SwingUtilities.windowForComponent(this), "Game solution");
     }
 
@@ -204,16 +197,58 @@ public class GUIClient extends JFrame {
         getContentPane().addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
+//                if (resizingTimer.isRunning()){
+//                    if (WindowUtilities.getWidth() >= 1008 && WindowUtilities.getHeight() >= 706) {
+//                        super.componentResized(e);
+//                        WindowUtilities.setWidth(e.getComponent().getWidth());
+//                        WindowUtilities.setHeight(e.getComponent().getHeight());
+//                    } else {
+//                        resizingTimer.stop();
+//                        super.componentResized(e);
+//                        stopResizing(false);
+//                        WindowUtilities.setWidth(e.getComponent().getWidth());
+//                        WindowUtilities.setHeight(e.getComponent().getHeight());
+//                        BoardCanvas.refreshScreen();
+//                        LEFT_PANEL_WIDTH = e.getComponent().getWidth() / 2;
+//                        RIGHT_PANEL_WIDTH = e.getComponent().getWidth() / 2;
+//                        HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
+//                        boardPanel.setPreferredSize(new Dimension(LEFT_PANEL_WIDTH, HEIGHT));
+//                        playerPanel.setPreferredSize(new Dimension(RIGHT_PANEL_WIDTH, HEIGHT));
+//                        repaint();
+//                    }
+//                } else {
+//                    if (WindowUtilities.getWidth() >= 1008 && WindowUtilities.getHeight() >= 706) {
+//                        resizingTimer.restart();
+//                    }
+//                }
+//                if (!resizingTimer.isRunning()){
+//                    super.componentResized(e);
+//                    WindowUtilities.setWidth(e.getComponent().getWidth());
+//                    WindowUtilities.setHeight(e.getComponent().getHeight());
+//                    WindowUtilities.setWidth(e.getComponent().getWidth());
+//                    WindowUtilities.setHeight(e.getComponent().getHeight());
+//                    BoardCanvas.refreshScreen();
+//                    LEFT_PANEL_WIDTH = e.getComponent().getWidth() / 2;
+//                    RIGHT_PANEL_WIDTH = e.getComponent().getWidth() / 2;
+//                    HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
+//                    boardPanel.setPreferredSize(new Dimension(LEFT_PANEL_WIDTH, HEIGHT));
+//                    playerPanel.setPreferredSize(new Dimension(RIGHT_PANEL_WIDTH, HEIGHT));
+//                    repaint();
+//                }
+
                 super.componentResized(e);
                 WindowUtilities.setWidth(e.getComponent().getWidth());
                 WindowUtilities.setHeight(e.getComponent().getHeight());
+                WindowUtilities.setWidth(e.getComponent().getWidth());
+                WindowUtilities.setHeight(e.getComponent().getHeight());
                 BoardCanvas.refreshScreen();
-                LEFT_PANEL_WIDTH = e.getComponent().getWidth()/2;
-                RIGHT_PANEL_WIDTH = e.getComponent().getWidth()/2;
+                LEFT_PANEL_WIDTH = e.getComponent().getWidth() / 2;
+                RIGHT_PANEL_WIDTH = e.getComponent().getWidth() / 2;
                 HEIGHT = BoardCanvas.BOARD_IMG_HEIGHT;
                 boardPanel.setPreferredSize(new Dimension(LEFT_PANEL_WIDTH, HEIGHT));
                 playerPanel.setPreferredSize(new Dimension(RIGHT_PANEL_WIDTH, HEIGHT));
                 repaint();
+
             }
         });
 
@@ -226,15 +261,15 @@ public class GUIClient extends JFrame {
         this.remove(window);
         window = new JPanel();
         window.setLayout(new BoxLayout(window, BoxLayout.X_AXIS));
-        double width = screenSize.getWidth();
-        double height = screenSize.getHeight();
-        window.setPreferredSize(screenSize);
-        WindowUtilities.setLastWidth((int) width);
+        double width = WindowUtilities.getWidth();
+        double height = WindowUtilities.getHeight();
+        window.setPreferredSize(new Dimension((int) width, (int) height));
+        WindowUtilities.setLastWidth(1508);
         WindowUtilities.setWidth((int) width);
-        WindowUtilities.setLastheight((int) height);
+        WindowUtilities.setLastheight(830);
         WindowUtilities.setHeight((int) height);
-        LEFT_PANEL_WIDTH = WindowUtilities.getWidth()/2;
-        RIGHT_PANEL_WIDTH = WindowUtilities.getWidth()/2;
+        LEFT_PANEL_WIDTH = WindowUtilities.getWidth() / 2;
+        RIGHT_PANEL_WIDTH = WindowUtilities.getWidth() / 2;
 
 
         // now make the left panel, which is game board
@@ -269,11 +304,15 @@ public class GUIClient extends JFrame {
 
     }
 
+    private void stopResizing(boolean b) {
+        this.setResizable(b);
+    }
+
     /**
      * This method updates game board and player panel display according to the model
      * (game).
      */
-    public void update(){
+    public void update() {
         if (game.isGameRunning()) {
             boardPanel.update();
             playerPanel.update();
@@ -281,8 +320,8 @@ public class GUIClient extends JFrame {
 
             // The game in finished, so will display the option panel to start new game, see solution or exit
             configurations.getRecords().add(new GameRecord(game.getSolution(), game.getPlayerByCharacter(game.getWinner()).getName(), game.getPlayerByCharacter(game.getCurrentPlayer()).getCards()));
-          
-            String[] options = new String[] {"Okay", "Show solution", "Exit"};
+
+            String[] options = new String[]{"Okay", "Show solution", "Exit"};
 
             int choice = JOptionPane.showOptionDialog(window, game.getWinner().toString()
                             + " are the only player left. Congratulations, "
@@ -294,11 +333,10 @@ public class GUIClient extends JFrame {
             if (choice == 0) {
                 // start a new game
                 setupNumPlayers();
-            } else if (choice == 1){
+            } else if (choice == 1) {
 
                 displaySolution();
-            }
-            else{
+            } else {
                 configurations.Serialize();
                 System.exit(0);
             }
@@ -415,7 +453,7 @@ public class GUIClient extends JFrame {
             }
 
         } else {
-            if (getPlayerByCharacter(getCurrentPlayer()).feasibleOperation(5)){
+            if (getPlayerByCharacter(getCurrentPlayer()).feasibleOperation(5)) {
                 int choice = JOptionPane.showConfirmDialog(window,
                         "Your accusation is wrong.\n"
                                 + getCurrentPlayer().toString() + " ("
@@ -431,13 +469,13 @@ public class GUIClient extends JFrame {
                 } else {
                     kickPlayer();
                 }
-            }else{
+            } else {
                 kickPlayer();
             }
         }
     }
 
-    private void kickPlayer(){
+    private void kickPlayer() {
         game.kickPlayerOut(getCurrentPlayer());
         JOptionPane.showMessageDialog(window,
                 "Your accusation is WRONG, you are out!", "Incorrect",
@@ -499,7 +537,7 @@ public class GUIClient extends JFrame {
         return game;
     }
 
-    public void extractSalaryPlayer(int tax){
+    public void extractSalaryPlayer(int tax) {
         game.extractSalaryPlayer(game.getCurrentPlayer(), tax);
     }
 
@@ -594,6 +632,7 @@ public class GUIClient extends JFrame {
      */
     public void setEasyMode(boolean isEasyMode) {
         game.setEasyMode(isEasyMode);
+        update();
     }
 
     /**
@@ -813,8 +852,12 @@ public class GUIClient extends JFrame {
         }
     }
 
-    public void changeResolution(Dimension dimension){
+    public void changeResolution(Dimension dimension) {
         this.setSize(dimension);
+    }
+
+    public void setScreenSize(Dimension dimension) {
+        this.screenSize = dimension;
     }
 
     /**

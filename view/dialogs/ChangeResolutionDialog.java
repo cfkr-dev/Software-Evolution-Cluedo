@@ -33,7 +33,7 @@ public class ChangeResolutionDialog extends JDialog {
         }
     }
 
-    private final String[] RESOLUTIONS = {"800×600", "1024×768", "1280×720", "1920×1080", "1366×768"};
+    private final String[] RESOLUTIONS = {"1024×768", "1280×720", "1920×1080", "1366×768"};
     private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private DefaultComboBoxModel<Dimension> dimenstionListModel = new DefaultComboBoxModel<>();
     private JComboBox<Dimension> resolutionsComboBox;
@@ -57,7 +57,10 @@ public class ChangeResolutionDialog extends JDialog {
 
         applyButton = new JButton();
         applyButton.setText("Apply");
-        applyButton.addActionListener(e -> parent.changeResolution((Dimension) resolutionsComboBox.getSelectedItem()));
+        applyButton.addActionListener(e -> {
+            parent.changeResolution((Dimension) resolutionsComboBox.getSelectedItem());
+            //parent.setScreenSize((Dimension) resolutionsComboBox.getSelectedItem());
+        });
 
         okButton = new JButton();
         okButton.setText("OK");
@@ -70,7 +73,7 @@ public class ChangeResolutionDialog extends JDialog {
         mainPanel.add(okButton);
 
         this.add(mainPanel);
-        this.setModal(false);
+        this.setModal(true);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setResizable(false);
         this.pack();
