@@ -43,7 +43,6 @@ public class GUIClient extends JFrame {
     private Timer resizingTimer = new Timer(500, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("end resizing........");
             BoardCanvas.refreshScreen();
             playerPanel.refreshScreen();
             playerPanel.resetImages();
@@ -207,7 +206,6 @@ public class GUIClient extends JFrame {
             public void componentResized(ComponentEvent e) {
 
                 if (!resizingTimer.isRunning()){
-                    System.out.println("resizing...........");
                     resizingTimer.restart();
                     resizingTimer.setRepeats(false);
                 }
