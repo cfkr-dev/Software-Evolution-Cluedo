@@ -5,10 +5,18 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import static ui.GUIClient.loadImage;
 
+/**
+ * This class is made for configure the status of the screen's resolution and allow resizing
+ *
+ * @author G7EAS
+ */
+
 public class WindowUtilities {
+
     private static int width;
-    private static int lastWidth;
     private static int height;
+    /* The two following parameters are used to calculate the proportion of the old and new resize */
+    private static int lastWidth;
     private static int lastheight;
 
     public static int getWidth() {
@@ -43,7 +51,13 @@ public class WindowUtilities {
         WindowUtilities.lastheight = lastheight;
     }
 
+    /**
+     *
+     * @param imageToResize The image to resize
+     * @return The ImageIcon with the new scales
+     */
     public static ImageIcon resizeImage(ImageIcon imageToResize){
+        /* Loads the image with its description */
         ImageIcon img = new ImageIcon(loadImage(imageToResize.getDescription()));
         BufferedImage bi = new BufferedImage(
                 img.getIconWidth(),
@@ -52,6 +66,7 @@ public class WindowUtilities {
         Graphics g = bi.createGraphics();
         img.paintIcon(null, g, 0,0);
         g.dispose();
+        /* Calculate the new measures dividing the new measure with the old one */
         Image dimg = bi.getScaledInstance((int) ((double) (img.getIconWidth()) * ((double) (WindowUtilities.getWidth()) / (double) (WindowUtilities.getLastWidth()))), (int) ((double) (img.getIconHeight()) * ((double) (WindowUtilities.getHeight()) / (double) (WindowUtilities.getLastheight()))),
                 Image.SCALE_SMOOTH);
         return new ImageIcon(dimg, imageToResize.getDescription());
