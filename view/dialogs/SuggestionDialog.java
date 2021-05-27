@@ -112,7 +112,7 @@ public class SuggestionDialog extends JDialog {
 
         JPanel mainPanel = new JPanel();
 
-        // we use item.card layout
+        // we use card layout
         mainPanel.setLayout(cardLayout);
         addCharacterPanel(mainPanel);
         addWeaponPanel(mainPanel);
@@ -153,7 +153,7 @@ public class SuggestionDialog extends JDialog {
                 super.paintComponent(g);
                 for (JRadioButton b : rButtonList) {
                     if (b.isSelected()) {
-                        // draw the selected item.card
+                        // draw the selected card
                         g.drawImage(
                                 PlayerPanelCanvas.CHARACTER_IMG[Integer
                                         .parseInt(b.getActionCommand())].getImage(),
@@ -205,7 +205,7 @@ public class SuggestionDialog extends JDialog {
         legendHighlights(radioButtonsPanel);
 
 
-        // the middle panel to hold radio buttons and item.card display
+        // the middle panel to hold radio buttons and card display
         JPanel midPanel = new JPanel();
         midPanel.setLayout(new BoxLayout(midPanel, BoxLayout.X_AXIS));
         midPanel.add(radioButtonsPanel);
@@ -340,7 +340,7 @@ public class SuggestionDialog extends JDialog {
 
         legendHighlights(radioButtonsPanel);
 
-        // the middle panel to hold radio buttons and item.card display
+        // the middle panel to hold radio buttons and card display
         JPanel midPanel = new JPanel();
         midPanel.setLayout(new BoxLayout(midPanel, BoxLayout.X_AXIS));
         midPanel.add(radioButtonsPanel);
@@ -490,7 +490,7 @@ public class SuggestionDialog extends JDialog {
             }
         }
 
-        // the middle panel to hold radio buttons and item.card display
+        // the middle panel to hold radio buttons and card display
         JPanel midPanel = new JPanel();
         midPanel.setLayout(new BoxLayout(midPanel, BoxLayout.X_AXIS));
         midPanel.add(radioButtonsPanel);
