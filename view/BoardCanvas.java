@@ -20,7 +20,7 @@ import tile.Room;
 import tile.RoomTile;
 import tile.Tile;
 import ui.GUIClient;
-import utilities.WindowUtilities;
+import configs.WindowUtilities;
 import view.token.AbstractToken;
 import view.token.CharacterToken;
 import view.token.WeaponToken;

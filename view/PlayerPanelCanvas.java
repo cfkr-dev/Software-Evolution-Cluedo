@@ -22,7 +22,7 @@ import item.card.Card;
 import item.card.Character;
 import item.card.Location;
 import item.card.Weapon;
-import utilities.WindowUtilities;
+import configs.WindowUtilities;
 import view.dialogs.ExitRoomDialog;
 import static ui.GUIClient.loadImage;
 

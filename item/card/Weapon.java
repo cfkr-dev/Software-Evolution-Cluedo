@@ -1,7 +1,7 @@
 package item.card;
 
 import game.GameError;
-import utilities.WindowUtilities;
+import configs.WindowUtilities;
 import view.PlayerPanelCanvas;
 import javax.swing.*;
 import java.io.Serializable;

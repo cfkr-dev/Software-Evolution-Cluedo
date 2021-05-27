@@ -24,7 +24,7 @@ import game.*;
 import tile.Position;
 import tile.Room;
 import tile.RoomTile;
-import utilities.WindowUtilities;
+import configs.WindowUtilities;
 import view.BoardCanvas;
 import view.CustomMenu;
 import view.PlayerPanelCanvas;

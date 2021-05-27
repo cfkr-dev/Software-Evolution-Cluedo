@@ -2,7 +2,7 @@ package view.dialogs;
 
 import game.Suggestion;
 import ui.GUIClient;
-import utilities.WindowUtilities;
+import configs.WindowUtilities;
 import view.PlayerPanelCanvas;
 import javax.swing.*;
 import java.awt.*;
