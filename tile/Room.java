@@ -2,7 +2,7 @@ package tile;
 
 import java.util.ArrayList;
 import java.util.List;
-import card.Location;
+import item.card.Location;
 import game.GameError;
 
 /**

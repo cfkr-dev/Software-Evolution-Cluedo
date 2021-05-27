@@ -1,7 +1,7 @@
 package game;
 
-import card.Character;
-import card.Location;
+import item.card.Character;
+import item.card.Location;
 import configs.Configs;
 import tile.*;
 import view.token.WeaponToken;

@@ -1,7 +1,7 @@
 package view.token;
 
 import javax.swing.ImageIcon;
-import card.Character;
+import item.card.Character;
 
 /**
  * This class represents a character token on board. It remembers where to draw tokens

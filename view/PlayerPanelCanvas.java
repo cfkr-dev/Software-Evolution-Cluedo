@@ -18,10 +18,10 @@ import tile.Entrance;
 import tile.Room;
 import tile.Tile;
 import ui.GUIClient;
-import card.Card;
-import card.Character;
-import card.Location;
-import card.Weapon;
+import item.card.Card;
+import item.card.Character;
+import item.card.Location;
+import item.card.Weapon;
 import utilities.WindowUtilities;
 import view.dialogs.ExitRoomDialog;
 import static ui.GUIClient.loadImage;
@@ -237,7 +237,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         // display remaining cards.
         remainingCards = gui.getRemainingCards();
         if (remainingCards.isEmpty()) {
-            remainingCardLabel.setToolTipText("There is no remaining card.");
+            remainingCardLabel.setToolTipText("There is no remaining item.card.");
         } else {
             remainingCardLabel.setToolTipText(
                     "There are " + remainingCards.size() + " remaining cards.");
@@ -1059,11 +1059,11 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
     /**
      * A helper method to create a JLabel object for displaying the cards.
      *
-     * @param cardImg --- the image used to display the card
-     * @param example --- a Character or a Weapon or a Location card, as example. This
-     *                argument is used to decide the type of this card, and look for
+     * @param cardImg --- the image used to display the item.card
+     * @param example --- a Character or a Weapon or a Location item.card, as example. This
+     *                argument is used to decide the type of this item.card, and look for
      *                appropriate image accordingly
-     * @return --- a JLabel object to represents the card
+     * @return --- a JLabel object to represents the item.card
      */
     private static JLabel[] createCardLabel(ImageIcon[] cardImg, Card example) {
         JLabel[] cards = new JLabel[cardImg.length];

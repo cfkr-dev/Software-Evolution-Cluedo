@@ -3,10 +3,10 @@ package game;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import card.Card;
-import card.Character;
-import card.Location;
-import card.Weapon;
+import item.card.Card;
+import item.card.Character;
+import item.card.Location;
+import item.card.Weapon;
 
 /**
  * This class represents a combination of one Character, one Location, and one Weapon.

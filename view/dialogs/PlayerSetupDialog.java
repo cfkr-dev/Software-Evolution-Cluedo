@@ -19,7 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import card.Character;
+import item.card.Character;
 import ui.GUIClient;
 import view.PlayerPanelCanvas;
 
@@ -123,7 +123,7 @@ public class PlayerSetupDialog extends JDialog {
             radioButtonsPanel.add(Box.createRigidArea(new Dimension(15, 15)));
         }
 
-        // the middle panel to hold radio buttons and card display
+        // the middle panel to hold radio buttons and item.card display
         JPanel midPanel = new JPanel();
         midPanel.setLayout(new BoxLayout(midPanel, BoxLayout.X_AXIS));
         midPanel.add(radioButtonsPanel);

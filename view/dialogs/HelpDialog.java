@@ -54,7 +54,7 @@ public class HelpDialog extends JDialog {
 
         JPanel mainPanel = new JPanel();
 
-        // we use card layout
+        // we use item.card layout
         mainPanel.setLayout(cardLayout);
 
         // add help images
@@ -73,7 +73,7 @@ public class HelpDialog extends JDialog {
     }
 
     /**
-     * This method adds an image into the CardLayout (as its card).
+     * This method adds an image into the CardLayout (as its item.card).
      * 
      * @param mainPanel
      *            --- the parent Panel with CardLayout

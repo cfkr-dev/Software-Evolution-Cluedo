@@ -1,8 +1,8 @@
 package game;
 
 import java.util.*;
-import card.Location;
-import card.Weapon;
+import item.card.Location;
+import item.card.Weapon;
 import configs.Configs;
 import tile.Entrance;
 import tile.Position;
@@ -11,8 +11,8 @@ import tile.RoomTile;
 import tile.Tile;
 import view.BoardCanvas;
 import view.token.WeaponToken;
-import card.Card;
-import card.Character;
+import item.card.Card;
+import item.card.Character;
 
 /**
  * This class represents a running Cluedo game.
@@ -62,7 +62,7 @@ public class Game {
     private final WeaponToken[] weaponTokens;
 
     /**
-     * this map keep a record of who knows what card (that is not involved in crime)
+     * this map keep a record of who knows what item.card (that is not involved in crime)
      */
     private final Map<Character, Set<Card>> knownCards;
 
@@ -165,7 +165,7 @@ public class Game {
         }
         // randomly choose one as the murderer
         Character solCharacter = characterCards.remove(RAN.nextInt(characterCards.size()));
-        // then put the rest character cards in the card pile
+        // then put the rest character cards in the item.card pile
         remainingCards.addAll(characterCards);
 
         // then let's get all Location cards
@@ -175,7 +175,7 @@ public class Game {
         }
         // randomly choose one as the crime scene
         Location solLocation = locationCards.remove(RAN.nextInt(locationCards.size()));
-        // then put the rest location cards in the card pile
+        // then put the rest location cards in the item.card pile
         remainingCards.addAll(locationCards);
 
         // then let's get all Weapon cards
@@ -185,7 +185,7 @@ public class Game {
         }
         // randomly choose one as the murder weapon
         Weapon solWeapon = weaponCards.remove(RAN.nextInt(weaponCards.size()));
-        // then put the rest location cards in the card pile
+        // then put the rest location cards in the item.card pile
         remainingCards.addAll(weaponCards);
 
         // now we have a solution
@@ -243,7 +243,7 @@ public class Game {
                 }
             }
 
-            // let each player know what card he has, and what card remains undealt
+            // let each player know what item.card he has, and what item.card remains undealt
             for (Player player : players) {
                 knownCards.get(player.getToken()).addAll(player.getCards());
                 knownCards.get(player.getToken()).addAll(remainingCards);
@@ -317,7 +317,7 @@ public class Game {
     /**
      * This method examines the given suggestion, let other players try to refute it, and
      * returns a String that represents other player's "voice" in turn, which is either
-     * he/she can refute this suggestion with one card, or he/she can't.
+     * he/she can refute this suggestion with one item.card, or he/she can't.
      * 
      * @param suggestion
      *            --- the suggestion
@@ -331,7 +331,7 @@ public class Game {
 
         StringBuilder rejectMsg = new StringBuilder();
         List<Card> cardsInSuggetion = suggestion.asList();
-        // shuffle so that it randomly reject the first refutable card
+        // shuffle so that it randomly reject the first refutable item.card
         Collections.shuffle(cardsInSuggetion);
 
         outer: for (Player p : players) {
@@ -339,11 +339,11 @@ public class Game {
             if (p.getToken() != currentPlayer && !p.getCards().isEmpty()) {
                 for (Card card : cardsInSuggetion) {
                     if (p.getCards().contains(card)) {
-                        rejectMsg.append(p.getToken().toString()).append(" rejects your suggestion with card: ").append(card.toString()).append("\n");
+                        rejectMsg.append(p.getToken().toString()).append(" rejects your suggestion with item.card: ").append(card.toString()).append("\n");
                         // update current player's known cards
                         knownCardsForCurrentPlayer.add(card);
                         cardsWellSuggested.put(Character.get(currentPlayer.ordinal()), knownCardsForCurrentPlayer);
-                        continue outer; // only refute one card
+                        continue outer; // only refute one item.card
 
                     }
                 }

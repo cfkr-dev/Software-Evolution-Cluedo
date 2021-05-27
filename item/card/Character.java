@@ -1,4 +1,4 @@
-package card;
+package item.card;
 
 import game.GameError;
 import utilities.WindowUtilities;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * This enum class represents a character card in Cluedo game. There are six characters,
+ * This enum class represents a character item.card in Cluedo game. There are six characters,
  * Miss Scarlet, Colonel Mustard, Mrs White, The Reverend Green, Mrs Peacock, and Professor Plum.
  * Each of them has a unique starting position on board.<br>
  *

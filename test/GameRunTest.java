@@ -6,9 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import card.Character;
-import card.Location;
-import card.Weapon;
+import item.card.Character;
+import item.card.Location;
+import item.card.Weapon;
 import configs.Configs;
 import game.Game;
 import game.Suggestion;

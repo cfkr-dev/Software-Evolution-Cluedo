@@ -1,9 +1,9 @@
 package view.dialogs;
 
-import card.Card;
-import card.Character;
-import card.Location;
-import card.Weapon;
+import item.card.Card;
+import item.card.Character;
+import item.card.Location;
+import item.card.Weapon;
 import configs.Configs;
 import game.GameRecord;
 import ui.GUIClient;

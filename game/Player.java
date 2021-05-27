@@ -2,9 +2,9 @@ package game;
 
 import java.util.ArrayList;
 import java.util.List;
-import card.Card;
-import card.Character;
-import card.Coin;
+import item.card.Card;
+import item.card.Character;
+import item.Coin;
 import tile.Position;
 
 /**
@@ -33,7 +33,7 @@ public class Player {
     private Position position;
 
     /**
-     * cards drawn by this player. dummy token won't have any card in it.
+     * cards drawn by this player. dummy token won't have any item.card in it.
      */
     private final List<Card> cards;
 
@@ -127,7 +127,7 @@ public class Player {
     }
 
     /**
-     * This method draws a card for this player.
+     * This method draws a item.card for this player.
      *
      */
     public void drawACard(Card card) {

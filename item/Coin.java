@@ -1,4 +1,4 @@
-package card;
+package item;
 
 /**
  * This class represents the salary in number of coins of one player in Cluedo game.

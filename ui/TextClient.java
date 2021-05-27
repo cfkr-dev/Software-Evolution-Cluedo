@@ -3,10 +3,10 @@ package ui;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
-import card.Card;
-import card.Character;
-import card.Location;
-import card.Weapon;
+import item.card.Card;
+import item.card.Character;
+import item.card.Location;
+import item.card.Weapon;
 import configs.Configs;
 import game.Game;
 import game.GameRecord;
@@ -35,7 +35,7 @@ public class TextClient {
     public static void main(String[] args) {
         // show some welcome message
         welcomeMsg();
-        // set up the game, dealing card, joining players, etc.
+        // set up the game, dealing item.card, joining players, etc.
         Game game = setupGame();
         // game running!
         runGame(game);
@@ -548,7 +548,7 @@ public class TextClient {
     }
 
     /**
-     * This method print out suspicious message, which every card is a possible solution
+     * This method print out suspicious message, which every item.card is a possible solution
      */
     private static void suspiciousMessage(Game game) {
         StringBuilder message = new StringBuilder("[Suspicious cards]\n");

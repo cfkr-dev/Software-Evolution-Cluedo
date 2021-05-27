@@ -1,4 +1,4 @@
-package card;
+package item.card;
 
 import game.GameError;
 import utilities.WindowUtilities;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * This enum class represents a Room card in Cluedo game. There are nine rooms,
+ * This enum class represents a Room item.card in Cluedo game. There are nine rooms,
  * Kitchen, Ball room, Conservatory, Billard Room, Library, Study, Hall, Lounge, and Dining Room.<br>
  *
  * Note that this class is also used to symbolically represent the Room position in game.

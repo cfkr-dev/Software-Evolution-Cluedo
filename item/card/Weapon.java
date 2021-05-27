@@ -1,4 +1,4 @@
-package card;
+package item.card;
 
 import game.GameError;
 import utilities.WindowUtilities;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * This enum class represents a Weapon card in Cluedo game. There are six weapons,
+ * This enum class represents a Weapon item.card in Cluedo game. There are six weapons,
  * Candlestick, Dagger, Lead Pipe, Revolver, Rope, and Spanner.<br>
  *
  * Note that this class is also used to symbolically represent the weapon token in game.

@@ -1,7 +1,7 @@
 package view.token;
 
 import javax.swing.ImageIcon;
-import card.Weapon;
+import item.card.Weapon;
 import tile.RoomTile;
 
 /**

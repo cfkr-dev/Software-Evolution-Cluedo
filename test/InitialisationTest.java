@@ -2,10 +2,10 @@ package test;
 
 import org.junit.*;
 
-import card.Card;
-import card.Character;
-import card.Location;
-import card.Weapon;
+import item.card.Card;
+import item.card.Character;
+import item.card.Location;
+import item.card.Weapon;
 import configs.Configs;
 import game.Game;
 import game.GameError;
@@ -159,7 +159,7 @@ public class InitialisationTest {
             for (Player p : players) {
                 for (Card c : game.getSolution().asList()) {
                     if (p.getCards().contains(c)) {
-                        fail("Player's hand should not have any card in solution");
+                        fail("Player's hand should not have any item.card in solution");
                     }
                 }
             }

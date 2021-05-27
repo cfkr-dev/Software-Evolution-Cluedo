@@ -18,7 +18,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import card.Location;
+import item.card.Location;
 import game.Player;
 import tile.Entrance;
 import ui.GUIClient;
@@ -140,7 +140,7 @@ public class ExitRoomDialog extends JDialog {
             }
         }
 
-        // the middle panel to hold radio buttons and card display
+        // the middle panel to hold radio buttons and item.card display
         JPanel midPanel = new JPanel();
         midPanel.setLayout(new BoxLayout(midPanel, BoxLayout.X_AXIS));
         midPanel.add(radioButtonsPanel);

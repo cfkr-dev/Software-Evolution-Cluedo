@@ -86,7 +86,7 @@ public abstract class AbstractToken extends JLabel {
     }
 
     /**
-     * Set the card (held by this token) is known or not to current player.
+     * Set the item.card (held by this token) is known or not to current player.
      * 
      * @param isKnown
      *            --- is it known?

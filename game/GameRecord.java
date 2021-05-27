@@ -1,6 +1,6 @@
 package game;
 
-import card.Card;
+import item.card.Card;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.List;
