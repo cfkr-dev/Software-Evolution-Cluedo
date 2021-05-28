@@ -49,6 +49,7 @@ public class ChangeResolutionDialog extends JDialog {
 
         // initialise the main panel, and set a vertical BoxLayout
         JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         mainPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         mainPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
@@ -59,6 +60,11 @@ public class ChangeResolutionDialog extends JDialog {
         resolutionsComboBox.setSelectedItem(new Dimension(WindowUtilities.getFullWidth(), WindowUtilities.getFullHeight()));
         resolutionsComboBox.setRenderer(new CustomComboBoxRenderer());
 
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+        buttonsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        buttonsPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
+
         applyButton = new JButton();
         applyButton.setText("Apply");
         applyButton.addActionListener(e -> {
@@ -67,13 +73,18 @@ public class ChangeResolutionDialog extends JDialog {
 
         okButton = new JButton();
         okButton.setText("OK");
-        okButton.addActionListener(e -> ChangeResolutionDialog.this.dispose());
+        okButton.addActionListener(e -> {
+            parent.changeResolution((Dimension) resolutionsComboBox.getSelectedItem());
+            ChangeResolutionDialog.this.dispose();
+        });
+
+        buttonsPanel.add(applyButton);
+        buttonsPanel.add(okButton);
 
         resolutionsComboBox.setPreferredSize(new Dimension(150, 50));
 
         mainPanel.add(resolutionsComboBox);
-        mainPanel.add(applyButton);
-        mainPanel.add(okButton);
+        mainPanel.add(buttonsPanel);
 
         this.add(mainPanel);
         this.setModal(true);
