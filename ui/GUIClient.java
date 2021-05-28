@@ -779,7 +779,7 @@ public class GUIClient extends JFrame {
         Action secPas = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                playerPanel.tryClickOnSecretOass();
+                playerPanel.tryClickOnSecretPass();
             }
         };
         inputMap.put(KeyStroke.getKeyStroke('e'), "secPas");

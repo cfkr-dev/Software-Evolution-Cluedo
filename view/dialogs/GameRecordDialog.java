@@ -1,9 +1,7 @@
 package view.dialogs;
 
 import item.card.Card;
-import item.card.Character;
-import item.card.Location;
-import item.card.Weapon;
+
 import configs.Configs;
 import game.GameRecord;
 import ui.GUIClient;
@@ -162,13 +160,7 @@ public class GameRecordDialog extends JDialog {
                     playerCardsLabel.setText("Player cards");
 
                     for (Card c : selectedValue.getCardsPlayer()) {
-                        if (c instanceof Character) {
-                            playerCardsPanel.add(new JLabel(PlayerPanelCanvas.CHARACTER_IMG[((Character) c).ordinal()]));
-                        } else if (c instanceof Weapon) {
-                            playerCardsPanel.add(new JLabel(PlayerPanelCanvas.WEAPON_IMG[((Weapon) c).ordinal()]));
-                        } else {
-                            playerCardsPanel.add(new JLabel(PlayerPanelCanvas.LOCATION_IMG[((Location) c).ordinal()]));
-                        }
+                        playerCardsPanel.add(c.addCard(c));
                     }
                 }
             });

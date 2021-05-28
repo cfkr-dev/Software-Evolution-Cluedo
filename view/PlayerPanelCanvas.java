@@ -1000,7 +1000,7 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
      * simply check whether secret passage button is enabled. If yes, then click on it, if
      * no, do nothing.
      */
-    public void tryClickOnSecretOass() {
+    public void tryClickOnSecretPass() {
         if (secPasButton.isEnabled()) {
             clickOnSecretPass();
         }
