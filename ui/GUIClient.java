@@ -1,10 +1,6 @@
 package ui;
 
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.net.URL;
@@ -15,6 +11,7 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+
 import item.card.Card;
 import item.card.Character;
 import item.card.Location;
@@ -43,6 +40,11 @@ public class GUIClient extends JFrame {
     private Timer resizingTimer = new Timer(500, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (WindowUtilities.getWidth() < 1008 || WindowUtilities.getHeight() < 658) {
+                resetDimension(new Dimension(1024, 720));
+                window.setSize(new Dimension(1024, 720));
+                JOptionPane.showOptionDialog(window, "You can't resize under 1024×720", "Alert on resizing", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+            }
             BoardCanvas.refreshScreen();
             playerPanel.refreshScreen();
             playerPanel.resetImages();
@@ -83,7 +85,7 @@ public class GUIClient extends JFrame {
     public static int LEFT_PANEL_WIDTH;
 
     /**
-     *Tthe width of game board (right panel)
+     * Tthe width of game board (right panel)
      */
     public static int RIGHT_PANEL_WIDTH;
 
@@ -140,6 +142,8 @@ public class GUIClient extends JFrame {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
+                WindowUtilities.setFullWidth(GUIClient.super.getWidth());
+                WindowUtilities.setFullHeight(GUIClient.super.getHeight());
                 WindowUtilities.setWidth(e.getComponent().getWidth());
                 WindowUtilities.setHeight(e.getComponent().getHeight());
             }
@@ -205,6 +209,11 @@ public class GUIClient extends JFrame {
         game.joinPlayer(playerChoice, name);
     }
 
+    public void resetDimension(Dimension dimension) {
+        this.setSize(dimension);
+        super.setSize(dimension);
+    }
+
     /**
      * This method construct the in-game GUI, and let the game begin.
      */
@@ -216,14 +225,21 @@ public class GUIClient extends JFrame {
             @Override
             public void componentResized(ComponentEvent e) {
 
-                if (!resizingTimer.isRunning()){
+                if (!resizingTimer.isRunning()) {
                     resizingTimer.restart();
                     resizingTimer.setRepeats(false);
                 }
-
                 super.componentResized(e);
                 WindowUtilities.setWidth(e.getComponent().getWidth());
                 WindowUtilities.setHeight(e.getComponent().getHeight());
+                WindowUtilities.setFullWidth(GUIClient.super.getWidth());
+                WindowUtilities.setFullHeight(GUIClient.super.getHeight());
+                if (WindowUtilities.getWidth() <= 0) {
+                    WindowUtilities.setWidth(1);
+                }
+                if (WindowUtilities.getHeight() <= 0) {
+                    WindowUtilities.setHeight(1);
+                }
             }
         });
 
@@ -274,7 +290,6 @@ public class GUIClient extends JFrame {
         this.validate();
         this.setResizable(true);
         this.setVisible(true);
-
     }
 
     /**

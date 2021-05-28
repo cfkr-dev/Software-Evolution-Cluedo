@@ -18,6 +18,24 @@ public class WindowUtilities {
     /* The two following parameters are used to calculate the proportion of the old and new resize */
     private static int lastWidth;
     private static int lastheight;
+    private static int fullWidth;
+    private static int fullHeight;
+
+    public static int getFullWidth() {
+        return fullWidth;
+    }
+
+    public static void setFullWidth(int fullWidth) {
+        WindowUtilities.fullWidth = fullWidth;
+    }
+
+    public static int getFullHeight() {
+        return fullHeight;
+    }
+
+    public static void setFullHeight(int fullHeight) {
+        WindowUtilities.fullHeight = fullHeight;
+    }
 
     public static int getWidth() {
         return width;

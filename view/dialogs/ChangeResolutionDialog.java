@@ -1,5 +1,6 @@
 package view.dialogs;
 
+import configs.WindowUtilities;
 import ui.GUIClient;
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +17,12 @@ public class ChangeResolutionDialog extends JDialog {
         @Override
         public Component getListCellRendererComponent(JList<? extends Dimension> list, Dimension dimension, int index, boolean isSelected, boolean cellHasFocus) {
 
-            String element = dimension.width + "×" + dimension.height;
+            String element;
+            if (dimension.width == WindowUtilities.getFullWidth() && dimension.height == WindowUtilities.getFullHeight()){
+                element = dimension.width + "×" + dimension.height + " (Current)";
+            } else {
+                element = dimension.width + "×" + dimension.height;
+            }
             setText(element);
 
             if (isSelected) {
@@ -31,7 +37,7 @@ public class ChangeResolutionDialog extends JDialog {
         }
     }
 
-    private final String[] RESOLUTIONS = {"1024×768", "1280×720", "1920×1080", "1366×768"};
+    private final String[] RESOLUTIONS = {"1024×768", "1024×720", "1280×720", "1920×1080", "1366×768"};
     private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private DefaultComboBoxModel<Dimension> dimenstionListModel = new DefaultComboBoxModel<>();
     private JComboBox<Dimension> resolutionsComboBox;
@@ -43,6 +49,7 @@ public class ChangeResolutionDialog extends JDialog {
 
         // initialise the main panel, and set a vertical BoxLayout
         JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         mainPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         mainPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
@@ -50,25 +57,34 @@ public class ChangeResolutionDialog extends JDialog {
         resolutionsComboBox = new JComboBox<>();
         initializeResolutions();
         resolutionsComboBox.setModel(dimenstionListModel);
-        resolutionsComboBox.setSelectedItem(screenSize);
+        resolutionsComboBox.setSelectedItem(new Dimension(WindowUtilities.getFullWidth(), WindowUtilities.getFullHeight()));
         resolutionsComboBox.setRenderer(new CustomComboBoxRenderer());
+
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+        buttonsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        buttonsPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
 
         applyButton = new JButton();
         applyButton.setText("Apply");
         applyButton.addActionListener(e -> {
             parent.changeResolution((Dimension) resolutionsComboBox.getSelectedItem());
-            //parent.setScreenSize((Dimension) resolutionsComboBox.getSelectedItem());
         });
 
         okButton = new JButton();
         okButton.setText("OK");
-        okButton.addActionListener(e -> ChangeResolutionDialog.this.dispose());
+        okButton.addActionListener(e -> {
+            parent.changeResolution((Dimension) resolutionsComboBox.getSelectedItem());
+            ChangeResolutionDialog.this.dispose();
+        });
+
+        buttonsPanel.add(applyButton);
+        buttonsPanel.add(okButton);
 
         resolutionsComboBox.setPreferredSize(new Dimension(150, 50));
 
         mainPanel.add(resolutionsComboBox);
-        mainPanel.add(applyButton);
-        mainPanel.add(okButton);
+        mainPanel.add(buttonsPanel);
 
         this.add(mainPanel);
         this.setModal(true);
@@ -83,6 +99,10 @@ public class ChangeResolutionDialog extends JDialog {
         ArrayList<Dimension> sortingList = new ArrayList<>();
 
         sortingList.add(screenSize);
+        Dimension currectSize = new Dimension(WindowUtilities.getFullWidth(), WindowUtilities.getFullHeight());
+        if (!sortingList.contains(currectSize)) {
+            sortingList.add(currectSize);
+        }
 
         for (String resolution : RESOLUTIONS) {
             int resolutionX = Integer.parseInt(resolution.substring(0, resolution.indexOf('×')));

@@ -42,32 +42,7 @@ public class GameRecordDialog extends JDialog {
 
     }
 
-    private ArrayList<GameRecord> configurationsGameRecords = Configs.getConfiguration().getGameRecords() /*testDataLoading()*/;
-
-    /*===== ONLY FOR TESTING ===== TODO REMOVE THIS*/
-    /*private ArrayList<GameRecord> testDataLoading() {
-        Character c1 = Character.get(1);
-        Location l1 = Location.get(1);
-        Weapon w1 = Weapon.get(1);
-
-        ArrayList<Card> cl1 = new ArrayList<>();
-        cl1.add(c1);
-        cl1.add(l1);
-        cl1.add(w1);
-        cl1.add(c1);
-        cl1.add(l1);
-        cl1.add(w1);
-
-        Suggestion s1 = new Suggestion(c1, w1, l1);
-
-        ArrayList<GameRecord> grl = new ArrayList<>();
-
-        for (int i = 0; i < 200; i++) {
-            grl.add(new GameRecord(s1, "#" + i * i + "#", cl1));
-        }
-
-        return grl;
-    }*/
+    private ArrayList<GameRecord> configurationsGameRecords = Configs.getConfiguration().getGameRecords();
 
     private DefaultListModel<GameRecord> gameRecordStringList = new DefaultListModel<>();
     private GameRecord selectedValue;
