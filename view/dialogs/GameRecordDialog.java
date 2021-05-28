@@ -8,6 +8,7 @@ import configs.Configs;
 import game.GameRecord;
 import ui.GUIClient;
 import view.PlayerPanelCanvas;
+
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
@@ -62,19 +63,9 @@ public class GameRecordDialog extends JDialog {
 
         JScrollPane listScroller = new JScrollPane(list);
 
-        JTextArea noGameRecordsText = new JTextArea();
-        noGameRecordsText.setFont(new Font("Calibre", 1, 40));
-        noGameRecordsText.setText("No game records saved.\nPlease, win a game!");
-        noGameRecordsText.setWrapStyleWord(true);
-        noGameRecordsText.setLineWrap(true);
-        noGameRecordsText.setEditable(false);
-        noGameRecordsText.setOpaque(true);
-
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        // ===== first column, game record scrollable list panel =====
 
         JPanel gameRecordsListColumn = new JPanel();
         gameRecordsListColumn.setLayout(new BoxLayout(gameRecordsListColumn, BoxLayout.Y_AXIS));
@@ -83,14 +74,9 @@ public class GameRecordDialog extends JDialog {
         gameRecordsListColumn.setMaximumSize(new Dimension(400, 600));
         gameRecordsListColumn.setAlignmentY(Component.CENTER_ALIGNMENT);
         if (gameRecordStringList.isEmpty()) {
-            gameRecordsListColumn.add(noGameRecordsText);
-            gameRecordsListColumn.setPreferredSize(new Dimension(400, 200));
-            mainPanel.add(gameRecordsListColumn);
-            mainPanel.add(Box.createRigidArea(new Dimension(15, 20)));
+            JOptionPane.showMessageDialog(parent, "No game records saved.\nPlease, win a game!", "No records found", JOptionPane.WARNING_MESSAGE);
         } else {
             gameRecordsListColumn.add(listScroller);
-
-            // ===== second column, view more panel =====
 
             JPanel viewMoreColumn = new JPanel();
             viewMoreColumn.setLayout(new BoxLayout(viewMoreColumn, BoxLayout.Y_AXIS));
@@ -191,17 +177,16 @@ public class GameRecordDialog extends JDialog {
             mainPanel.add(Box.createRigidArea(new Dimension(15, 20)));
             mainPanel.add(viewMoreColumn);
             mainPanel.add(Box.createRigidArea(new Dimension(15, 20)));
+
+            // pack and show it
+            this.add(mainPanel);
+            this.setModal(true);
+            this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            this.setResizable(false);
+            this.pack();
+            this.setLocationRelativeTo(parent);
+            this.setVisible(true);
         }
-
-        // pack and show it
-        this.add(mainPanel);
-        this.setModal(true);
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.setResizable(false);
-        this.pack();
-        this.setLocationRelativeTo(parent);
-        this.setVisible(true);
-
     }
 
     private void listToDefaultListModel(ArrayList<GameRecord> list) {
