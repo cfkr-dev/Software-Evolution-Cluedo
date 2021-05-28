@@ -254,8 +254,6 @@ public class SuggestionDialog extends JDialog {
         characterPanel.add(textPane);
         characterPanel.add(Box.createRigidArea(new Dimension(15, 15)));
         characterPanel.add(midPanel);
-        //characterPanel.add(Box.createRigidArea(new Dimension(10, 10)));
-        //characterPanel.add(infoText);
         characterPanel.add(Box.createRigidArea(new Dimension(15, 15)));
         characterPanel.add(buttonPane);
 

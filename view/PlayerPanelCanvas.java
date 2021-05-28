@@ -1476,7 +1476,4 @@ public class PlayerPanelCanvas extends JPanel implements ComponentListener {
         remainingCoins.setText("Remaining coins: " + gui.getGame().getPlayerByCharacter(character).getSalary().getCoins());
     }
 
-    public JPanel getRemainingCardsPanel() {
-        return remainingCardsPanel;
-    }
 }
